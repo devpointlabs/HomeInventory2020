@@ -11,7 +11,7 @@ class Api::LocationsController < ApplicationController
     if location.save
       render json: location
     else
-      render json: post.errors, status: 422
+      render json: location.errors, status: 422
     end
   end
 
