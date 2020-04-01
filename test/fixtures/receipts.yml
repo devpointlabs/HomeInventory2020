@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2020-04-01
+  receipt_num: MyString
+  purchased_from: MyString
+  price: 1.5
+  tax: 1.5
+  img: MyString
+  item: one
+
+two:
+  date: 2020-04-01
+  receipt_num: MyString
+  purchased_from: MyString
+  price: 1.5
+  tax: 1.5
+  img: MyString
+  item: two
