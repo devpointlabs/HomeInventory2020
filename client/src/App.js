@@ -9,16 +9,18 @@ import Album from './components/Album'
 import Policies from './components/Policies'
 import Inbox from './components/Inbox'
 import UserPage from './components/UserPage'
+import FetchUser from './components/FetchUser';
 import { Switch, Route, } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 
 const App = () => (
   <Fragment>
     <Navbar />
-    <div>
+    <FetchUser>
       <Switch>
-        <Route exact path="/" component={Home} />
+        <ProtectedRoute exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/items" component={Items} />
@@ -28,7 +30,7 @@ const App = () => (
         <Route exact path="/userpage" component={UserPage} />
         <Route component={NoMatch} />
       </Switch>
-      </div>
+    </FetchUser>
   </Fragment>
 )
 
