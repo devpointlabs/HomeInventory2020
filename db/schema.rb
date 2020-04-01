@@ -10,10 +10,72 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_31_213947) do
+ActiveRecord::Schema.define(version: 2020_04_01_203752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "documents", force: :cascade do |t|
+    t.string "name"
+    t.string "doc_type"
+    t.string "file"
+    t.bigint "item_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_id"], name: "index_documents_on_item_id"
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string "name"
+    t.string "make"
+    t.string "model"
+    t.string "serial_num"
+    t.string "category"
+    t.string "collection"
+    t.string "condition"
+    t.string "heir"
+    t.date "purchase_date"
+    t.integer "quantity"
+    t.float "value"
+    t.string "tags"
+    t.bigint "location_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["location_id"], name: "index_items_on_location_id"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "name"
+    t.integer "square_footage"
+    t.text "description"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_locations_on_user_id"
+  end
+
+  create_table "photos", force: :cascade do |t|
+    t.string "name"
+    t.string "file"
+    t.bigint "item_id", null: false
+    t.date "date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_id"], name: "index_photos_on_item_id"
+  end
+
+  create_table "receipts", force: :cascade do |t|
+    t.date "date"
+    t.string "receipt_num"
+    t.string "purchased_from"
+    t.float "price"
+    t.float "tax"
+    t.string "img"
+    t.bigint "item_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_id"], name: "index_receipts_on_item_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
@@ -45,4 +107,9 @@ ActiveRecord::Schema.define(version: 2020_03_31_213947) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "documents", "items"
+  add_foreign_key "items", "locations"
+  add_foreign_key "locations", "users"
+  add_foreign_key "photos", "items"
+  add_foreign_key "receipts", "items"
 end
