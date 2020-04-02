@@ -29,17 +29,6 @@ class Register extends React.Component {
       <> 
         <PageHeader as='h1' textAlign='center'>Register</PageHeader>
         <Form onFinish={this.handleSubmit}>
-          <Form.Item >
-            <Input
-            label="Name"
-            autoFocus
-            required     
-            name='name'
-            value={name}
-            placeholder='Name'
-            onChange={this.handleChange}
-            />
-          </Form.Item>
           <Form.Item>
             <Input
               label="Email"
@@ -49,6 +38,16 @@ class Register extends React.Component {
               value={email} 
               placeholder='Email'
               onChange={this.handleChange}
+            />
+          </Form.Item>
+          <Form.Item >
+            <Input
+            label="Name"
+            required     
+            name='name'
+            value={name}
+            placeholder='Name'
+            onChange={this.handleChange}
             />
           </Form.Item>
           <Form.Item>

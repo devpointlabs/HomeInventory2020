@@ -7,6 +7,7 @@ import Login from './components/Login'
 import Items from './components/Items'
 import Album from './components/Album'
 import Policies from './components/Policies'
+import Reports from './components/Reports'
 import Inbox from './components/Inbox'
 import UserPage from './components/UserPage'
 import FetchUser from './components/FetchUser';
@@ -20,12 +21,13 @@ const App = () => (
     <Navbar />
     <FetchUser>
       <Switch>
-        <ProtectedRoute exact path="/" component={Home} />
+        <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/items" component={Items} />
         <Route exact path="/album" component={Album} />
         <Route exact path="/policies" component={Policies} />
+        <Route exact path="/reports" component={Reports} />
         <Route exact path="/inbox" component={Inbox} />
         <Route exact path="/userpage" component={UserPage} />
         <Route component={NoMatch} />
