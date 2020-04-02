@@ -9,7 +9,6 @@ export default class RenderItem extends React.Component {
       const { itemId, locationId } = this.props
       axios.get(`/api/locations/${locationId}/items/${itemId}`).then((res) => {
       this.setState({item: res});
-      console.log(this.state)
     }).catch((err) => {
       console.log(err)
     })

@@ -37,8 +37,9 @@ class Items extends React.Component {
     }
   }
 //Toggles item number for info display:
-  toggleItemId = (targetId) => {
-    this.setState({...this.state, itemId: targetId});
+  toggleItemId = (itemId) => {
+    console.log(itemId)
+    // this.setState({...this.state, itemId: targetId});
   }
 
 
@@ -46,11 +47,7 @@ class Items extends React.Component {
   toggleItems = (targetId) => {
     this.setState({...this.state, id: targetId});
   }
-// Component did update re-renders items when toggler is hit. 
-  componentDidUpdate(){
-    const { id } = this.state
-    console.log(id)
-  }
+
  render(){
    const { id, tab, itemId } = this.state
 
@@ -84,7 +81,7 @@ class Items extends React.Component {
       </Col>
       <Col span={5}>
         <div style={{...divField}}>        
-          <RenderItems locationId={id}/>
+          <RenderItems locationId={id} toggleItemId={this.toggleItemId}/>
         </div>
       </Col>
       <Col span={14}>

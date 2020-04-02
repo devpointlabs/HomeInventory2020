@@ -19,9 +19,10 @@ export default class RenderItems extends React.Component {
 
   renderItems = () => {
     const { items } = this.state
+    const { toggleItemId } = this.props
     return items.map(item => (
       <div key={item.id}>
-        <StyledA2>{item.name}</StyledA2>
+        <StyledA2 onClick={() => toggleItemId(item.id)}>{item.name}</StyledA2>
       </div>
     ))
   }
