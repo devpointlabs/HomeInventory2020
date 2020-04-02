@@ -16,7 +16,7 @@ class Api::ItemsController < ApplicationController
       render json: item.errors, status: 422
     end
   end
-
+ 
   def update
     @item.update(item_params)
     render json: @item
