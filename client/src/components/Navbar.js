@@ -23,7 +23,6 @@ const Navbar = (props) => {
             <StyledItem><StyledA as={Link} to='/policies'>Policies</StyledA></StyledItem>
             <StyledItem><StyledA as={Link} to='/reports'>Reports</StyledA></StyledItem>
             <StyledItem><StyledA as={Link} to='/inbox'>Inbox</StyledA></StyledItem>
-            <StyledItem><Search></Search></StyledItem>
             <StyledItem><StyledA onClick={() => data.handleLogout(props.history)}>Sign Out</StyledA></StyledItem>
           </StyledUl>
         </StyledNav>
