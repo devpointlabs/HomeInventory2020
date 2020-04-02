@@ -7,7 +7,7 @@ class Login extends React.Component {
   state = { email: '', password: '' }
   
   handleSubmit = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const { email, password, } = this.state;
     this.props.auth.handleLogin({ email, password, }, this.props.history);
   }
@@ -22,7 +22,7 @@ class Login extends React.Component {
     return (
       <>
         <PageHeader as='h1' textAlign='center'>Login</PageHeader>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onFinish={this.handleSubmit}>
           <Form.Item>
             <Input
               label="Email"
