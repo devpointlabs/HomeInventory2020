@@ -20,7 +20,7 @@ class Api::DocumentsController < ApplicationController
   end
 
   def update
-    if @document.update(photo_params)
+    if @document.update(docoument_params)
       render json: @document
     else
       render json:{message: 'ooopsie'}
@@ -33,7 +33,7 @@ class Api::DocumentsController < ApplicationController
 
   private 
 
-  def documents_params
+  def document_params
     params.require(:documents).permit(:name, :file, :doc_type)
   end
 
