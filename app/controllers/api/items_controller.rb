@@ -8,6 +8,11 @@ class Api::ItemsController < ApplicationController
     render json: items
   end
 
+  def show
+    item = @location.items.find(params[:id])
+    render json: item
+  end
+
   def create
     item = @location.items.new(item_params)
     if item.save

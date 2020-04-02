@@ -3,9 +3,10 @@ import { Row, Col } from 'antd';
 import styled from 'styled-components';
 import RenderItems from './RenderItems'
 import axios from 'axios'
+import RenderItem from './ItemInfo'
 
 class Items extends React.Component {
-  state = { locations: [], id: 0};
+  state = { locations: [], id: 0, tab: 'info', itemId: null};
 
   componentDidMount() {
     axios.get('/api/locations').then((res) => {
@@ -23,6 +24,23 @@ class Items extends React.Component {
       </div>
     ))
   }
+// Toggles Info display for info / photos / etc. 
+  toggleTab = (tab) => {
+    console.log('tab toggle hit', tab)
+  }
+// Render information panel based on function above / active tab. 
+  renderItemInfo = (show, id) => {
+    if (show== 'info') {
+      return(
+        <RenderItem itemId={id} locationId={this.state.id}/>
+      )
+    }
+  }
+//Toggles item number for info display:
+  toggleItemId = (targetId) => {
+    this.setState({...this.state, itemId: targetId});
+  }
+
 
 // Toggles the location id for calling up item list. 
   toggleItems = (targetId) => {
@@ -34,7 +52,7 @@ class Items extends React.Component {
     console.log(id)
   }
  render(){
-   const { id } = this.state
+   const { id, tab, itemId } = this.state
 
    return(
     <>
@@ -51,12 +69,12 @@ class Items extends React.Component {
       </Col>
       <Col span={14}>
         <div style={{...divHead}}>
-        <StyledA>Info</StyledA>
-        <StyledA>Photos</StyledA>
-        <StyledA>Receipts</StyledA>
-        <StyledA>Files</StyledA>
+        <StyledA onClick={() => this.toggleTab('info')}>Info</StyledA>
+        <StyledA onClick={() => this.toggleTab('photos')}>Photos</StyledA>
+        <StyledA onClick={() => this.toggleTab('receipts')}>Receipts</StyledA>
+        <StyledA onClick={() => this.toggleTab('files')}>Files</StyledA>
         </div>
-      </Col>
+      </Col> 
     </Row>
     <Row>
       <Col span={5} style={{display: 'flex', flexDirection: 'row'}}>
@@ -71,7 +89,7 @@ class Items extends React.Component {
       </Col>
       <Col span={14}>
         <div style={{...divField}}>           
-          Info Display
+          {this.renderItemInfo(tab, itemId)}
         </div>
       </Col>  
     </Row>
@@ -97,9 +115,6 @@ class Items extends React.Component {
 )}
 
 } 
-
-
-
 
 const divHead = {
 display: 'flex',
