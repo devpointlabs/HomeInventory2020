@@ -2,15 +2,18 @@ import React from 'react';
 import axios from 'axios';
 
 export default class RenderItems extends React.Component {
-  state = { items: [], };
+  state = { items: [], id: 0 };
 
-  componentDidMount() {
+  componentDidUpdate() {
       const { locationId } = this.props
-    axios.get(`/api/locations/${locationId}/items`).then((res) => {
-      this.setState({ items: res.data });
+      const { id } = this.state
+    if( locationId !== id ) {
+      axios.get(`/api/locations/${locationId}/items`).then((res) => {
+      this.setState({ items: res.data, id: locationId});
     }).catch((err) => {
       console.log(err)
     })
+  }
   }
   renderItems = () => {
     const { items } = this.state
