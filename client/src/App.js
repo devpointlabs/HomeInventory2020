@@ -24,12 +24,12 @@ const App = () => (
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
-        <Route exact path="/items" component={Items} />
-        <Route exact path="/album" component={Album} />
-        <Route exact path="/policies" component={Policies} />
-        <Route exact path="/reports" component={Reports} />
-        <Route exact path="/inbox" component={Inbox} />
-        <Route exact path="/userpage" component={UserPage} />
+        <ProtectedRoute exact path="/items" component={Items} />
+        <ProtectedRoute exact path="/album" component={Album} />
+        <ProtectedRoute exact path="/policies" component={Policies} />
+        <ProtectedRoute exact path="/reports" component={Reports} />
+        <ProtectedRoute exact path="/inbox" component={Inbox} />
+        <ProtectedRoute exact path="/userpage" component={UserPage} />
         <Route component={NoMatch} />
       </Switch>
     </FetchUser>
