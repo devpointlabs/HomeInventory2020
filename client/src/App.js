@@ -14,11 +14,12 @@ import FetchUser from './components/FetchUser';
 import { Switch, Route, } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
-
+import PageLayout from './components/Layout'
 
 const App = () => (
   <Fragment>
     <Navbar />
+    <PageLayout/>
     <FetchUser>
       <Switch>
         <Route exact path="/" component={Home} />
