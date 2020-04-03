@@ -5,9 +5,9 @@ import RenderItems from './RenderItems'
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
 import { Button } from 'antd'
-import { PlusOutlined, EditOutlined } from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
-
+import ItemForm from './forms/ItemForm'
 
 class Items extends React.Component {
   state = { locations: [], id: 0, tab: 'info', itemId: null};
@@ -57,6 +57,10 @@ class Items extends React.Component {
       case 'newLocation':
         return (
           <LocationForm/>
+        )
+      case 'newItem':
+        return (
+          <ItemForm/>
         )
     }
   }
@@ -119,15 +123,13 @@ class Items extends React.Component {
         <Button type="primary" shape="circle" onClick={() => this.toggleTab('newLocation')}>
           <PlusOutlined />
         </Button>
-        <Button type="primary" shape="circle">
-        <EditOutlined />
-        </Button>
- 
       </div>
       </Col>
       <Col span={5}>
       <div style={{...divFoot}}> 
-        Bottom Nav
+        <Button type="primary" shape="circle" onClick={() => this.toggleTab('newItem')}>
+          <PlusOutlined />
+        </Button>
       </div>
       </Col>
       <Col span={14}>
@@ -157,7 +159,7 @@ fontWeight: '400'
 const divField = {
 display: 'flex !important',
 flexDirection: 'row !important',
-height: '30em',
+minHeight: '30em',
 width: '100%',
 fontSize: '18px',
 color: '#272829',
