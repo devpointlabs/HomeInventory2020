@@ -4,6 +4,10 @@ import styled from 'styled-components';
 import RenderItems from './RenderItems'
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
+import { Button } from 'antd'
+import { PlusOutlined, EditOutlined } from '@ant-design/icons'
+import LocationForm from '../components/forms/LocationForm'
+
 
 class Items extends React.Component {
   state = { locations: [], id: 0, tab: 'info', itemId: null};
@@ -27,28 +31,35 @@ class Items extends React.Component {
   }
 // Toggles Info display for info / photos / etc. 
   toggleTab = (t) => {
+    console.log('tab toggle hit')
     this.setState({tab: t})
   }
 // Render information panel based on function above / active tab. 
   renderItemInfo = () => {
     const { tab } = this.state
-    if (tab == 'info') {
-      return (
-        <ItemInfo itemId={this.state.itemId} locationId={this.state.id}/>
-      )
-    } else if (tab == 'photos' ) {
-      return(
-        <p>PHOTOS</p>
-      )
-    } else if ( tab == 'receipts') {
-      return (
-        <p>RECEIPTS</p>
-      )
+    switch (tab) {
+      case 'info':
+        return (
+          <ItemInfo itemId={this.state.itemId} locationId={this.state.id}/>
+        )
+      case 'photos':
+        return(
+          <p>PHOTOS</p>
+        )
+      case 'receipts':
+        return (
+          <p>RECEIPTS</p>
+        )
+      case 'files':
+        return (
+          <p>FILES</p>
+        )
+      case 'newLocation':
+        return (
+          <LocationForm/>
+        )
     }
-    return (
-      <p>FILES</p>
-    )
-    }
+  }
   
 //Toggles item number for info display:
   toggleItemId = (e) => {
@@ -105,7 +116,13 @@ class Items extends React.Component {
     <Row>
       <Col span={5}>
       <div style={{...divFoot}}> 
-        Bottom Nav
+        <Button type="primary" shape="circle" onClick={() => this.toggleTab('newLocation')}>
+          <PlusOutlined />
+        </Button>
+        <Button type="primary" shape="circle">
+        <EditOutlined />
+        </Button>
+ 
       </div>
       </Col>
       <Col span={5}>

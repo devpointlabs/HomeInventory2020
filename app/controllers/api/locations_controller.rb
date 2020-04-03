@@ -27,7 +27,7 @@ class Api::LocationsController < ApplicationController
 
 private
   def location_params
-    params.require(:locations).permit(:name, :square_footage, :description)
+    params.permit(:name, :square_footage, :description)
   end
   def set_location
     @location = current_user.locations.find(params[:id])
