@@ -3,23 +3,27 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 export default class RenderItem extends React.Component {
-  state = { item: {}};
+  state = {
+    item: {}
+  };
 
-  componentDidMount() {
-      const { itemId, locationId } = this.props
-      axios.get(`/api/locations/${locationId}/items/${itemId}`).then((res) => {
-      this.setState({item: res});
+  componentDidUpdate() {
+    const { itemId, locationId } = this.props
+    if( itemId !== this.state.item.id ) {
+    axios.get(`/api/locations/${locationId}/items/${itemId}`).then((res) => {
+      console.log(res)
+      this.setState({item: res.data});
     }).catch((err) => {
       console.log(err)
     })
+   }
   }
 
- 
   render() {
     const { item } = this.state
     return (
       <>
-        <p>TEST</p>
+        <p>{item.name}</p>
       </>
 
     )

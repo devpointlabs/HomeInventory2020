@@ -3,7 +3,7 @@ import { Row, Col } from 'antd';
 import styled from 'styled-components';
 import RenderItems from './RenderItems'
 import axios from 'axios'
-import RenderItem from './ItemInfo'
+import ItemInfo from './ItemInfo'
 
 class Items extends React.Component {
   state = { locations: [], id: 0, tab: 'info', itemId: null};
@@ -32,14 +32,13 @@ class Items extends React.Component {
   renderItemInfo = (show, id) => {
     if (show== 'info') {
       return(
-        <RenderItem itemId={id} locationId={this.state.id}/>
+        <ItemInfo itemId={this.state.itemId} locationId={this.state.id}/>
       )
     }
   }
 //Toggles item number for info display:
-  toggleItemId = (itemId) => {
-    console.log(itemId)
-    // this.setState({...this.state, itemId: targetId});
+  toggleItemId = (e) => {
+    this.setState({...this.state, itemId: e});
   }
 
 
