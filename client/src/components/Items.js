@@ -15,6 +15,7 @@ class Items extends React.Component {
       console.log(err)
     })
   }
+ 
   renderLocations = () => {
     const { locations } = this.state
     return locations.map(location => (
@@ -25,22 +26,34 @@ class Items extends React.Component {
     ))
   }
 // Toggles Info display for info / photos / etc. 
-  toggleTab = (tab) => {
-    console.log('tab toggle hit', tab)
+  toggleTab = (t) => {
+    this.setState({tab: t})
   }
 // Render information panel based on function above / active tab. 
-  renderItemInfo = (show, id) => {
-    if (show== 'info') {
-      return(
+  renderItemInfo = () => {
+    const { tab } = this.state
+    if (tab == 'info') {
+      return (
         <ItemInfo itemId={this.state.itemId} locationId={this.state.id}/>
       )
+    } else if (tab == 'photos' ) {
+      return(
+        <p>PHOTOS</p>
+      )
+    } else if ( tab == 'receipts') {
+      return (
+        <p>RECEIPTS</p>
+      )
     }
-  }
+    return (
+      <p>FILES</p>
+    )
+    }
+  
 //Toggles item number for info display:
   toggleItemId = (e) => {
     this.setState({...this.state, itemId: e});
   }
-
 
 // Toggles the location id for calling up item list. 
   toggleItems = (targetId) => {
