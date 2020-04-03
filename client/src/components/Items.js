@@ -62,6 +62,11 @@ class Items extends React.Component {
         return (
           <ItemForm/>
         )
+      default:
+        return (
+          <>
+          </>
+        )
     }
   }
   
@@ -82,7 +87,9 @@ class Items extends React.Component {
     axios.delete(`/api/locations/${id}/items/${itemId}`)
     .then(res => {
       console.log(res)
-      // this.setState({});
+      this.setState({
+        id: 0, itemId: null, tab: 'blank'
+      });
     })
     .catch(err => {
       console.log(err)
