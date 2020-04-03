@@ -2,16 +2,18 @@ import React from 'react';
 import { PageHeader, } from 'antd';
 import { Button, Form, Input } from 'antd';
 import { AuthConsumer } from '../providers/AuthProvider'
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
   state = { email: '', password: '' }
-  
+
   handleSubmit = (e) => {
     // e.preventDefault();
     const { email, password, } = this.state;
     this.props.auth.handleLogin({ email, password, }, this.props.history);
   }
-  
+
   handleChange = (e) => {
     const { name, value, } = e.target;
     this.setState({ [name]: value, });
@@ -20,14 +22,20 @@ class Login extends React.Component {
   render() {
     const { email, password, } = this.state;
     return (
-      <>
-        <PageHeader as='h1' textAlign='center'>Login</PageHeader>
+      <StyledBackground>
+        <StyledHeader>Log Into Home Inventory</StyledHeader>
+        <StyledHeader2>Log in with <a>Facebook</a> or <a>Google</a></StyledHeader2>
+        <LineCon>
+          <StyledLine></StyledLine>
+          <StyledHeader2>or</StyledHeader2>
+          <StyledLine></StyledLine>
+        </LineCon>
         <Form onFinish={this.handleSubmit}>
           <Form.Item>
             <Input
               label="Email"
               autoFocus
-              required         
+              required
               name='email'
               value={email}
               placeholder='Email'
@@ -46,12 +54,14 @@ class Login extends React.Component {
             />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
+            <StyledButton htmlType="submit">
+              Log in
+            </StyledButton>
+            <StyledLine2></StyledLine2>
+            <StyledHeader2>Don't have an account? <Link to='/register'>Sign up</Link></StyledHeader2>
           </Form.Item>
         </Form>
-      </>
+      </ StyledBackground>
     )
   }
 }
@@ -60,9 +70,61 @@ export default class ConnectedLogin extends React.Component {
   render() {
     return (
       <AuthConsumer>
-        { auth => <Login {...this.props} auth={auth} />}
+        {auth => <Login {...this.props} auth={auth} />}
       </AuthConsumer>
     )
   }
 }
+
+const StyledForm = styled.input`
+background: grey !important;
+border: none !important;
+`
+
+const StyledBackground = styled.div`
+border: black 1px solid;
+margin: 10px 420px;
+padding: 10px 25px;
+`
+const StyledHeader = styled.h1`
+font-weight: bold;
+font-size: 30px;
+`
+const StyledHeader2 = styled.h2`
+font-size: 15px;
+`
+const LineCon = styled.div`
+display: flex; 
+flex-direction: row;
+justify-content: center;
+align-items: center;
+margin-bottom: 20px;
+`
+const StyledLine = styled.div`
+background: #adadad;
+width: 250px;
+height: 1px;
+margin: 0px 15px;
+`
+const StyledButton = styled.button`
+border: none;
+color: white;
+font-weight: bold;
+background: #008cff;
+padding: 5px 15px;
+cursor: pointer;
+width: 100%;
+transition: all 0.3s ease-in-out;
+
+&:hover {
+box-shadow: 0 5px 10px #6bbcff;
+transition: all 0.3s ease-in-out;
+}
+`
+const StyledLine2 = styled.div`
+background: #adadad;
+margin-top: 45px;
+width: 100%;
+height: 1px;
+`
 
