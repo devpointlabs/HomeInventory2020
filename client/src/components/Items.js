@@ -5,7 +5,7 @@ import RenderItems from './RenderItems'
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
 import { Button } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
 import ItemForm from './forms/ItemForm'
 
@@ -74,6 +74,21 @@ class Items extends React.Component {
   toggleItems = (targetId) => {
     this.setState({...this.state, id: targetId});
   }
+// delete item when delete button pressed
+  deleteItem = () => {
+    const { id, itemId } = this.state
+    console.log(`delete item: ${this.state.itemId}`)
+    console.log(`location id: ${this.state.id}`)
+    axios.delete(`/api/locations/${id}/items/${itemId}`)
+    .then(res => {
+      console.log(res)
+      // this.setState({});
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
 
  render(){
    const { id, tab, itemId } = this.state
@@ -134,7 +149,16 @@ class Items extends React.Component {
       </Col>
       <Col span={14}>
       <div style={{...divFoot}}> 
-        No Items
+        {this.state.itemId !== null ?
+        <>
+          <Button shape="circle">
+            <EditOutlined />
+          </Button>
+          <Button shape="circle" onClick={() => this.deleteItem()}>
+            <DeleteOutlined />
+          </Button>
+        </>
+         : null }
       </div>
       </Col>     
     </Row>
@@ -171,7 +195,7 @@ const divFoot = {
 display: 'flex',
 alignItems: 'center',
 justifyContent: 'space-around',
-height: 'auto',
+minHeight: '58px',
 width: 'auto',
 fontSize: '19px',
 color: '#272829',

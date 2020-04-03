@@ -10,6 +10,9 @@ class ItemForm extends React.Component {
     axios.post("/api/items", { ...this.state, })
       .then( res => {
         console.log(res)
+        this.setState({
+          name: "", make: "", model: "", serial_num: "", category: "", collection: "", condition: "", heir: "", purchase_date: null, quantity: "", value: "", tags: "", location_id: null 
+        });
       })
   }
 
