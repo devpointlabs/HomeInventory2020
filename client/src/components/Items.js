@@ -31,7 +31,6 @@ class Items extends React.Component {
   }
 // Toggles Info display for info / photos / etc. 
   toggleTab = (t) => {
-    console.log('tab toggle hit')
     this.setState({tab: t})
   }
 // Render information panel based on function above / active tab. 
@@ -56,11 +55,11 @@ class Items extends React.Component {
         )
       case 'newLocation':
         return (
-          <LocationForm/>
+          <LocationForm />
         )
       case 'newItem':
         return (
-          <ItemForm/>
+          <ItemForm locationId={this.state.id}/>
         )
       default:
         return (
@@ -77,7 +76,7 @@ class Items extends React.Component {
 
 // Toggles the location id for calling up item list. 
   toggleItems = (targetId) => {
-    this.setState({...this.state, id: targetId});
+    this.setState({ id: targetId});
   }
 // delete item when delete button pressed
   deleteItem = () => {

@@ -4,7 +4,12 @@ import { Form, Input, DatePicker, InputNumber, Button } from "antd";
 import moment from 'moment'
 
 class ItemForm extends React.Component {
-  state = { name: "", make: "", model: "", serial_num: "", category: "", collection: "", condition: "", heir: "", purchase_date: null, quantity: "", value: "", tags: "", location_id: 2 };
+  state = { name: "", make: "", model: "", serial_num: "", category: "", collection: "", condition: "", heir: "", purchase_date: null, quantity: "", value: "", tags: "", location_id: null };
+
+  componentDidMount(){
+    const { locationId } = this.props
+    this.setState({location_id: locationId});
+  }
 
   handleSubmit = (e) => {
     axios.post("/api/items", { ...this.state, })
