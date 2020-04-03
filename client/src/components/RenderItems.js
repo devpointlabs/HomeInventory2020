@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 
 export default class RenderItems extends React.Component {
   state = { items: [], id: 0 };
@@ -13,13 +14,15 @@ export default class RenderItems extends React.Component {
     }).catch((err) => {
       console.log(err)
     })
+    }
   }
-  }
+
   renderItems = () => {
     const { items } = this.state
+    const { toggleItemId } = this.props
     return items.map(item => (
       <div key={item.id}>
-        <h3 >- {item.name}</h3>
+        <StyledA2 onClick={() => toggleItemId(item.id)}>{item.name}</StyledA2>
       </div>
     ))
   }
@@ -33,3 +36,7 @@ export default class RenderItems extends React.Component {
     )
   }
 }
+const StyledA2 = styled.a`
+color: #272829;
+text-decoration: none;
+`

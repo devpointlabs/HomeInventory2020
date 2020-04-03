@@ -3,9 +3,10 @@ import { Row, Col } from 'antd';
 import styled from 'styled-components';
 import RenderItems from './RenderItems'
 import axios from 'axios'
+import ItemInfo from './ItemInfo'
 
 class Items extends React.Component {
-  state = { locations: [], id: 0};
+  state = { locations: [], id: 0, tab: 'info', itemId: null};
 
   componentDidMount() {
     axios.get('/api/locations').then((res) => {
@@ -14,6 +15,7 @@ class Items extends React.Component {
       console.log(err)
     })
   }
+ 
   renderLocations = () => {
     const { locations } = this.state
     return locations.map(location => (
@@ -23,18 +25,43 @@ class Items extends React.Component {
       </div>
     ))
   }
+// Toggles Info display for info / photos / etc. 
+  toggleTab = (t) => {
+    this.setState({tab: t})
+  }
+// Render information panel based on function above / active tab. 
+  renderItemInfo = () => {
+    const { tab } = this.state
+    if (tab == 'info') {
+      return (
+        <ItemInfo itemId={this.state.itemId} locationId={this.state.id}/>
+      )
+    } else if (tab == 'photos' ) {
+      return(
+        <p>PHOTOS</p>
+      )
+    } else if ( tab == 'receipts') {
+      return (
+        <p>RECEIPTS</p>
+      )
+    }
+    return (
+      <p>FILES</p>
+    )
+    }
+  
+//Toggles item number for info display:
+  toggleItemId = (e) => {
+    this.setState({...this.state, itemId: e});
+  }
 
 // Toggles the location id for calling up item list. 
   toggleItems = (targetId) => {
     this.setState({...this.state, id: targetId});
   }
-// Component did update re-renders items when toggler is hit. 
-  componentDidUpdate(){
-    const { id } = this.state
-    console.log(id)
-  }
+
  render(){
-   const { id } = this.state
+   const { id, tab, itemId } = this.state
 
    return(
     <>
@@ -51,12 +78,12 @@ class Items extends React.Component {
       </Col>
       <Col span={14}>
         <div style={{...divHead}}>
-        <StyledA>Info</StyledA>
-        <StyledA>Photos</StyledA>
-        <StyledA>Receipts</StyledA>
-        <StyledA>Files</StyledA>
+        <StyledA onClick={() => this.toggleTab('info')}>Info</StyledA>
+        <StyledA onClick={() => this.toggleTab('photos')}>Photos</StyledA>
+        <StyledA onClick={() => this.toggleTab('receipts')}>Receipts</StyledA>
+        <StyledA onClick={() => this.toggleTab('files')}>Files</StyledA>
         </div>
-      </Col>
+      </Col> 
     </Row>
     <Row>
       <Col span={5} style={{display: 'flex', flexDirection: 'row'}}>
@@ -66,12 +93,12 @@ class Items extends React.Component {
       </Col>
       <Col span={5}>
         <div style={{...divField}}>        
-          <RenderItems locationId={id}/>
+          <RenderItems locationId={id} toggleItemId={this.toggleItemId}/>
         </div>
       </Col>
       <Col span={14}>
         <div style={{...divField}}>           
-          Info Display
+          {this.renderItemInfo(tab, itemId)}
         </div>
       </Col>  
     </Row>
@@ -97,9 +124,6 @@ class Items extends React.Component {
 )}
 
 } 
-
-
-
 
 const divHead = {
 display: 'flex',
