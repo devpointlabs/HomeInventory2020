@@ -8,6 +8,10 @@ class Api::ReceiptsController < ApplicationController
     render json: receipts
   end
 
+  def show
+    render json: @receipt
+  end
+
   def create
     receipt = @location.receipts.new(receipt_params)
     if receipt.save
@@ -34,9 +38,9 @@ class Api::ReceiptsController < ApplicationController
   end
 
   def set_item
-    @item = item.find(params[:item_id])
+    @item = Item.find(params[:item_id])
   end
-
+  
   def set_receipt
    @receipt = @item.receipts.find(params[:id])
   end
