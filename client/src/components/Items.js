@@ -5,6 +5,10 @@ import RenderItems from './RenderItems'
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
 import Receipts from './Receipts';
+import { Button } from 'antd'
+import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import LocationForm from '../components/forms/LocationForm'
+import ItemForm from './forms/ItemForm'
 
 class Items extends React.Component {
   state = { locations: [], receipts: {}, id: 0, tab: 'info', itemId: null};
@@ -30,11 +34,13 @@ class Items extends React.Component {
   }
 // Toggles Info display for info / photos / etc. 
   toggleTab = (t) => {
+    console.log('tab toggle hit')
     this.setState({tab: t})
   }
 // Render information panel based on function above / active tab. 
   renderItemInfo = () => {
     const { tab } = this.state
+
     if (tab == 'info') {
       return (
         <ItemInfo itemId={this.state.itemId} locationId={this.state.id}/>
@@ -51,7 +57,39 @@ class Items extends React.Component {
     return (
       <p>FILES</p>
     )
+    
+    switch (tab) {
+      case 'info':
+        return (
+          <ItemInfo itemId={this.state.itemId} locationId={this.state.id}/>
+        )
+      case 'photos':
+        return(
+          <p>PHOTOS</p>
+        )
+      case 'receipts':
+        return (
+          <p>RECEIPTS</p>
+        )
+      case 'files':
+        return (
+          <p>FILES</p>
+        )
+      case 'newLocation':
+        return (
+          <LocationForm/>
+        )
+      case 'newItem':
+        return (
+          <ItemForm/>
+        )
+      default:
+        return (
+          <>
+          </>
+        )
     }
+  }
   
 //Toggles item number for info display:
   toggleItemId = (e) => {
@@ -62,6 +100,23 @@ class Items extends React.Component {
   toggleItems = (targetId) => {
     this.setState({...this.state, id: targetId});
   }
+// delete item when delete button pressed
+  deleteItem = () => {
+    const { id, itemId } = this.state
+    console.log(`delete item: ${this.state.itemId}`)
+    console.log(`location id: ${this.state.id}`)
+    axios.delete(`/api/locations/${id}/items/${itemId}`)
+    .then(res => {
+      console.log(res)
+      this.setState({
+        id: 0, itemId: null, tab: 'blank'
+      });
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
 
  render(){
    const { id, tab, itemId } = this.state
@@ -108,17 +163,30 @@ class Items extends React.Component {
     <Row>
       <Col span={5}>
       <div style={{...divFoot}}> 
-        Bottom Nav
+        <Button type="primary" shape="circle" onClick={() => this.toggleTab('newLocation')}>
+          <PlusOutlined />
+        </Button>
       </div>
       </Col>
       <Col span={5}>
       <div style={{...divFoot}}> 
-        Bottom Nav
+        <Button type="primary" shape="circle" onClick={() => this.toggleTab('newItem')}>
+          <PlusOutlined />
+        </Button>
       </div>
       </Col>
       <Col span={14}>
       <div style={{...divFoot}}> 
-        No Items
+        {this.state.itemId !== null ?
+        <>
+          <Button shape="circle">
+            <EditOutlined />
+          </Button>
+          <Button shape="circle" onClick={() => this.deleteItem()}>
+            <DeleteOutlined />
+          </Button>
+        </>
+         : null }
       </div>
       </Col>     
     </Row>
@@ -143,7 +211,7 @@ fontWeight: '400'
 const divField = {
 display: 'flex !important',
 flexDirection: 'row !important',
-height: '30em',
+minHeight: '30em',
 width: '100%',
 fontSize: '18px',
 color: '#272829',
@@ -155,7 +223,7 @@ const divFoot = {
 display: 'flex',
 alignItems: 'center',
 justifyContent: 'space-around',
-height: 'auto',
+minHeight: '58px',
 width: 'auto',
 fontSize: '19px',
 color: '#272829',

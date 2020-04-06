@@ -4,13 +4,15 @@ import { Form, Input, DatePicker, InputNumber, Button } from "antd";
 import moment from 'moment'
 
 class ItemForm extends React.Component {
-  state = { name: "", make: "", model: "", serial_num: "", category: "", collection: "", condition: "", heir: "", purchase_date: null, quantity: "", value: "", tags: "", };
+  state = { name: "", make: "", model: "", serial_num: "", category: "", collection: "", condition: "", heir: "", purchase_date: null, quantity: "", value: "", tags: "", location_id: 2 };
 
   handleSubmit = (e) => {
-    e.preventDefault();
     axios.post("/api/items", { ...this.state, })
       .then( res => {
-        this.props.add(res.data);
+        console.log(res)
+        this.setState({
+          name: "", make: "", model: "", serial_num: "", category: "", collection: "", condition: "", heir: "", purchase_date: null, quantity: "", value: "", tags: "", location_id: null 
+        });
       })
   }
 
@@ -120,6 +122,7 @@ class ItemForm extends React.Component {
           <Form.Item >
             <DatePicker 
             label="Purchase Date"
+            placeholder="Purchase Date"
             required
             name='purchase_date'
             value={purchase_date}
