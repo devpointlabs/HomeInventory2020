@@ -4,18 +4,21 @@ import styled from 'styled-components';
 import RenderItems from './RenderItems'
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
+import Receipts from './Receipts';
 import { Button } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
 import ItemForm from './forms/ItemForm'
 
 class Items extends React.Component {
-  state = { locations: [], id: 0, tab: 'info', itemId: null};
+  state = { locations: [], receipts: {}, id: 0, tab: 'info', itemId: null};
 
   componentDidMount() {
     axios.get('/api/locations').then((res) => {
       this.setState({ locations: res.data });
-    }).catch((err) => {
+    })
+
+    .catch((err) => {
       console.log(err)
     })
   }
@@ -59,7 +62,7 @@ class Items extends React.Component {
         )
       case 'receipts':
         return (
-          <p>RECEIPTS</p>
+          <Receipts itemId={this.state.itemId} receiptId={this.state.receiptId}/>
         )
       case 'files':
         return (
