@@ -40,24 +40,6 @@ class Items extends React.Component {
 // Render information panel based on function above / active tab. 
   renderItemInfo = () => {
     const { tab } = this.state
-
-    if (tab == 'info') {
-      return (
-        <ItemInfo itemId={this.state.itemId} locationId={this.state.id}/>
-      )
-    } else if (tab == 'photos' ) {
-      return(
-        <p>PHOTOS</p>
-        )
-      } else if ( tab == 'receipts') {
-        return (
-          <Receipts itemId={this.state.itemId} receiptId={this.state.receiptId}/>
-      )
-    }
-    return (
-      <p>FILES</p>
-    )
-    
     switch (tab) {
       case 'info':
         return (
@@ -69,7 +51,7 @@ class Items extends React.Component {
         )
       case 'receipts':
         return (
-          <p>RECEIPTS</p>
+          <Receipts itemId={this.state.itemId} receiptId={this.state.receiptId}/>
         )
       case 'files':
         return (
