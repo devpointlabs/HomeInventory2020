@@ -4,14 +4,17 @@ import styled from 'styled-components';
 import RenderItems from './RenderItems'
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
+import Receipts from './Receipts';
 
 class Items extends React.Component {
-  state = { locations: [], id: 0, tab: 'info', itemId: null};
+  state = { locations: [], receipts: {}, id: 0, tab: 'info', itemId: null};
 
   componentDidMount() {
     axios.get('/api/locations').then((res) => {
       this.setState({ locations: res.data });
-    }).catch((err) => {
+    })
+
+    .catch((err) => {
       console.log(err)
     })
   }
@@ -39,10 +42,10 @@ class Items extends React.Component {
     } else if (tab == 'photos' ) {
       return(
         <p>PHOTOS</p>
-      )
-    } else if ( tab == 'receipts') {
-      return (
-        <p>RECEIPTS</p>
+        )
+      } else if ( tab == 'receipts') {
+        return (
+          <Receipts itemId={this.state.itemId} receiptId={this.state.receiptId}/>
       )
     }
     return (
