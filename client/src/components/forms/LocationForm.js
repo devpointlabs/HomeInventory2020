@@ -7,9 +7,11 @@ class LocationForm extends React.Component {
 
 
   handleSubmit = () => {
-    axios.post("/api/locations", { ...this.state, })
+    const newLocation = {...this.state}
+    axios.post("/api/locations", newLocation)
       .then( res => {
-        console.log(res)
+        // console.log(res)
+        this.props.update(newLocation)
       })
   }
 

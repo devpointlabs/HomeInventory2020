@@ -19,6 +19,11 @@ class Items extends React.Component {
       console.log(err)
     })
   }
+  componentDidUpdate() {
+    if (co)
+    this.render()
+  }
+
  
   renderLocations = () => {
     const { locations } = this.state
@@ -29,6 +34,13 @@ class Items extends React.Component {
       </div>
     ))
   }
+  //Function is passed to new location form / modal to hot-reload on submit. 
+  updateLocationList = (newLocation) => {
+    const { locations } = this.state
+    locations.push(newLocation)
+    console.log(this.state.locations)
+  }
+
 // Toggles Info display for info / photos / etc. 
   toggleTab = (t) => {
     this.setState({tab: t})
@@ -55,7 +67,7 @@ class Items extends React.Component {
         )
       case 'newLocation':
         return (
-          <LocationForm />
+          <LocationForm update={this.updateLocationList}/>
         )
       case 'newItem':
         return (
