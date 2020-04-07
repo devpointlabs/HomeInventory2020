@@ -5,10 +5,13 @@ import { Form, Input, InputNumber, Button } from "antd";
 class LocationForm extends React.Component {
   state = { name: "", square_footage: "", description: ""};
 
+
   handleSubmit = () => {
-    axios.post("/api/locations", { ...this.state, })
+    const newLocation = {...this.state}
+    axios.post("/api/locations", newLocation)
       .then( res => {
-        console.log(res)
+        this.setState({ name: "", square_footage: "", description: ""});
+        this.props.update(res)
       })
   }
 
