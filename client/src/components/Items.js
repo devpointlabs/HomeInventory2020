@@ -31,11 +31,6 @@ class Items extends React.Component {
         console.log(err)
       })
   }
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> 70a6088ef34edd3c101d34dac3b291065eaa3477
   renderLocations = () => {
     const { locations } = this.state
     return locations.map(location => (
@@ -45,7 +40,6 @@ class Items extends React.Component {
       </div>
     ))
   }
-<<<<<<< HEAD
   //Function is passed to new location form / modal to hot-reload on submit. 
   updateLocationList = (newLocation) => {
     const { locations } = this.state
@@ -58,9 +52,6 @@ class Items extends React.Component {
   }
 
 // Toggles Info display for info / photos / etc. 
-=======
-  // Toggles Info display for info / photos / etc. 
->>>>>>> 70a6088ef34edd3c101d34dac3b291065eaa3477
   toggleTab = (t) => {
     this.setState({tab: t})
   }
