@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import RenderItems from './RenderItems'
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
+import ItemPhoto from './ItemPhotos';
 
 class Items extends React.Component {
   state = { locations: [], id: 0, tab: 'info', itemId: null};
@@ -38,7 +39,7 @@ class Items extends React.Component {
       )
     } else if (tab == 'photos' ) {
       return(
-        <p>PHOTOS</p>
+        <ItemPhoto itemId={this.state.itemId} locationId={this.state.id}/>
       )
     } else if ( tab == 'receipts') {
       return (
