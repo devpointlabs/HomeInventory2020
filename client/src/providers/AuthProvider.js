@@ -39,7 +39,7 @@ export class AuthProvider extends React.Component {
         console.log(res);
       })
   }
-  
+
   render() {
     return (
       <AuthContext.Provider value={{
