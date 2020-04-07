@@ -10,5 +10,9 @@ Rails.application.routes.draw do
       resources :documents
       resources :receipts
     end
+    resources :homes do
+      resources :assessments
+      resources :maintenances
+    end
   end
 end
