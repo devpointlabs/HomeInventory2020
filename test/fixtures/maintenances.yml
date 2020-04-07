@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  due_date: 2020-04-07
+  task: MyString
+  home: one
+
+two:
+  due_date: 2020-04-07
+  task: MyString
+  home: two
