@@ -1,11 +1,9 @@
 import React from "react";
 import axios from "axios";
-
 export default class Receipts extends React.Component {
   state = {
     receipt: {},
   };
-
   componentDidMount() {
     const { itemId, receiptId } = this.props;
     axios
@@ -18,7 +16,6 @@ export default class Receipts extends React.Component {
         console.log(err);
       });
   }
-
   componentDidUpdate() {
     const { itemId, receiptId } = this.props;
     if (receiptId !== this.state.receipt.id) {
@@ -33,10 +30,8 @@ export default class Receipts extends React.Component {
         });
     }
   }
-
   render() {
     const { receipt } = this.state;
-
     return (
       <>
         <h3>Receipt Info</h3>
@@ -50,3 +45,14 @@ export default class Receipts extends React.Component {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
