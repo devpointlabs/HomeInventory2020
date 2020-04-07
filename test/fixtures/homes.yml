@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  address: MyString
+  zip_code: 1
+  square_footage: 1
+  lot_size: 1
+  purchase_date: 2020-04-07
+  purchase_price: 1.5
+  image: MyString
+  user: one
+
+two:
+  address: MyString
+  zip_code: 1
+  square_footage: 1
+  lot_size: 1
+  purchase_date: 2020-04-07
+  purchase_price: 1.5
+  image: MyString
+  user: two

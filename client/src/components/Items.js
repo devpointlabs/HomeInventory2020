@@ -11,9 +11,8 @@ import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
 import ItemForm from './forms/ItemForm'
 
-
 class Items extends React.Component {
-  state = { locations: [], receipts: {}, id: 0, tab: 'info', itemId: null };
+  state = { locations: [], receipts: {}, id: 0, tab: 'info', itemId: null};
 
   componentDidMount() {
     axios.get('/api/locations').then((res) => {
@@ -37,7 +36,7 @@ class Items extends React.Component {
   // Toggles Info display for info / photos / etc. 
   toggleTab = (t) => {
     console.log('tab toggle hit')
-    this.setState({ tab: t })
+    this.setState({tab: t})
   }
   // Render information panel based on function above / active tab. 
   renderItemInfo = () => {
@@ -46,15 +45,15 @@ class Items extends React.Component {
     switch (tab) {
       case 'info':
         return (
-          <ItemInfo itemId={this.state.itemId} locationId={this.state.id} />
+          <ItemInfo itemId={this.state.itemId} locationId={this.state.id}/>
         )
       case 'photos':
-        return (
+        return(
           <ItemPhoto itemId={this.state.itemId} locationId={this.state.id} />
         )
       case 'receipts':
         return (
-          <Receipts itemId={this.state.itemId} receiptId={this.state.receiptId} />
+          <Receipts itemId={this.state.itemId} receiptId={this.state.receiptId}/>
         )
       case 'files':
         return (
@@ -62,11 +61,11 @@ class Items extends React.Component {
         )
       case 'newLocation':
         return (
-          <LocationForm />
+          <LocationForm/>
         )
       case 'newItem':
         return (
-          <ItemForm />
+          <ItemForm/>
         )
       default:
         return (
@@ -75,8 +74,9 @@ class Items extends React.Component {
         )
     }
   }
+  
+//Toggles item number for info display:
 
-  //Toggles item number for info display:
   toggleItemId = (e) => {
     this.setState({ ...this.state, itemId: e });
   }
@@ -101,7 +101,22 @@ class Items extends React.Component {
         console.log(err)
       })
   }
-
+// delete item when delete button pressed
+  deleteItem = () => {
+    const { id, itemId } = this.state
+    console.log(`delete item: ${this.state.itemId}`)
+    console.log(`location id: ${this.state.id}`)
+    axios.delete(`/api/locations/${id}/items/${itemId}`)
+    .then(res => {
+      console.log(res)
+      this.setState({
+        id: 0, itemId: null, tab: 'blank'
+      });
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 
   render() {
     const { id, tab, itemId } = this.state
@@ -176,7 +191,6 @@ class Items extends React.Component {
           </Col>
         </Row>
       </>
-
     )
   }
 
@@ -195,27 +209,27 @@ const divHead = {
   fontWeight: '400'
 }
 const divField = {
-  display: 'flex !important',
-  flexDirection: 'row !important',
-  minHeight: '30em',
-  width: '100%',
-  fontSize: '18px',
-  color: '#272829',
-  border: '1px solid grey',
-  padding: '14px',
-  fontWeight: '300'
+display: 'flex !important',
+flexDirection: 'row !important',
+minHeight: '30em',
+width: '100%',
+fontSize: '18px',
+color: '#272829',
+border: '1px solid grey',
+padding: '14px',
+fontWeight: '300'
 }
 const divFoot = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-around',
-  minHeight: '58px',
-  width: 'auto',
-  fontSize: '19px',
-  color: '#272829',
-  border: '1px solid grey',
-  padding: '12px',
-  fontWeight: '400'
+display: 'flex',
+alignItems: 'center',
+justifyContent: 'space-around',
+minHeight: '58px',
+width: 'auto',
+fontSize: '19px',
+color: '#272829',
+border: '1px solid grey',
+padding: '12px',
+fontWeight: '400'
 }
 const StyledA = styled.a`
 color: #272829;
