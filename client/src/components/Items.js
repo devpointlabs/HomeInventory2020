@@ -44,16 +44,15 @@ class Items extends React.Component {
     ))
   }
 
-
   //Function is passed to new location form / modal to hot-reload on submit. 
   updateLocationList = (newLocation) => {
     const { locations } = this.state
-    this.setState({locations: [...locations, newLocation]})
-    console.log(this.state.locations)
+    this.setState({locations: [...locations, newLocation.data]})
   }
   //Function is passed to new item form to hot-reload added item. 
   updateItemList = (newItem) => {
-    this.setState({});
+    const { items } = this.state
+    this.setState({items: [...items, newItem.data], tab: 'info', itemId: newItem.data.id})
   }
 
 // Toggles Info display for info / photos / etc. 
@@ -106,55 +105,23 @@ class Items extends React.Component {
   toggleItems = (targetId) => {
     this.setState({ ...this.state, locationId: targetId });
   }
-  // delete item when delete button pressed
-  deleteItem = () => {
-    const { id, itemId } = this.state
-    console.log(`delete item: ${this.state.itemId}`)
-    console.log(`location id: ${this.state.id}`)
-    axios.delete(`/api/locations/${id}/items/${itemId}`)
-      .then(res => {
-        console.log(res)
-        this.setState({
-          id: 0, itemId: null, tab: 'blank'
-        });
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-// delete item when delete button pressed
-  deleteItem = () => {
-    const { id, itemId } = this.state
-    console.log(`delete item: ${this.state.itemId}`)
-    console.log(`location id: ${this.state.id}`)
-    axios.delete(`/api/locations/${id}/items/${itemId}`)
-    .then(res => {
-      console.log(res)
-      this.setState({
-        id: 0, itemId: null, tab: 'blank'
-      });
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
-// delete item when delete button pressed
-  deleteItem = () => {
-    const { id, itemId } = this.state
-    console.log(`delete item: ${this.state.itemId}`)
-    console.log(`location id: ${this.state.id}`)
-    axios.delete(`/api/locations/${id}/items/${itemId}`)
-    .then(res => {
-      console.log(res)
-      this.setState({
-        id: 0, itemId: null, tab: 'blank'
-      });
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
 
+// delete item when delete button pressed
+  deleteItem = () => {
+    const { id, itemId } = this.state
+    console.log(`delete item: ${this.state.itemId}`)
+    console.log(`location id: ${this.state.id}`)
+    axios.delete(`/api/locations/${id}/items/${itemId}`)
+    .then(res => {
+      console.log(res)
+      this.setState({
+        id: 0, itemId: null, tab: 'blank'
+      });
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 
   render() {
     const { tab, itemId } = this.state

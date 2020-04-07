@@ -10,8 +10,8 @@ class LocationForm extends React.Component {
     const newLocation = {...this.state}
     axios.post("/api/locations", newLocation)
       .then( res => {
-        // console.log(res)
-        this.props.update(newLocation)
+        this.setState({ name: "", square_footage: "", description: ""});
+        this.props.update(res)
       })
   }
 
