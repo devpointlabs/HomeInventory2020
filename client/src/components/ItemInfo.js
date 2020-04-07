@@ -7,29 +7,29 @@ export default class RenderItem extends React.Component {
     item: {}
   };
 
-  componentDidMount() {
-    const { itemId, locationId } = this.props
-    if (itemId !== null) {
-      axios.get(`/api/locations/${locationId}/items/${itemId}`).then((res) => {
-        console.log(res)
-        this.setState({item: res.data});
-      }).catch((err) => {
-        console.log(err)
-      })
-    }
-  }
+  // componentDidMount() {
+  //   const { itemId, locationId } = this.props
+  //   if (itemId !== null) {
+  //     axios.get(`/api/locations/${locationId}/items/${itemId}`).then((res) => {
+  //       console.log(res)
+  //       this.setState({item: res.data});
+  //     }).catch((err) => {
+  //       console.log(err)
+  //     })
+  //   }
+  // }
 
-  componentDidUpdate() {
-    const { itemId, locationId } = this.props
-    if( itemId !== this.state.item.id ) {
-    axios.get(`/api/locations/${locationId}/items/${itemId}`).then((res) => {
-      console.log(res)
-      this.setState({item: res.data});
-    }).catch((err) => {
-      console.log(err)
-    })
-   }
-  }
+  // componentDidUpdate() {
+  //   const { itemId, locationId } = this.props
+  //   if( itemId !== this.state.item.id ) {
+  //   axios.get(`/api/locations/${locationId}/items/${itemId}`).then((res) => {
+  //     console.log(res)
+  //     this.setState({item: res.data});
+  //   }).catch((err) => {
+  //     console.log(err)
+  //   })
+  //  }
+  // }
 
   render() {
     const { item } = this.state

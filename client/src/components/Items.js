@@ -14,23 +14,36 @@ import LocationForm from '../components/forms/LocationForm'
 import ItemForm from './forms/ItemForm'
 
 class Items extends React.Component {
-  state = { locations: [], receipts: {}, id: null, tab: null, itemId: null};
+  state = { locations: [], items: [], receipts: {}, locationId: null, itemId: null, tab: 'info'};
 
-  componentDidMount() {
-    axios.get('/api/locations').then((res) => {
-      this.setState({ locations: res.data });
-
-
-    })
-    .catch((err) => {
-      console.log(err)
-
-    })
-
-      .catch((err) => {
-        console.log(err)
-      })
+  async componentDidMount() {
+    let data = await axios.get('/api/locations')
+    this.setState({ locations: data.data });
   }
+
+componentDidUpdate(prevProps, prevState) {
+    console.log(prevState.locationId)
+    console.log(this.state.locationId)
+    if (this.state.locationId !== null && prevState.locationId !== this.state.locationId){
+      console.log('updating')
+      axios.get(`/api/locations/${this.state.locationId}/items`).then((res) => {
+            this.setState({ items: res.data});
+          }).catch((err) => {
+            console.log(err)
+          })
+    }
+  }
+
+  renderItems = () => {
+    const { items } = this.state
+    return items.map(item => (
+      <div key={item.id}>
+        <StyledA2 onClick={() => this.toggleItemId(item.id)}>{item.name}</StyledA2>
+      </div>
+    ))
+  }
+
+
   renderLocations = () => {
     const { locations } = this.state
     return locations.map(location => (
@@ -100,7 +113,7 @@ class Items extends React.Component {
 
   // Toggles the location id for calling up item list. 
   toggleItems = (targetId) => {
-    this.setState({ ...this.state, id: targetId });
+    this.setState({ ...this.state, locationId: targetId });
   }
   // delete item when delete button pressed
   deleteItem = () => {
@@ -153,8 +166,7 @@ class Items extends React.Component {
 
 
   render() {
-    const { id, tab, itemId } = this.state
-
+    const { locationId, tab, itemId } = this.state
 
     return (
       <>
@@ -186,7 +198,7 @@ class Items extends React.Component {
           </Col>
           <Col span={5}>
             <div style={{ ...divField }}>
-              <RenderItems locationId={id} toggleItemId={this.toggleItemId} />
+              {this.renderItems()}
             </div>
           </Col>
           <Col span={14}>
