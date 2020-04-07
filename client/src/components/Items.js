@@ -67,11 +67,11 @@ class Items extends React.Component {
     switch (tab) {
       case 'info':
         return (
-          <ItemInfo itemId={this.state.itemId} locationId={this.state.id}/>
+          <ItemInfo itemId={this.state.itemId} locationId={this.state.locationId}/>
         )
       case 'photos':
         return(
-          <ItemPhoto itemId={this.state.itemId} locationId={this.state.id} />
+          <ItemPhoto itemId={this.state.itemId} locationId={this.state.locationId} />
         )
       case 'receipts':
         return (
@@ -98,7 +98,6 @@ class Items extends React.Component {
   }
   
 //Toggles item number for info display:
-
   toggleItemId = (e) => {
     this.setState({ ...this.state, itemId: e });
   }
