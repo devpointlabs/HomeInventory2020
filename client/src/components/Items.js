@@ -26,20 +26,29 @@ class Items extends React.Component {
   }
 
   renderLocations = () => {
-    const { locations } = this.state
+    const { locations, locationId } = this.state
     return locations.map(location => (
-      <div key={location.id}>
-        <StyledA2 onClick={() => this.toggleItems(location.id)}>{location.name}</StyledA2>
+      <div key={location.id} style={location.id === locationId ? activeDiv : passiveDiv}>
+        <StyledA2 
+        onClick={() => this.toggleItems(location.id)}
+        style={location.id === locationId ? activeA : {}}
+        >
+          {location.name}
+        </StyledA2>
         <br />
       </div>
     ))
   }
 
   renderItems = () => {
-    const { items } = this.state
+    const { items, itemId } = this.state
     return items.map(item => (
-      <div key={item.id}>
-        <StyledA2 onClick={() => this.toggleItemId(item.id)}>{item.name}</StyledA2>
+      <div key={item.id} style={item.id === itemId ? activeDiv : passiveDiv}>
+        <StyledA2 onClick={() => this.toggleItemId(item.id)}
+         style={item.id === itemId ? activeA : {}}
+         >
+           {item.name}
+        </StyledA2>
       </div>
     ))
   }
@@ -98,7 +107,7 @@ class Items extends React.Component {
   
 //Toggles item number for info display:
   toggleItemId = (e) => {
-    this.setState({ ...this.state, itemId: e });
+    this.setState({ ...this.state, itemId: e ,});
   }
 
   // Toggles the location id for calling up item list. 
@@ -108,14 +117,13 @@ class Items extends React.Component {
 
 // delete item when delete button pressed
   deleteItem = () => {
-    const { id, itemId } = this.state
-    console.log(`delete item: ${this.state.itemId}`)
-    console.log(`location id: ${this.state.id}`)
-    axios.delete(`/api/locations/${id}/items/${itemId}`)
+    const { items, locationId, itemId } = this.state
+    axios.delete(`/api/locations/${locationId}/items/${itemId}`)
     .then(res => {
       console.log(res)
+      const filteredArr = items.filter( i => i.id !== itemId)
       this.setState({
-        id: 0, itemId: null, tab: 'blank'
+        items: filteredArr, id: 0, itemId: null, tab: 'blank'
       });
     })
     .catch(err => {
@@ -175,9 +183,11 @@ class Items extends React.Component {
           </Col>
           <Col span={5}>
             <div style={{ ...divFoot }}>
+              {this.state.locationId !== null ?  
               <Button type="primary" shape="circle" onClick={() => this.toggleTab('newItem')}>
                 <PlusOutlined />
               </Button>
+              : null}
             </div>
           </Col>
           <Col span={14}>
@@ -199,8 +209,12 @@ class Items extends React.Component {
     )
   }}
 
+// styling for selected menu options
+const activeDiv = {height: '50px', backgroundColor: '#f0f0f0', boxShadow: '0px 2px 5px #888888', paddingTop: '12px'}
+const passiveDiv = {height: '50px', marginLeft: '14px', paddingTop: '12px' }
+const activeA = {color:'#1890ff', marginTop: '16px', paddingLeft: '6px'}
 
-
+// styling for layout of items page
 const divHead = {
   display: 'flex',
   alignItems: 'center',
@@ -216,13 +230,13 @@ const divHead = {
 const divField = {
 display: 'flex !important',
 flexDirection: 'row !important',
-minHeight: '30em',
+height: '25em',
 width: '100%',
 fontSize: '18px',
 color: '#272829',
 border: '1px solid grey',
-padding: '14px',
-fontWeight: '300'
+fontWeight: '300',
+overflow: 'scroll'
 }
 const divFoot = {
 display: 'flex',
@@ -236,6 +250,7 @@ border: '1px solid grey',
 padding: '12px',
 fontWeight: '400'
 }
+//styling for item and location name links
 const StyledA = styled.a`
 color: #272829;
 text-decoration: none;
@@ -246,6 +261,3 @@ text-decoration: none;
 `
 
 export default Items;
-
-
-//this.setState{photos: [...photos, newPhoto]} = hot reload
