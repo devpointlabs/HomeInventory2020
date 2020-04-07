@@ -1,20 +1,27 @@
 import React from "react";
 import axios from "axios";
 import { Form, Input, DatePicker, InputNumber, Button } from "antd";
-import moment from 'moment'
+
 
 class ItemForm extends React.Component {
-  state = { name: "", make: "", model: "", serial_num: "", category: "", collection: "", condition: "", heir: "", purchase_date: null, quantity: "", value: "", tags: "", location_id: 2 };
+  state = { name: "", make: "", model: "", serial_num: "", category: "", collection: "", condition: "", heir: "", purchase_date: null, quantity: "", value: "", tags: "", location_id: null };
+
+  componentDidMount(){
+    const { locationId } = this.props
+    this.setState({location_id: locationId});
+  }
 
   handleSubmit = (e) => {
-    axios.post("/api/items", { ...this.state, })
+    const newItem = {...this.state}
+    axios.post("/api/items", newItem)
       .then( res => {
         console.log(res)
         this.setState({
-          name: "", make: "", model: "", serial_num: "", category: "", collection: "", condition: "", heir: "", purchase_date: null, quantity: "", value: "", tags: "", location_id: null 
+          name: "", make: "", model: "", serial_num: "", category: "", collection: "", condition: "", purchase_date: null, quantity: "", value: "", tags: "", location_id: null 
         });
+        this.props.update(res)
       })
-  }
+    }
 
   handleNumberInputChange = (value) => {
     this.setState({quantity: value})
@@ -106,16 +113,6 @@ class ItemForm extends React.Component {
             name='condition'
             value={condition}
             placeholder='Condition'
-            onChange={this.handleChange}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Input
-            label="Heir"
-            required
-            name='heir'
-            value={heir}
-            placeholder='Heir'
             onChange={this.handleChange}
             />
           </Form.Item>

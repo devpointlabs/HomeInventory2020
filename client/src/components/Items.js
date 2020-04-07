@@ -1,12 +1,9 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 import styled from 'styled-components';
-import RenderItems from './RenderItems'
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
-
 import ItemPhoto from './ItemPhotos';
-
 import Receipts from './Receipts';
 import { Button } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
@@ -14,37 +11,61 @@ import LocationForm from '../components/forms/LocationForm'
 import ItemForm from './forms/ItemForm'
 
 class Items extends React.Component {
-  state = { locations: [], receipts: {}, id: 0, tab: 'info', itemId: null};
+  state = { locations: [], items: [], receipts: {}, locationId: null, itemId: null, tab: 'info'};
 
-  componentDidMount() {
-    axios.get('/api/locations').then((res) => {
-      this.setState({ locations: res.data });
+  async componentDidMount() {
+    let data = await axios.get('/api/locations')
+    this.setState({ locations: data.data });
+  }
 
-
-    })
-
-    .catch((err) => {
-      console.log(err)
-
-    })
-
-      .catch((err) => {
-        console.log(err)
-      })
+  async componentDidUpdate(prevProps, prevState) {
+    if (this.state.locationId !== null && prevState.locationId !== this.state.locationId){
+      let itemList = await axios.get(`/api/locations/${this.state.locationId}/items`)
+      this.setState({items: itemList.data});
+    }
   }
 
   renderLocations = () => {
-    const { locations } = this.state
+    const { locations, locationId } = this.state
     return locations.map(location => (
-      <div key={location.id}>
-        <StyledA2 onClick={() => this.toggleItems(location.id)}>{location.name}</StyledA2>
+      <div key={location.id} style={location.id === locationId ? activeDiv : passiveDiv}>
+        <StyledA2 
+        onClick={() => this.toggleItems(location.id)}
+        style={location.id === locationId ? activeA : {}}
+        >
+          {location.name}
+        </StyledA2>
         <br />
       </div>
     ))
   }
-  // Toggles Info display for info / photos / etc. 
+
+  renderItems = () => {
+    const { items, itemId } = this.state
+    return items.map(item => (
+      <div key={item.id} style={item.id === itemId ? activeDiv : passiveDiv}>
+        <StyledA2 onClick={() => this.toggleItemId(item.id)}
+         style={item.id === itemId ? activeA : {}}
+         >
+           {item.name}
+        </StyledA2>
+      </div>
+    ))
+  }
+
+  //Function is passed to new location form / modal to hot-reload on submit. 
+  updateLocationList = (newLocation) => {
+    const { locations } = this.state
+    this.setState({locations: [...locations, newLocation.data]})
+  }
+  //Function is passed to new item form to hot-reload added item. 
+  updateItemList = (newItem) => {
+    const { items } = this.state
+    this.setState({items: [...items, newItem.data], tab: 'info', itemId: newItem.data.id})
+  }
+
+// Toggles Info display for info / photos / etc. 
   toggleTab = (t) => {
-    console.log('tab toggle hit')
     this.setState({tab: t})
   }
   // Render information panel based on function above / active tab. 
@@ -54,11 +75,11 @@ class Items extends React.Component {
     switch (tab) {
       case 'info':
         return (
-          <ItemInfo itemId={this.state.itemId} locationId={this.state.id}/>
+          <ItemInfo itemId={this.state.itemId} locationId={this.state.locationId}/>
         )
       case 'photos':
         return(
-          <ItemPhoto itemId={this.state.itemId} locationId={this.state.id} />
+          <ItemPhoto itemId={this.state.itemId} locationId={this.state.locationId} />
         )
       case 'receipts':
         return (
@@ -70,11 +91,11 @@ class Items extends React.Component {
         )
       case 'newLocation':
         return (
-          <LocationForm/>
+          <LocationForm update={this.updateLocationList}/>
         )
       case 'newItem':
         return (
-          <ItemForm/>
+          <ItemForm locationId={this.state.locationId} update={this.updateItemList}/>
         )
       default:
         return (
@@ -85,68 +106,33 @@ class Items extends React.Component {
   }
   
 //Toggles item number for info display:
-
   toggleItemId = (e) => {
-    this.setState({ ...this.state, itemId: e });
+    this.setState({ ...this.state, itemId: e ,});
   }
 
   // Toggles the location id for calling up item list. 
   toggleItems = (targetId) => {
-    this.setState({ ...this.state, id: targetId });
-  }
-  // delete item when delete button pressed
-  deleteItem = () => {
-    const { id, itemId } = this.state
-    console.log(`delete item: ${this.state.itemId}`)
-    console.log(`location id: ${this.state.id}`)
-    axios.delete(`/api/locations/${id}/items/${itemId}`)
-      .then(res => {
-        console.log(res)
-        this.setState({
-          id: 0, itemId: null, tab: 'blank'
-        });
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-// delete item when delete button pressed
-  deleteItem = () => {
-    const { id, itemId } = this.state
-    console.log(`delete item: ${this.state.itemId}`)
-    console.log(`location id: ${this.state.id}`)
-    axios.delete(`/api/locations/${id}/items/${itemId}`)
-    .then(res => {
-      console.log(res)
-      this.setState({
-        id: 0, itemId: null, tab: 'blank'
-      });
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
-// delete item when delete button pressed
-  deleteItem = () => {
-    const { id, itemId } = this.state
-    console.log(`delete item: ${this.state.itemId}`)
-    console.log(`location id: ${this.state.id}`)
-    axios.delete(`/api/locations/${id}/items/${itemId}`)
-    .then(res => {
-      console.log(res)
-      this.setState({
-        id: 0, itemId: null, tab: 'blank'
-      });
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    this.setState({ ...this.state, locationId: targetId });
   }
 
+// delete item when delete button pressed
+  deleteItem = () => {
+    const { items, locationId, itemId } = this.state
+    axios.delete(`/api/locations/${locationId}/items/${itemId}`)
+    .then(res => {
+      console.log(res)
+      const filteredArr = items.filter( i => i.id !== itemId)
+      this.setState({
+        items: filteredArr, id: 0, itemId: null, tab: 'blank'
+      });
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 
   render() {
-    const { id, tab, itemId } = this.state
-
+    const { tab, itemId } = this.state
 
     return (
       <>
@@ -178,7 +164,7 @@ class Items extends React.Component {
           </Col>
           <Col span={5}>
             <div style={{ ...divField }}>
-              <RenderItems locationId={id} toggleItemId={this.toggleItemId} />
+              {this.renderItems()}
             </div>
           </Col>
           <Col span={14}>
@@ -197,9 +183,11 @@ class Items extends React.Component {
           </Col>
           <Col span={5}>
             <div style={{ ...divFoot }}>
+              {this.state.locationId !== null ?  
               <Button type="primary" shape="circle" onClick={() => this.toggleTab('newItem')}>
                 <PlusOutlined />
               </Button>
+              : null}
             </div>
           </Col>
           <Col span={14}>
@@ -221,8 +209,12 @@ class Items extends React.Component {
     )
   }}
 
+// styling for selected menu options
+const activeDiv = {height: '50px', backgroundColor: '#f0f0f0', boxShadow: '0px 2px 5px #888888', paddingTop: '12px'}
+const passiveDiv = {height: '50px', marginLeft: '14px', paddingTop: '12px' }
+const activeA = {color:'#1890ff', marginTop: '16px', paddingLeft: '6px'}
 
-
+// styling for layout of items page
 const divHead = {
   display: 'flex',
   alignItems: 'center',
@@ -238,13 +230,13 @@ const divHead = {
 const divField = {
 display: 'flex !important',
 flexDirection: 'row !important',
-minHeight: '30em',
+height: '25em',
 width: '100%',
 fontSize: '18px',
 color: '#272829',
 border: '1px solid grey',
-padding: '14px',
-fontWeight: '300'
+fontWeight: '300',
+overflow: 'scroll'
 }
 const divFoot = {
 display: 'flex',
@@ -258,6 +250,7 @@ border: '1px solid grey',
 padding: '12px',
 fontWeight: '400'
 }
+//styling for item and location name links
 const StyledA = styled.a`
 color: #272829;
 text-decoration: none;
