@@ -1,4 +1,4 @@
-class MaintenancesController < ApplicationController
+class Api::MaintenancesController < ApplicationController
   def index
   end
 

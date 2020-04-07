@@ -1,4 +1,4 @@
-class HomesController < ApplicationController
+class Api::HomesController < ApplicationController
   def index
   end
 
