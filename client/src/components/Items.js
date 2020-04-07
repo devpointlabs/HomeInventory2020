@@ -230,12 +230,13 @@ const divHead = {
 const divField = {
 display: 'flex !important',
 flexDirection: 'row !important',
-minHeight: '30em',
+height: '25em',
 width: '100%',
 fontSize: '18px',
 color: '#272829',
 border: '1px solid grey',
-fontWeight: '300'
+fontWeight: '300',
+overflow: 'scroll'
 }
 const divFoot = {
 display: 'flex',
