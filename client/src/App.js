@@ -14,6 +14,7 @@ import FetchUser from './components/FetchUser';
 import { Switch, Route, } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
+import House from './components/House';
 
 
 const App = () => (
@@ -24,6 +25,7 @@ const App = () => (
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
+        <ProtectedRoute exact path="/house" component={House} />
         <ProtectedRoute exact path="/items" component={Items} />
         <ProtectedRoute exact path="/album" component={Album} />
         <ProtectedRoute exact path="/policies" component={Policies} />

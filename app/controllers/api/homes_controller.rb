@@ -4,6 +4,7 @@ class Api::HomesController < ApplicationController
   
   def index
     render json: current_user.homes.all
+    binding.pry
   end
 
   def create

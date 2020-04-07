@@ -25,5 +25,7 @@ Item.create(name: 'TV', make: 'Samsung', model: 'S600', serial_num: '123456', ca
   collection: 'Electronics', condition: 'Good', heir: 'The Cat', 
   quantity: 1, value: 800.00, location_id: 2)
 
+## _________________________ CREATE HOME ___________________________________
+
 puts "Items seeded."
   

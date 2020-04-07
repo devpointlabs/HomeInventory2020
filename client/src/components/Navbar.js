@@ -17,7 +17,7 @@ const Navbar = (props) => {
         <Redirect to='/items' />
         <StyledNav>
           <StyledUl>
-            <StyledItem><StyledDot ></StyledDot></StyledItem>
+            <StyledItem as={Link} to='/house'><StyledDot></StyledDot></StyledItem>
             <StyledItem><StyledA as={Link} to='/items'>Items</StyledA></StyledItem>
             <StyledItem><StyledA as={Link} to='/album'>Album</StyledA></StyledItem>
             <StyledItem><StyledA as={Link} to='/policies'>Policies</StyledA></StyledItem>
