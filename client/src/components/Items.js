@@ -108,14 +108,13 @@ class Items extends React.Component {
 
 // delete item when delete button pressed
   deleteItem = () => {
-    const { id, itemId } = this.state
-    console.log(`delete item: ${this.state.itemId}`)
-    console.log(`location id: ${this.state.id}`)
-    axios.delete(`/api/locations/${id}/items/${itemId}`)
+    const { items, locationId, itemId } = this.state
+    axios.delete(`/api/locations/${locationId}/items/${itemId}`)
     .then(res => {
       console.log(res)
+      const filteredArr = items.filter( i => i.id !== itemId)
       this.setState({
-        id: 0, itemId: null, tab: 'blank'
+        items: filteredArr, id: 0, itemId: null, tab: 'blank'
       });
     })
     .catch(err => {
@@ -175,9 +174,11 @@ class Items extends React.Component {
           </Col>
           <Col span={5}>
             <div style={{ ...divFoot }}>
+              {this.state.locationId !== null ?  
               <Button type="primary" shape="circle" onClick={() => this.toggleTab('newItem')}>
                 <PlusOutlined />
               </Button>
+              : null}
             </div>
           </Col>
           <Col span={14}>
