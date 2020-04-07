@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_01_203752) do
+ActiveRecord::Schema.define(version: 2020_04_07_112359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assessments", force: :cascade do |t|
+    t.date "date"
+    t.float "land_value"
+    t.float "structure_value"
+    t.float "total_value"
+    t.bigint "home_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["home_id"], name: "index_assessments_on_home_id"
+  end
 
   create_table "documents", force: :cascade do |t|
     t.string "name"
@@ -23,6 +34,20 @@ ActiveRecord::Schema.define(version: 2020_04_01_203752) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["item_id"], name: "index_documents_on_item_id"
+  end
+
+  create_table "homes", force: :cascade do |t|
+    t.string "address"
+    t.integer "zip_code"
+    t.integer "square_footage"
+    t.integer "lot_size"
+    t.date "purchase_date"
+    t.float "purchase_price"
+    t.string "image"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_homes_on_user_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -52,6 +77,15 @@ ActiveRecord::Schema.define(version: 2020_04_01_203752) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_locations_on_user_id"
+  end
+
+  create_table "maintenances", force: :cascade do |t|
+    t.date "due_date"
+    t.string "task"
+    t.bigint "home_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["home_id"], name: "index_maintenances_on_home_id"
   end
 
   create_table "photos", force: :cascade do |t|
@@ -107,9 +141,12 @@ ActiveRecord::Schema.define(version: 2020_04_01_203752) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "assessments", "homes"
   add_foreign_key "documents", "items"
+  add_foreign_key "homes", "users"
   add_foreign_key "items", "locations"
   add_foreign_key "locations", "users"
+  add_foreign_key "maintenances", "homes"
   add_foreign_key "photos", "items"
   add_foreign_key "receipts", "items"
 end
