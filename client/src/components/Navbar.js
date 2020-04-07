@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-import { Menu, Icon, Button } from 'antd';
 import styled from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
-import Search from 'antd/lib/transfer/search';
 import { AuthContext } from '../providers/AuthProvider';
+// import { Menu, Icon, Button } from 'antd';
+// import Search from 'antd/lib/transfer/search';
 
 const Navbar = (props) => {
   const data = useContext(AuthContext)

@@ -5,7 +5,7 @@ export default class Receipts extends React.Component {
     receipt: {},
   };
   componentDidMount() {
-    const { itemId, receiptId } = this.props;
+    const { itemId } = this.props;
     axios
       .get(`/api/items/${itemId}/receipts`)
       .then((res) => {

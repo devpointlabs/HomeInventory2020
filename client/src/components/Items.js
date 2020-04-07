@@ -1,12 +1,9 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 import styled from 'styled-components';
-import RenderItems from './RenderItems'
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
-
 import ItemPhoto from './ItemPhotos';
-
 import Receipts from './Receipts';
 import { Button } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
@@ -21,17 +18,21 @@ class Items extends React.Component {
     this.setState({ locations: data.data });
   }
 
-componentDidUpdate(prevProps, prevState) {
-    console.log(prevState.locationId)
-    console.log(this.state.locationId)
+  async componentDidUpdate(prevProps, prevState) {
     if (this.state.locationId !== null && prevState.locationId !== this.state.locationId){
-      console.log('updating')
-      axios.get(`/api/locations/${this.state.locationId}/items`).then((res) => {
-            this.setState({ items: res.data});
-          }).catch((err) => {
-            console.log(err)
-          })
+      let itemList = await axios.get(`/api/locations/${this.state.locationId}/items`)
+      this.setState({items: itemList.data});
     }
+  }
+
+  renderLocations = () => {
+    const { locations } = this.state
+    return locations.map(location => (
+      <div key={location.id}>
+        <StyledA2 onClick={() => this.toggleItems(location.id)}>{location.name}</StyledA2>
+        <br />
+      </div>
+    ))
   }
 
   renderItems = () => {
@@ -44,15 +45,6 @@ componentDidUpdate(prevProps, prevState) {
   }
 
 
-  renderLocations = () => {
-    const { locations } = this.state
-    return locations.map(location => (
-      <div key={location.id}>
-        <StyledA2 onClick={() => this.toggleItems(location.id)}>{location.name}</StyledA2>
-        <br />
-      </div>
-    ))
-  }
   //Function is passed to new location form / modal to hot-reload on submit. 
   updateLocationList = (newLocation) => {
     const { locations } = this.state
@@ -95,7 +87,7 @@ componentDidUpdate(prevProps, prevState) {
         )
       case 'newItem':
         return (
-          <ItemForm locationId={this.state.id} update={this.updateItemList}/>
+          <ItemForm locationId={this.state.locationId} update={this.updateItemList}/>
         )
       default:
         return (
@@ -166,7 +158,7 @@ componentDidUpdate(prevProps, prevState) {
 
 
   render() {
-    const { locationId, tab, itemId } = this.state
+    const { tab, itemId } = this.state
 
     return (
       <>

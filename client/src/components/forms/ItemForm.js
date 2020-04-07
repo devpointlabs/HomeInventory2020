@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { Form, Input, DatePicker, InputNumber, Button } from "antd";
-import moment from 'moment'
+
 
 class ItemForm extends React.Component {
   state = { name: "", make: "", model: "", serial_num: "", category: "", collection: "", condition: "", heir: "", purchase_date: null, quantity: "", value: "", tags: "", location_id: null };
