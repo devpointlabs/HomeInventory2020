@@ -38,8 +38,6 @@ export default class ItemPhotos extends React.Component {
     })
   }
 
-
-
   renderPhotos = () => {
     const { photos } = this.state
     return photos.map(photo => (
@@ -50,6 +48,7 @@ export default class ItemPhotos extends React.Component {
     ))
   }
   render() {
+    if(this.props.itemId){
     return (
       <StyledCon>
         <Dropzone onDrop={this.onDrop} multiple={false}>
@@ -64,7 +63,12 @@ export default class ItemPhotos extends React.Component {
         </Dropzone>
         {this.renderPhotos()}
       </StyledCon>
-    )
+    )} else {
+      return(
+        <>
+        </>
+      )
+    }
   }
 }
 

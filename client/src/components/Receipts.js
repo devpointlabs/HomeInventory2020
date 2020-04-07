@@ -32,6 +32,7 @@ export default class Receipts extends React.Component {
   }
   render() {
     const { receipt } = this.state;
+    if (this.props.itemId) {
     return (
       <>
         <h3>Receipt Info</h3>
@@ -42,7 +43,12 @@ export default class Receipts extends React.Component {
         <p>Tax: ${receipt.tax}</p>
         <p>Image: {receipt.img}</p>
       </>
-    );
+    )} else {
+      return (
+        <>
+        </>
+      )
+    }
   }
 }
 
