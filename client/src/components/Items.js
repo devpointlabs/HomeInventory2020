@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import RenderItems from './RenderItems'
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
+
 import ItemPhoto from './ItemPhotos';
+
 import Receipts from './Receipts';
 import { Button } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
@@ -17,6 +19,13 @@ class Items extends React.Component {
   componentDidMount() {
     axios.get('/api/locations').then((res) => {
       this.setState({ locations: res.data });
+
+
+    })
+
+    .catch((err) => {
+      console.log(err)
+
     })
 
       .catch((err) => {
@@ -49,7 +58,11 @@ class Items extends React.Component {
         )
       case 'photos':
         return(
+
           <ItemPhoto itemId={this.state.itemId} locationId={this.state.id} />
+
+          <p>PHOTOS</p>
+
         )
       case 'receipts':
         return (
@@ -117,9 +130,27 @@ class Items extends React.Component {
       console.log(err)
     })
   }
+// delete item when delete button pressed
+  deleteItem = () => {
+    const { id, itemId } = this.state
+    console.log(`delete item: ${this.state.itemId}`)
+    console.log(`location id: ${this.state.id}`)
+    axios.delete(`/api/locations/${id}/items/${itemId}`)
+    .then(res => {
+      console.log(res)
+      this.setState({
+        id: 0, itemId: null, tab: 'blank'
+      });
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
 
   render() {
     const { id, tab, itemId } = this.state
+
 
     return (
       <>
@@ -193,6 +224,80 @@ class Items extends React.Component {
       </>
     )
   }
+
+   return(
+    <>
+    <Row >
+      <Col span={5}>
+        <div style={{...divHead}}>
+          <p>Locations Drop Down</p>
+        </div>
+      </Col>
+      <Col span={5}>
+        <div style={{...divHead}}>
+          <p>Items</p>
+        </div>
+      </Col>
+      <Col span={14}>
+        <div style={{...divHead}}>
+        <StyledA onClick={() => this.toggleTab('info')}>Info</StyledA>
+        <StyledA onClick={() => this.toggleTab('photos')}>Photos</StyledA>
+        <StyledA onClick={() => this.toggleTab('receipts')}>Receipts</StyledA>
+        <StyledA onClick={() => this.toggleTab('files')}>Files</StyledA>
+        </div>
+      </Col> 
+    </Row>
+    <Row>
+      <Col span={5} style={{display: 'flex', flexDirection: 'row'}}>
+        <div style={{...divField}}>           
+          {this.renderLocations()}
+        </div>
+      </Col>
+      <Col span={5}>
+        <div style={{...divField}}>        
+          <RenderItems locationId={id} toggleItemId={this.toggleItemId}/>
+        </div>
+      </Col>
+      <Col span={14}>
+        <div style={{...divField}}>           
+          {this.renderItemInfo(tab, itemId)}
+        </div>
+      </Col>  
+    </Row>
+    <Row>
+      <Col span={5}>
+      <div style={{...divFoot}}> 
+        <Button type="primary" shape="circle" onClick={() => this.toggleTab('newLocation')}>
+          <PlusOutlined />
+        </Button>
+      </div>
+      </Col>
+      <Col span={5}>
+      <div style={{...divFoot}}> 
+        <Button type="primary" shape="circle" onClick={() => this.toggleTab('newItem')}>
+          <PlusOutlined />
+        </Button>
+      </div>
+      </Col>
+      <Col span={14}>
+      <div style={{...divFoot}}> 
+        {this.state.itemId !== null ?
+        <>
+          <Button shape="circle">
+            <EditOutlined />
+          </Button>
+          <Button shape="circle" onClick={() => this.deleteItem()}>
+            <DeleteOutlined />
+          </Button>
+        </>
+         : null }
+      </div>
+      </Col>     
+    </Row>
+  </>
+    
+)}
+
 
 }
 
