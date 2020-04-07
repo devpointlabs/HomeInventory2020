@@ -11,23 +11,17 @@ import LocationForm from '../components/forms/LocationForm'
 import ItemForm from './forms/ItemForm'
 
 class Items extends React.Component {
-  state = { locations: [], receipts: {}, id: 0, tab: 'info', itemId: null};
+  state = { locations: [], receipts: {}, id: null, tab: null, itemId: null};
 
   componentDidMount() {
     axios.get('/api/locations').then((res) => {
       this.setState({ locations: res.data });
     })
-
     .catch((err) => {
       console.log(err)
     })
   }
-  componentDidUpdate() {
-    if (co)
-    this.render()
-  }
-
- 
+  
   renderLocations = () => {
     const { locations } = this.state
     return locations.map(location => (
@@ -40,8 +34,12 @@ class Items extends React.Component {
   //Function is passed to new location form / modal to hot-reload on submit. 
   updateLocationList = (newLocation) => {
     const { locations } = this.state
-    locations.push(newLocation)
+    this.setState({locations: [...locations, newLocation]})
     console.log(this.state.locations)
+  }
+  //Function is passed to new item form to hot-reload added item. 
+  updateItemList = (newItem) => {
+    this.setState({});
   }
 
 // Toggles Info display for info / photos / etc. 
@@ -74,7 +72,7 @@ class Items extends React.Component {
         )
       case 'newItem':
         return (
-          <ItemForm locationId={this.state.id}/>
+          <ItemForm locationId={this.state.id} update={this.updateItemList}/>
         )
       default:
         return (
@@ -91,7 +89,7 @@ class Items extends React.Component {
 
 // Toggles the location id for calling up item list. 
   toggleItems = (targetId) => {
-    this.setState({ id: targetId});
+    this.setState({ id: targetId, tab: 'info'});
   }
 // delete item when delete button pressed
   deleteItem = () => {
@@ -234,3 +232,6 @@ text-decoration: none;
 `
 
 export default Items;
+
+
+//this.setState{photos: [...photos, newPhoto]} = hot reload

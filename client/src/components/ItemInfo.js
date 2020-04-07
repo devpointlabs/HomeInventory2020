@@ -9,7 +9,7 @@ export default class RenderItem extends React.Component {
 
   componentDidMount() {
     const { itemId, locationId } = this.props
-    if (itemId) {
+    if (itemId !== null) {
       axios.get(`/api/locations/${locationId}/items/${itemId}`).then((res) => {
         console.log(res)
         this.setState({item: res.data});
