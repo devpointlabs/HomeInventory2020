@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import RenderItems from './RenderItems'
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
+
+import ItemPhoto from './ItemPhotos';
+
 import Receipts from './Receipts';
 import { Button } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
@@ -16,21 +19,33 @@ class Items extends React.Component {
   componentDidMount() {
     axios.get('/api/locations').then((res) => {
       this.setState({ locations: res.data });
+
+
     })
     .catch((err) => {
       console.log(err)
+
     })
+
+      .catch((err) => {
+        console.log(err)
+      })
   }
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 70a6088ef34edd3c101d34dac3b291065eaa3477
   renderLocations = () => {
     const { locations } = this.state
     return locations.map(location => (
       <div key={location.id}>
-      <StyledA2  onClick={() => this.toggleItems(location.id)}>{location.name}</StyledA2>
-      <br/>
+        <StyledA2 onClick={() => this.toggleItems(location.id)}>{location.name}</StyledA2>
+        <br />
       </div>
     ))
   }
+<<<<<<< HEAD
   //Function is passed to new location form / modal to hot-reload on submit. 
   updateLocationList = (newLocation) => {
     const { locations } = this.state
@@ -43,12 +58,16 @@ class Items extends React.Component {
   }
 
 // Toggles Info display for info / photos / etc. 
+=======
+  // Toggles Info display for info / photos / etc. 
+>>>>>>> 70a6088ef34edd3c101d34dac3b291065eaa3477
   toggleTab = (t) => {
     this.setState({tab: t})
   }
-// Render information panel based on function above / active tab. 
+  // Render information panel based on function above / active tab. 
   renderItemInfo = () => {
     const { tab } = this.state
+
     switch (tab) {
       case 'info':
         return (
@@ -56,7 +75,11 @@ class Items extends React.Component {
         )
       case 'photos':
         return(
+
+          <ItemPhoto itemId={this.state.itemId} locationId={this.state.id} />
+
           <p>PHOTOS</p>
+
         )
       case 'receipts':
         return (
@@ -83,13 +106,46 @@ class Items extends React.Component {
   }
   
 //Toggles item number for info display:
+
   toggleItemId = (e) => {
-    this.setState({...this.state, itemId: e});
+    this.setState({ ...this.state, itemId: e });
   }
 
-// Toggles the location id for calling up item list. 
+  // Toggles the location id for calling up item list. 
   toggleItems = (targetId) => {
-    this.setState({ id: targetId, tab: 'info'});
+    this.setState({ ...this.state, id: targetId });
+  }
+  // delete item when delete button pressed
+  deleteItem = () => {
+    const { id, itemId } = this.state
+    console.log(`delete item: ${this.state.itemId}`)
+    console.log(`location id: ${this.state.id}`)
+    axios.delete(`/api/locations/${id}/items/${itemId}`)
+      .then(res => {
+        console.log(res)
+        this.setState({
+          id: 0, itemId: null, tab: 'blank'
+        });
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+// delete item when delete button pressed
+  deleteItem = () => {
+    const { id, itemId } = this.state
+    console.log(`delete item: ${this.state.itemId}`)
+    console.log(`location id: ${this.state.id}`)
+    axios.delete(`/api/locations/${id}/items/${itemId}`)
+    .then(res => {
+      console.log(res)
+      this.setState({
+        id: 0, itemId: null, tab: 'blank'
+      });
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 // delete item when delete button pressed
   deleteItem = () => {
@@ -109,8 +165,82 @@ class Items extends React.Component {
   }
 
 
- render(){
-   const { id, tab, itemId } = this.state
+  render() {
+    const { id, tab, itemId } = this.state
+
+
+    return (
+      <>
+        <Row >
+          <Col span={5}>
+            <div style={{ ...divHead }}>
+              <p>Locations Drop Down</p>
+            </div>
+          </Col>
+          <Col span={5}>
+            <div style={{ ...divHead }}>
+              <p>Items</p>
+            </div>
+          </Col>
+          <Col span={14}>
+            <div style={{ ...divHead }}>
+              <StyledA onClick={() => this.toggleTab('info')}>Info</StyledA>
+              <StyledA onClick={() => this.toggleTab('photos')}>Photos</StyledA>
+              <StyledA onClick={() => this.toggleTab('receipts')}>Receipts</StyledA>
+              <StyledA onClick={() => this.toggleTab('files')}>Files</StyledA>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={5} style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ ...divField }}>
+              {this.renderLocations()}
+            </div>
+          </Col>
+          <Col span={5}>
+            <div style={{ ...divField }}>
+              <RenderItems locationId={id} toggleItemId={this.toggleItemId} />
+            </div>
+          </Col>
+          <Col span={14}>
+            <div style={{ ...divField }}>
+              {this.renderItemInfo(tab, itemId)}
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={5}>
+            <div style={{ ...divFoot }}>
+              <Button type="primary" shape="circle" onClick={() => this.toggleTab('newLocation')}>
+                <PlusOutlined />
+              </Button>
+            </div>
+          </Col>
+          <Col span={5}>
+            <div style={{ ...divFoot }}>
+              <Button type="primary" shape="circle" onClick={() => this.toggleTab('newItem')}>
+                <PlusOutlined />
+              </Button>
+            </div>
+          </Col>
+          <Col span={14}>
+            <div style={{ ...divFoot }}>
+              {this.state.itemId !== null ?
+                <>
+                  <Button shape="circle">
+                    <EditOutlined />
+                  </Button>
+                  <Button shape="circle" onClick={() => this.deleteItem()}>
+                    <DeleteOutlined />
+                  </Button>
+                </>
+                : null}
+            </div>
+          </Col>
+        </Row>
+      </>
+    )
+  }
 
    return(
     <>
@@ -185,19 +315,20 @@ class Items extends React.Component {
     
 )}
 
-} 
+
+}
 
 const divHead = {
-display: 'flex',
-alignItems: 'center',
-justifyContent: 'space-around',
-height: 'auto',
-width: 'auto',
-fontSize: '19px',
-color: '#272829',
-border: '1px solid grey',
-padding: '12px',
-fontWeight: '400'
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-around',
+  height: 'auto',
+  width: 'auto',
+  fontSize: '19px',
+  color: '#272829',
+  border: '1px solid grey',
+  padding: '12px',
+  fontWeight: '400'
 }
 const divField = {
 display: 'flex !important',
