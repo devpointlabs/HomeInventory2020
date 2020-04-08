@@ -230,7 +230,7 @@ const divHead = {
 const divField = {
 display: 'flex !important',
 flexDirection: 'row !important',
-height: '25em',
+height: '30em',
 width: '100%',
 fontSize: '18px',
 color: '#272829',
