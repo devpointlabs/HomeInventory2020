@@ -149,7 +149,7 @@ class Items extends React.Component {
   }
 
   render() {
-    const { tab, itemId } = this.state
+    const { tab, itemId, locationId } = this.state
 
     return (
       <>
@@ -177,6 +177,9 @@ class Items extends React.Component {
           <Col span={5} style={{ display: 'flex', flexDirection: 'row' }}>
             <div style={{ ...divField }}>
               {this.renderLocations()}
+              <StyledA2 style={locationId === 'nil' ? activeDiv : passiveDiv}
+              onClick={() => this.toggleItemId('nil')}
+              >Unspecified</StyledA2>
             </div>
           </Col>
           <Col span={5}>
