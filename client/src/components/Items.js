@@ -12,6 +12,8 @@ import { Button } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
 import ItemForm from './forms/ItemForm'
+import AssessmentForm from './forms/AssessmentForm';
+import MaintenanceForm from './MaintenanceForm';
 
 class Items extends React.Component {
   state = { locations: [], receipts: {}, id: 0, tab: 'info', itemId: null};
@@ -66,7 +68,8 @@ class Items extends React.Component {
         )
       case 'files':
         return (
-          <p>FILES</p>
+          // <p>FILES</p>
+          <MaintenanceForm></MaintenanceForm>
         )
       case 'newLocation':
         return (
