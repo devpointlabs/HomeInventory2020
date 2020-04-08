@@ -68,8 +68,7 @@ class Items extends React.Component {
         )
       case 'files':
         return (
-          // <p>FILES</p>
-          <MaintenanceForm></MaintenanceForm>
+          <p>FILES</p>
         )
       case 'newLocation':
         return (
