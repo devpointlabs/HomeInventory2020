@@ -125,7 +125,22 @@ class Items extends React.Component {
       console.log(res)
       const filteredArr = items.filter( i => i.id !== itemId)
       this.setState({
-        items: filteredArr, id: 0, itemId: null, tab: 'blank'
+        items: filteredArr, locationId: 0, itemId: null, tab: 'blank'
+      });
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+// delete location when delete button pressed
+  deleteLocation = () => {
+    const { locationId, locations } = this.state
+    axios.delete(`/api/locations/${locationId}`)
+    .then(res => {
+      console.log(res)
+      const filteredLocations = locations.filter( location => location.id !== locationId)
+      this.setState({
+        locations: filteredLocations, LocationId: 0, itemId: null, tab: 'blank'
       });
     })
     .catch(err => {
@@ -181,12 +196,22 @@ class Items extends React.Component {
               <Button type="primary" shape="circle" onClick={() => this.toggleTab('newLocation')}>
                 <PlusOutlined />
               </Button>
+              {this.state.locationId !== null ?  
+              <>
+              <Button type="primary" shape="circle" onClick={() => this.deleteLocation()}>
+                <DeleteOutlined />
+              </Button>
+              <Button type="primary" shape="circle">
+                <EditOutlined />
+              </Button>
+              </>
+              : null}
             </div>
           </Col>
           <Col span={5}>
             <div style={{ ...divFoot }}>
               {this.state.locationId !== null ?  
-              <Button type="primary" shape="circle" onClick={() => this.toggleTab('newItem')}>
+              <Button shape="circle" onClick={() => this.toggleTab('newItem')}>
                 <PlusOutlined />
               </Button>
               : null}
