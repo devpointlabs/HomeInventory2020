@@ -9,5 +9,6 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
   has_many :locations
 
-  has_one :homes
+  has_many :homes
+
 end
