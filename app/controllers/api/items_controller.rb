@@ -1,6 +1,5 @@
 class Api::ItemsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_location
   before_action :set_item, only: [:show, :edit, :destroy]
 
   def index
@@ -38,9 +37,6 @@ private
     params.permit(:name, :make, :model, :serial_num, :category, :collection, :condition, :purchase_date, :quantity, :value, :tags, :location_id)
   end
 
-  def set_location
-    @location = Location.find(params[:location_id])
-  end
   def set_item
     @item = current_user.items.find(params[:id])
   end

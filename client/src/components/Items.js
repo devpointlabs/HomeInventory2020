@@ -16,15 +16,10 @@ class Items extends React.Component {
   state = { locations: [], items: [], receipts: {}, locationId: null, itemId: null, tab: 'info'};
 
   async componentDidMount() {
-    let data = await axios.get('/api/locations')
-    this.setState({ locations: data.data });
-  }
-
-  async componentDidUpdate(prevProps, prevState) {
-    if (this.state.locationId !== null && prevState.locationId !== this.state.locationId){
-      let itemList = await axios.get(`/api/locations/${this.state.locationId}/items`)
-      this.setState({items: itemList.data});
-    }
+    let locationData = await axios.get('/api/locations')
+    this.setState({ locations: locationData.data });
+    let itemData = await axios.get('/api/items')
+    this.setState({ items: itemData.data });
   }
 
   renderLocations = () => {
