@@ -9,6 +9,8 @@ import { Button } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
 import ItemForm from './forms/ItemForm'
+import AssessmentForm from './forms/AssessmentForm';
+import MaintenanceForm from './MaintenanceForm';
 
 class Items extends React.Component {
   state = { locations: [], items: [], receipts: {}, locationId: null, itemId: null, tab: 'info'};
