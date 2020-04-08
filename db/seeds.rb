@@ -25,5 +25,24 @@ Item.create(name: 'TV', make: 'Samsung', model: 'S600', serial_num: '123456', ca
   collection: 'Electronics', condition: 'Good', heir: 'The Cat', 
   quantity: 1, value: 800.00, location_id: 2)
 
+  ## _________________________ CREATE HOME ___________________________________
+  Home.create(address: "1234 Main Street Salt Lake City, Utah", zip_code: 84111, square_footage: 2500, lot_size: 0.08, purchase_date: "Jan 1, 2020",purchase_price: 1000000.00, user_id: 1)
+  puts "House seeded."
+
+  # assessments
+  # t.date "date"
+  # t.float "land_value"
+  # t.float "structure_value"
+  # t.float "total_value"
+  # t.bigint "home_id", null: false
+
+  Assessment.create(date: '01/01/01', land_value: 41000.00, structure_value: 100000.00, total_value: 100000.00, home_id: 1 )
+
+  # maintenances
+  # t.date "due_date"
+  # t.string "task"
+
+  Maintenance.create(due_date: '01/01/01', task: 'Change Heating Filter', home_id: 1)
+  
 puts "Items seeded."
   
