@@ -4,17 +4,17 @@ class Api::ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :destroy]
 
   def index
-    items = @location.items.all
+    items = current_user.items.all
     render json: items
   end
 
   def show
-    item = @location.items.find(params[:id])
+    item = current_user.items.find(params[:id])
     render json: item
   end
 
   def create
-    item = @location.items.new(item_params)
+    item = current_user.items.new(item_params)
     if item.save
       render json: item
     else
@@ -35,13 +35,13 @@ class Api::ItemsController < ApplicationController
 private
 
   def item_params
-    params.permit(:name, :make, :model, :serial_num, :category, :collection, :condition, :heir, :purchase_date, :quantity, :value, :tags)
+    params.permit(:name, :make, :model, :serial_num, :category, :collection, :condition, :purchase_date, :quantity, :value, :tags, :location_id)
   end
 
   def set_location
     @location = Location.find(params[:location_id])
   end
   def set_item
-    @item = @location.items.find(params[:id])
+    @item = current_user.items.find(params[:id])
   end
 end
