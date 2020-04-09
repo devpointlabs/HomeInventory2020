@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import CustomTableM from './CustomTableM';
 
 
 export default class Maintenances extends React.Component {
@@ -21,11 +22,7 @@ export default class Maintenances extends React.Component {
     renderMaintenances = () => {
         const {  maintenances } = this.state
         return  maintenances.map( maintenance => (
-            <div key={ maintenance.id }>
-                <h1> Maintenance </h1>
-                <p>{ maintenance.due_date }</p>
-                <p>{ maintenance.task }</p>
-            </div>
+            <CustomTableM info={maintenance} />
         ))
     }
 
