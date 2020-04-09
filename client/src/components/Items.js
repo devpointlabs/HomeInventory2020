@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
 import ItemPhoto from './ItemPhotos';
+import FileUpload from './FileUpload';
 import Receipts from './Receipts';
 import { Button } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
@@ -105,7 +106,7 @@ class Items extends React.Component {
         )
       case 'files':
         return (
-          <p>FILES</p>
+          <FileUpload itemId={this.state.itemId} locationId={this.state.locationId} />
         )
       case 'newLocation':
         return (
