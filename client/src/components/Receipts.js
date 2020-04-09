@@ -1,7 +1,5 @@
 import React from "react";
 
-
-
 const  Receipts = (props) => {
     const receipt = props.receipt
     console.log('receipt component')

@@ -13,7 +13,7 @@ import AssessmentForm from './forms/AssessmentForm';
 import MaintenanceForm from './MaintenanceForm';
 
 class Items extends React.Component {
-  state = { locations: [], items: [], receipt: {}, locationId: 0, itemId: null, tab: 'info'};
+  state = { locations: [], items: [], receipt: null, locationId: 0, itemId: null, tab: 'info'};
 
   async componentDidMount() {
     let locationData = await axios.get('/api/locations')
