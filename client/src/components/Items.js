@@ -17,8 +17,10 @@ class Items extends React.Component {
 
   async componentDidMount() {
     let locationData = await axios.get('/api/locations')
+    console.log(locationData)
     this.setState({ locations: locationData.data });
     let itemData = await axios.get('/api/items')
+    console.log(itemData)
     this.setState({ items: itemData.data });
   }
 
@@ -38,8 +40,11 @@ class Items extends React.Component {
   }
 
   renderItems = () => {
-    const { items, itemId } = this.state
-    return items.map(item => (
+    const { items, itemId, locationId } = this.state
+    const filteredItems = items.filter(i => i.location_id == locationId)
+    console.log("Filtered:",filteredItems)
+    console.log(locationId)
+    return filteredItems.map(item => (
       <div key={item.id} style={item.id === itemId ? activeDiv : passiveDiv}>
         <StyledA2 onClick={() => this.toggleItemId(item.id)}
          style={item.id === itemId ? activeA : {}}
@@ -59,6 +64,16 @@ class Items extends React.Component {
   updateItemList = (newItem) => {
     const { items } = this.state
     this.setState({items: [...items, newItem.data], tab: 'info', itemId: newItem.data.id})
+  }
+    
+  //Toggles item number for info display:
+  toggleItemId = (e) => {
+    this.setState({ ...this.state, itemId: e ,});
+  }
+
+  // Toggles the location id for calling up item list. 
+  toggleItems = (targetId) => {
+    this.setState({ ...this.state, locationId: targetId });
   }
 
 // Toggles Info display for info / photos / etc. 
@@ -101,16 +116,7 @@ class Items extends React.Component {
         )
     }
   }
-  
-//Toggles item number for info display:
-  toggleItemId = (e) => {
-    this.setState({ ...this.state, itemId: e ,});
-  }
 
-  // Toggles the location id for calling up item list. 
-  toggleItems = (targetId) => {
-    this.setState({ ...this.state, locationId: targetId });
-  }
 
 // delete item when delete button pressed
   deleteItem = () => {
@@ -173,7 +179,7 @@ class Items extends React.Component {
             <div style={{ ...divField }}>
               {this.renderLocations()}
               <StyledA2 style={locationId === 'nil' ? activeDiv : passiveDiv}
-              onClick={() => this.toggleItemId('nil')}
+              onClick={() => this.toggleItems(null)}
               >Unspecified</StyledA2>
             </div>
           </Col>

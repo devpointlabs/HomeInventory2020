@@ -8,7 +8,7 @@ export default class RenderItem extends React.Component {
   };
 
   componentDidMount() {
-    const { itemId, locationId } = this.props
+    const { itemId } = this.props
     if (itemId !== null) {
       axios.get(`/api/items/${itemId}`).then((res) => {
         console.log(res)
@@ -20,7 +20,7 @@ export default class RenderItem extends React.Component {
   }
 
   componentDidUpdate() {
-    const { itemId, locationId } = this.props
+    const { itemId } = this.props
     if( itemId !== null && itemId !== this.state.item.id ) {
     axios.get(`/api/items/${itemId}`).then((res) => {
       console.log(res)
