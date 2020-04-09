@@ -165,7 +165,7 @@ class Items extends React.Component {
           </Col>
           <Col span={14}>
             <div style={{ ...divHead }}>
-              <StyledA onClick={() => this.toggleTab('info')}>Info</StyledA>
+              <StyledA onClick={() => this.toggleTab('info')} style={tab === 'info' && itemId !== null ? activeTab : {}}>Info</StyledA>
               <StyledA onClick={() => this.toggleTab('photos')}>Photos</StyledA>
               <StyledA onClick={() => this.toggleTab('receipts')}>Receipts</StyledA>
               <StyledA onClick={() => this.toggleTab('files')}>Files</StyledA>
@@ -247,6 +247,7 @@ class Items extends React.Component {
 const activeDiv = {height: '50px', backgroundColor: '#f0f0f0', boxShadow: '0px 2px 5px #888888', paddingTop: '12px'}
 const passiveDiv = {height: '50px', marginLeft: '14px', paddingTop: '12px' }
 const activeA = {color:'#1890ff', marginTop: '16px', paddingLeft: '6px'}
+const activeTab = {color:'#1890ff', textDecoration: 'underline'}
 
 // styling for layout of items page
 const divHead = {
