@@ -13,7 +13,7 @@ import AssessmentForm from './forms/AssessmentForm';
 import MaintenanceForm from './MaintenanceForm';
 
 class Items extends React.Component {
-  state = { locations: [], items: [], receipts: [], locationId: 0, itemId: null, tab: 'info'};
+  state = { locations: [], items: [], receipt: {}, locationId: 0, itemId: null, tab: 'info'};
 
   async componentDidMount() {
     let locationData = await axios.get('/api/locations')
@@ -24,11 +24,11 @@ class Items extends React.Component {
     this.setState({ items: itemData.data });
   }
   async componentDidUpdate(prevProps, prevState) {
-    const { receipts, itemId } = this.state
+    const { itemId } = this.state
     if(prevState.itemId !== this.state.itemId){
       const receiptData = await axios.get(`/api/items/${itemId}/receipts`)
-      this.setState({receipts: receiptData.data});
-      console.log(this.state)
+      this.setState({receipt: receiptData.data[0]});
+      console.log(this.state.receipt)
     }
   }
 
@@ -101,7 +101,7 @@ class Items extends React.Component {
         )
       case 'receipts':
         return (
-          <Receipts itemId={this.state.itemId} receiptId={this.state.receiptId}/>
+          <Receipts itemId={this.state.itemId} receipt={this.state.receipt}/>
         )
       case 'files':
         return (
