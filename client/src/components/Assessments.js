@@ -1,5 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import { Table, Tag } from 'antd';
+import CustomTable from './CustomTable';
+const { Column, ColumnGroup } = Table;
 
 
 export default class Assessments extends React.Component {
@@ -19,15 +22,9 @@ export default class Assessments extends React.Component {
     }
 
     renderAssessments = () => {
-        const {  assessments } = this.state
-        return  assessments.map( assessment => (
-            <div key={ assessment.id }>
-                <h1> Assessment </h1>
-                <p>{ assessment.date }</p>
-                <p>{ assessment.land_value }</p>
-                <p>{ assessment.structure_value }</p>
-                <p>{ assessment.total_value }</p>
-            </div>
+        const { assessments } = this.state
+        return assessments.map(assessment => (
+                <CustomTable info={assessment} />
         ))
     }
 
