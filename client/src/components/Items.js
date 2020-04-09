@@ -13,7 +13,7 @@ import AssessmentForm from './forms/AssessmentForm';
 import MaintenanceForm from './MaintenanceForm';
 
 class Items extends React.Component {
-  state = { locations: [], items: [], receipts: {}, locationId: null, itemId: null, tab: 'info'};
+  state = { locations: [], items: [], receipts: {}, locationId: 0, itemId: null, tab: 'info'};
 
   async componentDidMount() {
     let locationData = await axios.get('/api/locations')
@@ -41,9 +41,7 @@ class Items extends React.Component {
 
   renderItems = () => {
     const { items, itemId, locationId } = this.state
-    const filteredItems = items.filter(i => i.location_id == locationId)
-    console.log("Filtered:",filteredItems)
-    console.log(locationId)
+    const filteredItems = items.filter(i => i.location_id === locationId)
     return filteredItems.map(item => (
       <div key={item.id} style={item.id === itemId ? activeDiv : passiveDiv}>
         <StyledA2 onClick={() => this.toggleItemId(item.id)}
@@ -178,9 +176,14 @@ class Items extends React.Component {
           <Col span={5} style={{ display: 'flex', flexDirection: 'row' }}>
             <div style={{ ...divField }}>
               {this.renderLocations()}
-              <StyledA2 style={locationId === 'nil' ? activeDiv : passiveDiv}
-              onClick={() => this.toggleItems(null)}
-              >Unspecified</StyledA2>
+              <div key={'nullLocation'} style={locationId === null ? activeDiv : passiveDiv}>
+                <StyledA2
+                onClick={() => this.toggleItems(null)}
+                style={locationId === null ? activeA : {}}
+                >
+                Unspecified
+                </StyledA2>
+              </div>
             </div>
           </Col>
           <Col span={5}>
