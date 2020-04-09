@@ -13,17 +13,22 @@ import AssessmentForm from './forms/AssessmentForm';
 import MaintenanceForm from './MaintenanceForm';
 
 class Items extends React.Component {
-  state = { locations: [], items: [], receipts: {}, locationId: null, itemId: null, tab: 'info'};
+  state = { locations: [], items: [], receipt: null, locationId: 0, itemId: null, tab: 'info'};
 
   async componentDidMount() {
-    let data = await axios.get('/api/locations')
-    this.setState({ locations: data.data });
+    let locationData = await axios.get('/api/locations')
+    console.log(locationData)
+    this.setState({ locations: locationData.data });
+    let itemData = await axios.get('/api/items')
+    console.log(itemData)
+    this.setState({ items: itemData.data });
   }
-
   async componentDidUpdate(prevProps, prevState) {
-    if (this.state.locationId !== null && prevState.locationId !== this.state.locationId){
-      let itemList = await axios.get(`/api/locations/${this.state.locationId}/items`)
-      this.setState({items: itemList.data});
+    const { itemId } = this.state
+    if(prevState.itemId !== this.state.itemId){
+      const receiptData = await axios.get(`/api/items/${itemId}/receipts`)
+      this.setState({receipt: receiptData.data[0]});
+      console.log(this.state.receipt)
     }
   }
 
@@ -43,8 +48,9 @@ class Items extends React.Component {
   }
 
   renderItems = () => {
-    const { items, itemId } = this.state
-    return items.map(item => (
+    const { items, itemId, locationId } = this.state
+    const filteredItems = items.filter(i => i.location_id === locationId)
+    return filteredItems.map(item => (
       <div key={item.id} style={item.id === itemId ? activeDiv : passiveDiv}>
         <StyledA2 onClick={() => this.toggleItemId(item.id)}
          style={item.id === itemId ? activeA : {}}
@@ -64,6 +70,16 @@ class Items extends React.Component {
   updateItemList = (newItem) => {
     const { items } = this.state
     this.setState({items: [...items, newItem.data], tab: 'info', itemId: newItem.data.id})
+  }
+    
+  //Toggles item number for info display:
+  toggleItemId = (e) => {
+    this.setState({ ...this.state, itemId: e ,});
+  }
+
+  // Toggles the location id for calling up item list. 
+  toggleItems = (targetId) => {
+    this.setState({ ...this.state, locationId: targetId });
   }
 
 // Toggles Info display for info / photos / etc. 
@@ -85,7 +101,7 @@ class Items extends React.Component {
         )
       case 'receipts':
         return (
-          <Receipts itemId={this.state.itemId} receiptId={this.state.receiptId}/>
+          <Receipts itemId={this.state.itemId} receipt={this.state.receipt}/>
         )
       case 'files':
         return (
@@ -106,16 +122,7 @@ class Items extends React.Component {
         )
     }
   }
-  
-//Toggles item number for info display:
-  toggleItemId = (e) => {
-    this.setState({ ...this.state, itemId: e ,});
-  }
 
-  // Toggles the location id for calling up item list. 
-  toggleItems = (targetId) => {
-    this.setState({ ...this.state, locationId: targetId });
-  }
 
 // delete item when delete button pressed
   deleteItem = () => {
@@ -125,7 +132,22 @@ class Items extends React.Component {
       console.log(res)
       const filteredArr = items.filter( i => i.id !== itemId)
       this.setState({
-        items: filteredArr, id: 0, itemId: null, tab: 'blank'
+        items: filteredArr, locationId: 0, itemId: null, tab: 'blank'
+      });
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+// delete location when delete button pressed
+  deleteLocation = () => {
+    const { locationId, locations } = this.state
+    axios.delete(`/api/locations/${locationId}`)
+    .then(res => {
+      console.log(res)
+      const filteredLocations = locations.filter( location => location.id !== locationId)
+      this.setState({
+        locations: filteredLocations, LocationId: 0, itemId: null, tab: 'blank'
       });
     })
     .catch(err => {
@@ -134,7 +156,7 @@ class Items extends React.Component {
   }
 
   render() {
-    const { tab, itemId } = this.state
+    const { tab, itemId, locationId } = this.state
 
     return (
       <>
@@ -151,10 +173,25 @@ class Items extends React.Component {
           </Col>
           <Col span={14}>
             <div style={{ ...divHead }}>
-              <StyledA onClick={() => this.toggleTab('info')}>Info</StyledA>
-              <StyledA onClick={() => this.toggleTab('photos')}>Photos</StyledA>
-              <StyledA onClick={() => this.toggleTab('receipts')}>Receipts</StyledA>
-              <StyledA onClick={() => this.toggleTab('files')}>Files</StyledA>
+              <StyledA 
+              onClick={() => this.toggleTab('info')} 
+              style={tab === 'info' && itemId !== null ? activeTab : {}}>
+                Info
+              </StyledA>
+              <StyledA 
+              onClick={() => this.toggleTab('photos')} 
+              style={tab === 'photos' && itemId !== null ? activeTab : {}}>
+                Photos
+              </StyledA>
+              <StyledA onClick={() => this.toggleTab('receipts')} 
+              style={tab === 'receipts' && itemId !== null ? activeTab : {}}>
+                Receipts
+              </StyledA>
+              <StyledA 
+              onClick={() => this.toggleTab('files')} 
+              style={tab === 'files' && itemId !== null ? activeTab : {}}>
+                Files
+              </StyledA>
             </div>
           </Col>
         </Row>
@@ -162,6 +199,14 @@ class Items extends React.Component {
           <Col span={5} style={{ display: 'flex', flexDirection: 'row' }}>
             <div style={{ ...divField }}>
               {this.renderLocations()}
+              <div key={'nullLocation'} style={locationId === null ? activeDiv : passiveDiv}>
+                <StyledA2
+                onClick={() => this.toggleItems(null)}
+                style={locationId === null ? activeA : {}}
+                >
+                Unspecified
+                </StyledA2>
+              </div>
             </div>
           </Col>
           <Col span={5}>
@@ -181,12 +226,22 @@ class Items extends React.Component {
               <Button type="primary" shape="circle" onClick={() => this.toggleTab('newLocation')}>
                 <PlusOutlined />
               </Button>
+              {this.state.locationId !== null ?  
+              <>
+              <Button type="primary" shape="circle" onClick={() => this.deleteLocation()}>
+                <DeleteOutlined />
+              </Button>
+              <Button type="primary" shape="circle">
+                <EditOutlined />
+              </Button>
+              </>
+              : null}
             </div>
           </Col>
           <Col span={5}>
             <div style={{ ...divFoot }}>
               {this.state.locationId !== null ?  
-              <Button type="primary" shape="circle" onClick={() => this.toggleTab('newItem')}>
+              <Button shape="circle" onClick={() => this.toggleTab('newItem')}>
                 <PlusOutlined />
               </Button>
               : null}
@@ -215,6 +270,7 @@ class Items extends React.Component {
 const activeDiv = {height: '50px', backgroundColor: '#f0f0f0', boxShadow: '0px 2px 5px #888888', paddingTop: '12px'}
 const passiveDiv = {height: '50px', marginLeft: '14px', paddingTop: '12px' }
 const activeA = {color:'#1890ff', marginTop: '16px', paddingLeft: '6px'}
+const activeTab = {color:'#1890ff', textDecoration: 'underline'}
 
 // styling for layout of items page
 const divHead = {
