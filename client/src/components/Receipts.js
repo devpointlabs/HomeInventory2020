@@ -16,20 +16,20 @@ export default class Receipts extends React.Component {
         console.log(err);
       });
   }
-  componentDidUpdate() {
-    const { itemId, receiptId } = this.props;
-    if (receiptId !== this.state.receipt.id) {
-      axios
-        .get(`/api/items/${itemId}/receipts/${receiptId}`)
-        .then((res) => {
-          console.log(res);
-          this.setState({ receipt: res.data });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }
+  // componentDidUpdate() {
+  //   const { itemId, receiptId } = this.props;
+  //   if (receiptId !== this.state.receipt.id) {
+  //     axios
+  //       .get(`/api/items/${itemId}/receipts/${receiptId}`)
+  //       .then((res) => {
+  //         console.log(res);
+  //         this.setState({ receipt: res.data });
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // }
   render() {
     const { receipt } = this.state;
     if (this.props.itemId) {

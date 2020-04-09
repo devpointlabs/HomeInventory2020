@@ -13,7 +13,7 @@ import AssessmentForm from './forms/AssessmentForm';
 import MaintenanceForm from './MaintenanceForm';
 
 class Items extends React.Component {
-  state = { locations: [], items: [], receipts: {}, locationId: 0, itemId: null, tab: 'info'};
+  state = { locations: [], items: [], receipts: [], locationId: 0, itemId: null, tab: 'info'};
 
   async componentDidMount() {
     let locationData = await axios.get('/api/locations')
@@ -22,6 +22,14 @@ class Items extends React.Component {
     let itemData = await axios.get('/api/items')
     console.log(itemData)
     this.setState({ items: itemData.data });
+  }
+  async componentDidUpdate(prevProps, prevState) {
+    const { receipts, itemId } = this.state
+    if(prevState.itemId !== this.state.itemId){
+      const receiptData = await axios.get(`/api/items/${itemId}/receipts`)
+      this.setState({receipts: receiptData.data});
+      console.log(this.state)
+    }
   }
 
   renderLocations = () => {
@@ -165,10 +173,25 @@ class Items extends React.Component {
           </Col>
           <Col span={14}>
             <div style={{ ...divHead }}>
-              <StyledA onClick={() => this.toggleTab('info')} style={tab === 'info' && itemId !== null ? activeTab : {}}>Info</StyledA>
-              <StyledA onClick={() => this.toggleTab('photos')}>Photos</StyledA>
-              <StyledA onClick={() => this.toggleTab('receipts')}>Receipts</StyledA>
-              <StyledA onClick={() => this.toggleTab('files')}>Files</StyledA>
+              <StyledA 
+              onClick={() => this.toggleTab('info')} 
+              style={tab === 'info' && itemId !== null ? activeTab : {}}>
+                Info
+              </StyledA>
+              <StyledA 
+              onClick={() => this.toggleTab('photos')} 
+              style={tab === 'photos' && itemId !== null ? activeTab : {}}>
+                Photos
+              </StyledA>
+              <StyledA onClick={() => this.toggleTab('receipts')} 
+              style={tab === 'receipts' && itemId !== null ? activeTab : {}}>
+                Receipts
+              </StyledA>
+              <StyledA 
+              onClick={() => this.toggleTab('files')} 
+              style={tab === 'files' && itemId !== null ? activeTab : {}}>
+                Files
+              </StyledA>
             </div>
           </Col>
         </Row>
