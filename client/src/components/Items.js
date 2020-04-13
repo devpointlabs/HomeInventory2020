@@ -80,7 +80,7 @@ class Items extends React.Component {
 
   // Toggles the location id for calling up item list. 
   toggleItems = (targetId) => {
-    this.setState({ ...this.state, locationId: targetId });
+    this.setState({ ...this.state, locationId: targetId, itemId: null});
   }
 
 // Toggles Info display for info / photos / etc. 
