@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Dropzone from 'react-dropzone';
+import { List, Divider } from 'antd'
 
 class FileUpload extends React.Component {
   state = {
@@ -46,7 +47,23 @@ class FileUpload extends React.Component {
       console.log(err)
     })
   }
-
+  renderFiles = () => {
+    const { files } = this.state
+    return files.map(file => (
+      <>
+      
+      <List
+        key={file.id}
+        size="large"
+        bordered
+        >
+        <List.Item>
+            <a href={file.file} width='auto' height='200px'>{file.name}</a>
+        </List.Item>
+      </List>
+      </>
+    ))
+  }
   render() {
     if (this.props.itemId) {
       return (
@@ -61,7 +78,8 @@ class FileUpload extends React.Component {
               </ StyledDrop>
             )}
           </Dropzone>
-          {/* {this.renderPhotos()} */}
+          <Divider orientation="left">Files</Divider>
+          {this.renderFiles()}
         </StyledCon>
       )
     } else {
