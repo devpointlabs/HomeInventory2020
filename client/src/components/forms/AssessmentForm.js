@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import styled from 'styled-components';
 import { Form, Input, InputNumber, Button, DatePicker } from "antd";
 
 class AssessmentForm extends React.Component {
@@ -12,7 +13,7 @@ class AssessmentForm extends React.Component {
 
   handleSubmit = () => {
     //gonna need a home to post this assessment to
-    axios.post("/api/homes/1/assessments").then((res) => {
+    axios.post("/api/homes/1/assessments", this.state).then((res) => {
       console.log(res);
       this.setState({
         date: null,
@@ -48,8 +49,11 @@ class AssessmentForm extends React.Component {
     } = this.state;
     return (
       <>
+        <StyledBackground>
+          <StyledHeader>Add Assessment History</StyledHeader>
         <Form onFinish={this.handleSubmit}>
         <Form.Item>
+        <p>Date</p>
             <DatePicker
               label="Date"
               placeholder="Assessment Date"
@@ -61,6 +65,7 @@ class AssessmentForm extends React.Component {
             />
           </Form.Item>
           <Form.Item>
+          <p>Land Value</p>
             <InputNumber
               label="Land Value"
               required
@@ -76,6 +81,7 @@ class AssessmentForm extends React.Component {
               />
           </Form.Item>
           <Form.Item>
+          <p>Structure Value</p>
             <InputNumber
               label="Structure Value"
               required
@@ -91,6 +97,7 @@ class AssessmentForm extends React.Component {
             />
           </Form.Item>
           <Form.Item>
+          <p>Total Value</p>
             <InputNumber
               label="Total Value"
               required
@@ -106,13 +113,44 @@ class AssessmentForm extends React.Component {
             />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
+          <StyledButton htmlType="submit">
+                Submit
+            </StyledButton>
+            </Form.Item>
+          </Form>
+        </StyledBackground>
       </>
     );
   }
 }
+const StyledBackground = styled.div`
+border: black 1px solid;
+margin: 10px 420px;
+padding: 10px 25px;
+`
+const StyledHeader = styled.h1`
+font-weight: bold;
+font-size: 25px;
+`
+const StyledButton = styled.button`
+border: none;
+color: white;
+font-weight: bold;
+background: #008cff;
+padding: 5px 15px;
+cursor: pointer;
+width: 100%;
+transition: all 0.3s ease-in-out;
+
+&:hover {
+box-shadow: 0 5px 10px #6bbcff;
+transition: all 0.3s ease-in-out;
+}
+`
+const StyledLine2 = styled.div`
+background: #adadad;
+margin-top: 45px;
+width: 100%;
+height: 1px;
+`
 export default AssessmentForm;

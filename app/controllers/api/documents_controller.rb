@@ -11,14 +11,19 @@ class Api::DocumentsController < ApplicationController
   end
 
   def create
-    document = @item.documents.new(photo_params)
-    if document.save
-      render json: document
-    else
-      render json: {message: "ooopsie"}
+    file = params[:file]
+    if file
+      begin
+        ext = File.extname(file.tempfile)
+        cloud_image = Cloudinary::Uploader.upload(file, public_id: file.original_filename, secure: true, :resource_type => :raw)
+        document = @item.documents.create(file: cloud_image['secure_url'], name: file.original_filename) 
+        render json: document
+      rescue => e
+        render json: { errors: e }, status: 422
+      end
     end
   end
-
+ 
   def update
     if @document.update(docoument_params)
       render json: @document

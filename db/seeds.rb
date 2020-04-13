@@ -33,13 +33,17 @@ Item.create(name: 'TV', make: 'Samsung', model: 'S600', serial_num: '123456', ca
   # t.float "total_value"
   # t.bigint "home_id", null: false
 
+ 
   Assessment.create(date: '01/01/01', land_value: 41000.00, structure_value: 100000.00, total_value: 100000.00, home_id: 1 )
-
+  Assessment.create(date: '02/02/02', land_value: 51000.00, structure_value: 200000.00, total_value: 200000.00, home_id: 1 )
+  Assessment.create(date: '03/03/03', land_value: 61000.00, structure_value: 300000.00, total_value: 300000.00, home_id: 1 )
   # maintenances
   # t.date "due_date"
   # t.string "task"
 
   Maintenance.create(due_date: '01/01/01', task: 'Change Heating Filter', home_id: 1)
+  Maintenance.create(due_date: '02/02/02', task: 'Fix Door', home_id: 1)
+  Maintenance.create(due_date: '03/03/03', task: 'Change Dog', home_id: 1)
   
 puts "Items seeded."
   

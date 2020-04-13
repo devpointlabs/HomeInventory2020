@@ -1,11 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import CustomTableM from './CustomTableM';
+import MaintenanceForm from './MaintenanceForm';
 
 
 export default class Maintenances extends React.Component {
     state = {
-        maintenances: []
+        maintenances: [],
+        checkbox: false,
     };
 
     componentDidMount() {
@@ -19,11 +20,38 @@ export default class Maintenances extends React.Component {
 
     }
 
+    deleteMaintenance = () => {
+        const { homeId, } = this.props
+        const {  } = this.state
+        axios.delete(`/api/homes/${homeId}/maintenances/:id`)
+        .then(res => {
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
+    
+
+    handleChange = () => {
+        this.setState({checkbox: !this.state.checkbox})
+        console.log(this.state.checkbox)
+    }
+
     renderMaintenances = () => {
-        const {  maintenances } = this.state
-        return  maintenances.map( maintenance => (
-            <CustomTableM info={maintenance} />
-        ))
+        const { maintenances } = this.state
+        if (maintenances.length !== 0) {
+            return maintenances.map(maintenance => (
+                <div key={maintenance.id}>
+                    <tr>
+                        <input type="checkbox" name="name1" onChange={this.handleChange}/>
+                        <td>{maintenance.due_date}</td>
+                        <td>{maintenance.task}</td>
+                    </tr>
+                </div>
+            ))
+        } else {
+            return <p>Add data here using the plus symbol</p>
+        }
     }
 
     render() {
@@ -36,4 +64,6 @@ export default class Maintenances extends React.Component {
         )
     }
 }
+
+
 

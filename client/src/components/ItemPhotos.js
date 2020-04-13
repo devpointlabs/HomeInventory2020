@@ -5,7 +5,8 @@ import Dropzone from 'react-dropzone';
 
 export default class ItemPhotos extends React.Component {
   state = {
-    photos: []
+    photos: [],
+    itemId: null
   };
 
   componentDidMount() {
@@ -13,11 +14,22 @@ export default class ItemPhotos extends React.Component {
     if (itemId) {
       axios.get(`/api/items/${itemId}/photos`).then((res) => {
         console.log(res)
-        this.setState({ photos: res.data });
+        this.setState({ photos: res.data, itemId });
       }).catch((err) => {
         console.log(err)
       })
     }
+  }
+  componentDidUpdate() {
+    const { itemId } = this.props
+    if( itemId !== null && itemId !== this.state.itemId ) {
+    axios.get(`/api/items/${itemId}/photos`).then((res) => {
+      console.log(res)
+      this.setState({photos: res.data, itemId});
+    }).catch((err) => {
+      console.log(err)
+    })
+   }
   }
 
   //seems to be doing something just not getting information passed in 
@@ -42,7 +54,7 @@ export default class ItemPhotos extends React.Component {
     const { photos } = this.state
     return photos.map(photo => (
       <StyledImg key={photo.id}>
-        <img src={photo.file} width='200px' height='200px' />
+        <img src={photo.file} width='auto' height='200px' />
         {/* <p>{photo.name}</p> */}
       </StyledImg>
     ))
@@ -56,7 +68,7 @@ export default class ItemPhotos extends React.Component {
             <StyledDrop>
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
-                <p>Drag 'n' drop some files here, or click to select files</p>
+                <p>Drag 'n' drop image here, or click to select image</p>
               </div>
             </ StyledDrop>
           )}
