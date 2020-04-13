@@ -67,6 +67,7 @@ class FileUpload extends React.Component {
   render() {
     if (this.props.itemId) {
       return (
+        <>
         <StyledCon>
           <Dropzone onDrop={this.onDrop} multiple={false}>
             {({ getRootProps, getInputProps }) => (
@@ -79,8 +80,9 @@ class FileUpload extends React.Component {
             )}
           </Dropzone>
           <Divider orientation="left">Files</Divider>
-          {this.renderFiles()}
         </StyledCon>
+        {this.renderFiles()}
+        </>
       )
     } else {
       return (
