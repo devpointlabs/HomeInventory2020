@@ -15,6 +15,8 @@ import { Switch, Route, } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import House from './components/House';
+import MaintenanceForm from './components/MaintenanceForm';
+import AssessmentForm from './components/forms/AssessmentForm';
 
 
 const App = () => (
@@ -32,6 +34,8 @@ const App = () => (
         <ProtectedRoute exact path="/reports" component={Reports} />
         <ProtectedRoute exact path="/inbox" component={Inbox} />
         <ProtectedRoute exact path="/userpage" component={UserPage} />
+        <ProtectedRoute exact path="/add/maintenance" component={MaintenanceForm} />
+        <ProtectedRoute exact path="/add/assessment" component={AssessmentForm} />
         <Route component={NoMatch} />
       </Switch>
     </FetchUser>
