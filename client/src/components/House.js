@@ -4,10 +4,12 @@ import styled from "styled-components";
 import Dropzone from "react-dropzone";
 import Assessments from "./Assessments";
 import Maintenances from "./Maintenances";
+import { Button } from "antd";
 
 export default class House extends React.Component {
   state = {
     houses: [],
+    homes: [],
   };
   componentDidMount() {
     axios
@@ -57,7 +59,7 @@ export default class House extends React.Component {
     const { houses } = this.state;
     return houses.map((house) => (
       <StyledImg key={house.id}>
-        <img src={house.image} width="200px" height="200px" />
+        <img src={house.image} width="500px" height="500px" />
       </StyledImg>
     ));
   };
@@ -76,6 +78,17 @@ export default class House extends React.Component {
       });
   };
 
+  //   <Dropzone onDrop={this.onDrop} multiple={false}>
+  //   {({ getRootProps, getInputProps }) => (
+  //     <StyledDrop>
+  //       <div {...getRootProps()}>
+  //         <input {...getInputProps()} />
+  //         <p>Drag or drop a picture of your home</p>
+  //       </div>
+  //     </StyledDrop>
+  //   )}
+  // </Dropzone>
+
   renderHousePage = () => {
     const { houses } = this.state;
     if (houses !== null) {
@@ -83,8 +96,7 @@ export default class House extends React.Component {
         <StyledRow>
           <StyledCol>
             <StyledBorder>
-              {/* <StyledImg> */}
-                <Dropzone onDrop={this.onDrop} multiple={false}>
+              <Dropzone onDrop={this.onDrop} multiple={false}>
                   {({ getRootProps, getInputProps }) => (
                     <StyledDrop>
                       <div {...getRootProps()}>
@@ -94,7 +106,8 @@ export default class House extends React.Component {
                     </StyledDrop>
                   )}
                 </Dropzone>
-              {/* </StyledImg> */}
+              {this.renderHomePhoto()}
+              {/* <Button>Edit Photo</Button> */}
             </StyledBorder>
             <StyledBorder>{this.renderHouses()}</StyledBorder>
           </StyledCol>
@@ -147,12 +160,12 @@ const StyledImg = styled.div`
 `;
 
 const StyledDrop = styled.div`
-border: 2.5px dashed black;
-width: 500px;
-height: 500px;
-padding: 50px 10px;
-background: #e3e3e3;
-text-align: center;
-margin: 10px 10px;
-cursor: pointer;
+  border: 2.5px dashed black;
+  width: 500px;
+  height: 500px;
+  padding: 50px 10px;
+  background: #e3e3e3;
+  text-align: center;
+  margin: 10px 10px;
+  cursor: pointer;
 `;
