@@ -37,12 +37,12 @@ export default class ItemPhotos extends React.Component {
     data.append('file', files[0])
   console.log('Photo File:',files[0])
     const { itemId, } = this.props
-    // axios.post(`/api/items/${itemId}/photos`, data).then((res) => {
-    //   console.log(res)
-    //   this.setState({ photos: [...this.state.photos, res.data] });
-    // }).catch((err) => {
-    //   console.log(err)
-    // })
+    axios.post(`/api/items/${itemId}/photos`, data).then((res) => {
+      console.log(res)
+      this.setState({ photos: [...this.state.photos, res.data] });
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   renderPhotos = () => {

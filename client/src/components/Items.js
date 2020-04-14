@@ -4,9 +4,8 @@ import styled from 'styled-components';
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
 import ItemPhoto from './ItemPhotos';
-import FileUpload from './Files';
 import Receipts from './Receipts';
-import { Button } from 'antd'
+import { Button, List } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
 import ItemForm from './forms/ItemForm'
@@ -14,7 +13,15 @@ import Uploader from './Uploader';
 
 
 class Items extends React.Component {
-  state = { locations: [], items: [], files: [], receipt: null, locationId: 0, itemId: null, tab: 'info'};
+  state = { 
+    locations: [],
+    items: [], 
+    files: [], 
+    fileId: null, 
+    receipt: null, 
+    locationId: 0, 
+    itemId: null, 
+    tab: 'info'};
 
   async componentDidMount() {
     let locationData = await axios.get('/api/locations')
@@ -28,7 +35,8 @@ class Items extends React.Component {
     const { itemId } = this.state
     if(prevState.itemId !== this.state.itemId){
       const receiptData = await axios.get(`/api/items/${itemId}/receipts`)
-      this.setState({receipt: receiptData.data[0]});
+      const fileData = await axios.get(`/api/items/${itemId}/documents`)
+      this.setState({receipt: receiptData.data[0], files: fileData.data});
       console.log(this.state.receipt)
     }
   }
@@ -60,6 +68,27 @@ class Items extends React.Component {
         </StyledA2>
       </div>
     ))
+  }
+  renderFiles = () => {
+    const { files, fileId } = this.state
+    return files.map(file => (
+      <div style={fileId === file.id ? activeFileDiv : passiveFileDiv} key={file.id} onClick={() => this.setId(file.id)}>
+      <List
+        size="large"
+        bordered
+        >
+        <List.Item>
+          <a href={file.file} width='auto' height='200px'>{file.name} </a>
+        </List.Item>
+      </List>
+      </div>
+    ))
+  }
+  // Function that toggles active file ID:
+  setId = (id) => {
+    this.setState({
+      fileId: id
+    });
   }
 
   //Function is passed to new location form / modal to hot-reload on submit. 
@@ -106,7 +135,9 @@ class Items extends React.Component {
         )
       case 'files':
         return (
-          <FileUpload itemId={this.state.itemId} locationId={this.state.locationId} />
+          <>
+          {this.renderFiles()}
+          </>
         )
       case 'newLocation':
         return (
@@ -167,7 +198,7 @@ class Items extends React.Component {
           <Button shape="circle" onClick={() => this.toggleTab('newFile')}>
             <PlusOutlined />
           </Button>
-          <Button shape="circle" >
+          <Button shape="circle" onClick={() => this.deleteFile()}>
             <DeleteOutlined />
           </Button>
           </>
@@ -219,15 +250,22 @@ class Items extends React.Component {
       console.log(err)
     })
   }
+  // Function passed to File component to get ID for delete file below
+  setFileId = (id) => {
+    this.setState({fileId: id});
+    console.log(id)
+  }
   //delete file when delete button pressed
   deleteFile = (id) => {
-    const { files } = this.state
-    axios.delete(`api/items/${this.props.itemId}/documents/${id}`)
+    const { itemId, fileId, files } = this.state
+    axios.delete(`api/items/${itemId}/documents/${fileId}`)
     .then(res => {
       console.log(res)
-      const filteredArr = files.filter( f => f.id !== id )
+      const filteredFiles = files.filter(f => f.id !== fileId)
       this.setState({
-        files: filteredArr
+        fileId: null, 
+        tab: 'files',
+        files: filteredFiles
       });
     }).catch(err => {
       console.log(err)
@@ -340,10 +378,36 @@ class Items extends React.Component {
   }}
 
 // styling for selected menu options
-const activeDiv = {height: '50px', backgroundColor: '#f0f0f0', boxShadow: '0px 2px 5px #888888', paddingTop: '12px'}
-const passiveDiv = {height: '50px', marginLeft: '14px', paddingTop: '12px' }
-const activeA = {color:'#1890ff', marginTop: '16px', paddingLeft: '6px'}
-const activeTab = {color:'#1890ff', textDecoration: 'underline'}
+const activeDiv = {
+  height: '50px',
+  backgroundColor: '#f0f0f0', 
+  boxShadow: '0px 2px 5px #888888', 
+  paddingTop: '12px'
+}
+const passiveDiv = {
+  height: '50px', 
+  marginLeft: '14px', 
+  paddingTop: '12px' 
+}
+const activeA = {
+  color:'#1890ff', 
+  marginTop: '16px', 
+  paddingLeft: '6px'
+}
+const activeTab = {
+  color:'#1890ff', 
+  textDecoration: 'underline'
+}
+//styling for active file tab
+const passiveFileDiv = {
+  margin: '12px',
+  cursor: 'pointer'
+}
+const activeFileDiv = {
+  margin: '12px',
+  cursor: 'pointer',
+  backgroundColor: '#f0f0f0'
+}
 
 // styling for layout of items page
 const divHead = {
