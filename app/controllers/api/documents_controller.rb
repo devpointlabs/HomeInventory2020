@@ -2,6 +2,7 @@ class Api::DocumentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item 
 
+
   def index
     render json: @item.documents
   end 
@@ -33,7 +34,8 @@ class Api::DocumentsController < ApplicationController
   end
 
   def destroy
-    @document.destroy
+    document = Document.find(params[:id])
+    document.destroy
   end
 
   private 
@@ -45,4 +47,5 @@ class Api::DocumentsController < ApplicationController
   def set_item
     @item = Item.find(params[:item_id])
   end
+
 end
