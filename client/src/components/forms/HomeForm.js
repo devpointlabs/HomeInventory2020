@@ -17,23 +17,6 @@ class HomeForm extends React.Component {
     file: null
   };
 
-  handleSubmit = () => {
-    const newHome = { ...this.state };
-    axios.post("/api/homes", newHome).then((res) => {
-      console.log(res);
-      this.setState({
-        address: "",
-        zip_code: "",
-        square_footage: "",
-        lot_size: "",
-        purchase_date: null,
-        purchase_price: "",
-        file: null
-        // image: "",
-      });
-    });
-  };
-
   handleChange = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
@@ -79,7 +62,7 @@ class HomeForm extends React.Component {
       purchase_price,
     } = this.state
     axios
-      .post(`/api/homes?address=${address}&zip_code=${zip_code}&square_footage=${square_footage}&lot_size=${lot_size}$purchase_date=${purchase_date}`, data)
+      .post(`/api/homes?address=${address}&zip_code=${zip_code}&square_footage=${square_footage}&lot_size=${lot_size}&purchase_date=${purchase_date}&purchase_price=${purchase_price}`, data)
       .then((res) => {
         console.log(res);
         // this.setState({ homes: [...this.state.homes, res.data]}
