@@ -32,22 +32,17 @@ export default class ItemPhotos extends React.Component {
    }
   }
 
-  //seems to be doing something just not getting information passed in 
   onDrop = (files) => {
     let data = new FormData()
     data.append('file', files[0])
+  console.log('Photo File:',files[0])
     const { itemId, } = this.props
-    const photoName = files[0].name
-    const path = files[0].path
-    const photoDate = files[0].lastModifiedDate
-    const photo = { name: photoName, file: path, date: photoDate }
-    console.log(photo)
-    axios.post(`/api/items/${itemId}/photos`, data).then((res) => {
-      console.log(res)
-      this.setState({ photos: [...this.state.photos, res.data] });
-    }).catch((err) => {
-      console.log(err)
-    })
+    // axios.post(`/api/items/${itemId}/photos`, data).then((res) => {
+    //   console.log(res)
+    //   this.setState({ photos: [...this.state.photos, res.data] });
+    // }).catch((err) => {
+    //   console.log(err)
+    // })
   }
 
   renderPhotos = () => {
