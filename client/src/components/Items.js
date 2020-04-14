@@ -96,7 +96,7 @@ class Items extends React.Component {
       fileId: id
     });
   }
-  // Function that is passed to Uploader to trigger reload of files when adding new:
+  // Function that is passed to Uploader component to trigger reload of files when adding new:
   updateFiles = () => {
     this.setState({filesLoaded: false});
   }
@@ -407,7 +407,7 @@ const activeTab = {
   color:'#1890ff', 
   textDecoration: 'underline'
 }
-//styling for active file tab
+//styling for selected file in files tab
 const passiveFileDiv = {
   margin: '12px',
   cursor: 'pointer'
