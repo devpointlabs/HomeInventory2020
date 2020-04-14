@@ -105,6 +105,15 @@ export default class House extends React.Component {
 
     }
 
+    renderHomePhoto = () => {
+      const { houses } = this.state;
+      return houses.map((house) => (
+        <StyledImg key={house.id}>
+          <img src={house.image} width="500px" height="500px" />
+        </StyledImg>
+      ));
+    };
+
     renderHousePage = () => {
         const { houses } = this.state
         if (houses.length !== 0) {
@@ -112,7 +121,7 @@ export default class House extends React.Component {
                 <StyledRow>
                     <StyledCol>
                         <StyledBorder>
-                            <StyledImg></StyledImg>
+                            {this.renderHomePhoto()}
                         </StyledBorder>
                         <StyledBorder>
                             {this.renderHouses()}
