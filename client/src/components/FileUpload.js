@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { List, Divider, Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import Uploader from './Uploader';
 class FileUpload extends React.Component {
   state = {
@@ -36,10 +36,24 @@ class FileUpload extends React.Component {
   this.setState({showLoader: !this.state.showLoader});
   }
 
+  deleteItem = (id) => {
+    const { files } = this.state
+    axios.delete(`api/items/${this.props.itemId}/documents/${id}`)
+    .then(res => {
+      console.log(res)
+      const filteredArr = files.filter( f => f.id !== id )
+      this.setState({
+        files: filteredArr
+      });
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+
   renderFiles = () => {
     const { files } = this.state
     return files.map(file => (
-      <div style={{margin: '18px'}}>
+      <div style={{margin: '12px'}}>
       <List
         key={file.id}
         size="large"
@@ -47,7 +61,9 @@ class FileUpload extends React.Component {
         >
         <List.Item>
             <a href={file.file} width='auto' height='200px'>{file.name}</a>
-            
+            <Button  shape="circle" onClick={() => this.deleteItem(file.id)}>
+                <DeleteOutlined />
+            </Button>
         </List.Item>
       </List>
       </div>
@@ -78,21 +94,3 @@ class FileUpload extends React.Component {
   }
 }
 export default FileUpload;
-const StyledCon = styled.div`
-display: flex;
-flex-wrap: wrap;
-flex-direction: row;
-align-content: space-around;
-margin-left: 2%; 
-margin-right: 2%;
-`
-const StyledDrop = styled.div`
-border: 2.5px dashed black;
-width: 200px;
-height: 200px;
-padding: 50px 10px;
-background: #e3e3e3;
-text-align: center;
-margin: 10px 10px;
-cursor: pointer;
-`
