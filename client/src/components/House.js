@@ -27,14 +27,27 @@ export default class House extends React.Component {
         const { houses } = this.state
         return houses.map(home => (
             <div key={home.id}>
-                <h2>Home Information:</h2>
+                <StyledCon>
+                    <StyledHeaderHome>
+                        <h2>Home Information</h2>
+                    </StyledHeaderHome>
+                    <StyledIcon>
+                        <MinusOutlined />
+                    </StyledIcon>
+                    <StyledIcon>
+                        <Link to='/add/assessment'><PlusOutlined /></Link>
+                    </StyledIcon>
+                    <StyledIcon>
+                        <EditOutlined />
+                    </StyledIcon>
+                </StyledCon>
                 <p>Address: {home.address}</p>
                 <p>Zip: {home.zip_code}</p>
                 <p>Square Footage: {home.square_footage}</p>
                 <p>Lot Size: {home.lot_size} Acres</p>
                 <p>Year Built: {home.purchase_date}</p>
                 <p>Purchase Price: {`$${home.purchase_price}`}</p>
-            </div>
+            </div >
         ))
     }
     renderAssessments = () => {
@@ -58,10 +71,10 @@ export default class House extends React.Component {
                 <StyledTable>
                     <table>
                         <tr>
-                            <th>Date</th>
-                            <th>Land</th>
-                            <th>Structure</th>
-                            <th>Total</th>
+                            <StyledTableDate>Date</StyledTableDate>
+                            <StyledTableTask2>Land</StyledTableTask2>
+                            <StyledTableTask2>Structure</StyledTableTask2>
+                            <StyledTableTask2>Total</StyledTableTask2>
                         </tr>
                     </table>
                     <StyledLine />
@@ -71,6 +84,8 @@ export default class House extends React.Component {
         ))
 
     }
+
+
     renderMaintenances = () => {
         const { houses } = this.state
         return houses.map(home => (
@@ -81,7 +96,7 @@ export default class House extends React.Component {
                         <p> Maintenance Schedule </p>
                     </StyledHeader>
                     <StyledIcon>
-                        <MinusOutlined />
+                        <MinusOutlined onClick={this.deleteMaintenance} />
                     </StyledIcon>
                     <StyledIcon>
                         <Link to='/add/maintenance'><PlusOutlined /></Link>
@@ -93,8 +108,8 @@ export default class House extends React.Component {
                 <StyledTable>
                     <table>
                         <tr>
-                            <th>Due Date</th>
-                            <th>Task</th>
+                            <StyledTableDate >Due Date</StyledTableDate >
+                            <StyledTableTask >Task</StyledTableTask >
                         </tr>
                     </table>
                     <StyledLine />
@@ -182,6 +197,9 @@ margin-bottom: 20px;
 const StyledHeader = styled.div`
 margin-right: 60%;
 `
+const StyledHeaderHome = styled.div`
+margin-right: 50%;
+`
 
 const StyledIcon = styled.div`
 cursor: pointer;
@@ -198,4 +216,16 @@ const StyledLine = styled.div`
 width: 100%;
 height: 1px;
 background: grey;
+`
+const StyledTableDate = styled.div`
+margin-left: 5px;
+display: inline;
+`
+const StyledTableTask = styled.div`
+margin-left: 32px;
+display: inline;
+`
+const StyledTableTask2 = styled.div`
+margin-left: 63px;
+display: inline;
 `

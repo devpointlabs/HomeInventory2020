@@ -1,12 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import MaintenanceForm from './MaintenanceForm';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 
 export default class Maintenances extends React.Component {
     state = {
-        maintenances: [],
-        checkbox: false,
+        maintenances: [], maintenanceId: 0,
     };
 
     componentDidMount() {
@@ -22,32 +22,34 @@ export default class Maintenances extends React.Component {
 
     deleteMaintenance = () => {
         const { homeId, } = this.props
-        const {  } = this.state
-        axios.delete(`/api/homes/${homeId}/maintenances/:id`)
-        .then(res => {
-        })
-        .catch(err => {
-          console.log(err)
-        })
-      }
-    
+        const { maintenanceId } = this.state
+        axios.delete(`/api/homes/${homeId}/maintenances/${maintenanceId}`)
+            .then(res => {
+                console.log('deleted')
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
 
-    handleChange = () => {
-        this.setState({checkbox: !this.state.checkbox})
+
+    handleChange = (e) => {
+        this.setState({ checkbox: !this.state.checkbox })
         console.log(this.state.checkbox)
+        console.log(e)
     }
 
     renderMaintenances = () => {
-        const { maintenances } = this.state
+        const { maintenances , maintenanceId } = this.state
+        console.log(this.state.maintenanceId)
         if (maintenances.length !== 0) {
             return maintenances.map(maintenance => (
-                <div key={maintenance.id}>
+                <StyledTableRow key={maintenance.id} onClick={() => this.setState({ maintenanceId: maintenance.id })} style={maintenance.id === maintenanceId ? activeDiv : passiveDiv}>
                     <tr>
-                        <input type="checkbox" name="name1" onChange={this.handleChange}/>
-                        <td>{maintenance.due_date}</td>
-                        <td>{maintenance.task}</td>
+                        <StyledTableData >{maintenance.due_date}</StyledTableData>
+                        <StyledTableData>{maintenance.task}</StyledTableData>
                     </tr>
-                </div>
+                </StyledTableRow>
             ))
         } else {
             return <p>Add data here using the plus symbol</p>
@@ -59,11 +61,21 @@ export default class Maintenances extends React.Component {
         return (
             <>
                 {this.renderMaintenances()}
+                <div onClick={this.deleteMaintenance}>delete</div>
+                <Link to={{pathname: '/edit/maintenance', id: this.state.maintenanceId}}>
+                    edit
+                </Link>
             </>
 
         )
     }
 }
 
-
-
+const StyledTableRow = styled.div`
+margin-top: 5px; 
+`
+const StyledTableData = styled.td`
+padding: 0px 5px; 
+`
+const activeDiv = { border: '2px solid #9ecaed', borderRadius: '5px',  boxShadow: '0 0 10px #9ecaed'}
+const passiveDiv = {border: 'none' }
