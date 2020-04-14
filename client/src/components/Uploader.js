@@ -7,6 +7,10 @@ import axios from 'axios'
 const { Dragger } = Upload;
 class Uploader extends React.Component {
   
+  state = {
+    loadId: 0
+  }
+
   onChange = (info) => {
     const { status } = info.file;
     if (status !== 'uploading') {
@@ -17,6 +21,9 @@ class Uploader extends React.Component {
       data.append('file', info.file.originFileObj)
       axios.post(`/api/items/${this.props.itemId}/documents`, data).then((res) => {
         console.log(res)
+        this.setState({
+          loadId: res.data.id
+        })
       }).catch((err) => {
         console.log(err)
       });
@@ -24,6 +31,11 @@ class Uploader extends React.Component {
     } else if (status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
     }
+  }
+ onRemove = () => {
+    console.log('remove')
+    console.log(this.state.loadId)
+    axios.delete(`api/items/${this.props.itemId}/documents/${this.state.loadId}`)
   }
 
  render() {
@@ -34,7 +46,7 @@ class Uploader extends React.Component {
   }
    return (
      <div style={draggerStyle}>
-      <Dragger {...data} onChange={this.onChange}>
+      <Dragger {...data} onChange={this.onChange} onRemove={this.onRemove}>
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
         </p>
@@ -48,5 +60,6 @@ class Uploader extends React.Component {
 const draggerStyle = {
   display: 'flex',
   justifyContent: 'center',
-  paddingTop: '20px'
+  paddingTop: '20px',
+  paddingBottom: '30px'
 }
