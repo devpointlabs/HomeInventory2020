@@ -35,7 +35,7 @@ export default class House extends React.Component {
                         <MinusOutlined />
                     </StyledIcon>
                     <StyledIcon>
-                        <Link to='/add/assessment'><PlusOutlined /></Link>
+                        <Link to=''><PlusOutlined /></Link>
                     </StyledIcon>
                     <StyledIcon>
                         <EditOutlined />
