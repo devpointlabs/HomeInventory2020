@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import Dropzone from 'react-dropzone';
 import Assessments from './Assessments';
 import Maintenances from './Maintenances';
+import HomeForm from './forms/HomeForm';
+import { MinusOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 export default class House extends React.Component {
     state = {
@@ -38,7 +41,32 @@ export default class House extends React.Component {
         const { houses } = this.state
         return houses.map(home => (
             <div key={`assessments-${home.id}`}>
-                <Assessments homeId={home.id} />
+                <StyledCon>
+                    <StyledHeader>
+                        <p> Assessment History </p>
+                    </StyledHeader>
+                    <StyledIcon>
+                        <MinusOutlined />
+                    </StyledIcon>
+                    <StyledIcon>
+                        <Link to='/add/assessment'><PlusOutlined /></Link>
+                    </StyledIcon>
+                    <StyledIcon>
+                        <EditOutlined />
+                    </StyledIcon>
+                </StyledCon>
+                <StyledTable>
+                    <table>
+                        <tr>
+                            <th>Date</th>
+                            <th>Land</th>
+                            <th>Structure</th>
+                            <th>Total</th>
+                        </tr>
+                    </table>
+                    <StyledLine />
+                    <Assessments homeId={home.id} />
+                </StyledTable>
             </div>
         ))
 
@@ -46,8 +74,32 @@ export default class House extends React.Component {
     renderMaintenances = () => {
         const { houses } = this.state
         return houses.map(home => (
+            //make table here 
             <div key={`maintenances-${home.id}`}>
-                <Maintenances homeId={home.id} />
+                <StyledCon>
+                    <StyledHeader>
+                        <p> Maintenance Schedule </p>
+                    </StyledHeader>
+                    <StyledIcon>
+                        <MinusOutlined />
+                    </StyledIcon>
+                    <StyledIcon>
+                        <Link to='/add/maintenance'><PlusOutlined /></Link>
+                    </StyledIcon>
+                    <StyledIcon>
+                        <EditOutlined />
+                    </StyledIcon>
+                </StyledCon>
+                <StyledTable>
+                    <table>
+                        <tr>
+                            <th>Due Date</th>
+                            <th>Task</th>
+                        </tr>
+                    </table>
+                    <StyledLine />
+                    <Maintenances homeId={home.id} />
+                </StyledTable>
             </div>
         ))
 
@@ -55,43 +107,43 @@ export default class House extends React.Component {
 
     renderHousePage = () => {
         const { houses } = this.state
-        if( houses !== null) {
-        return (
-            <StyledRow>
-                <StyledCol>
-                    <StyledBorder>
-                        <StyledImg></StyledImg>
-                    </StyledBorder>
-                    <StyledBorder>
-                        {this.renderHouses()}
-                    </StyledBorder>
-                </StyledCol>
-                <StyledCol>
-                    <StyledBorder>
-                        <StyledSection>
-                            {this.renderMaintenances()}
-                        </StyledSection>
-                        <StyledSection>
-                            {this.renderAssessments()}
-                        </StyledSection>
-                    </StyledBorder>
-                </StyledCol>
-            </StyledRow>
-        )} else {
+        if (houses.length !== 0) {
             return (
-                <div>
-                    <h2>Add House Information</h2>
-                    <h3>Render Form Here</h3>
-                </div>
+                <StyledRow>
+                    <StyledCol>
+                        <StyledBorder>
+                            <StyledImg></StyledImg>
+                        </StyledBorder>
+                        <StyledBorder>
+                            {this.renderHouses()}
+                        </StyledBorder>
+                    </StyledCol>
+                    <StyledCol>
+                        <StyledBorder>
+                            <StyledSection>
+                                {this.renderMaintenances()}
+                            </StyledSection>
+                            <StyledSection>
+                                {this.renderAssessments()}
+                            </StyledSection>
+                        </StyledBorder>
+                    </StyledCol>
+                </StyledRow>
+            )
+        } else {
+            return (
+                <>
+                    <HomeForm />
+                </>
             )
         }
 
     }
     render() {
         return (
-          <>
-          {this.renderHousePage()}
-          </>
+            <>
+                {this.renderHousePage()}
+            </>
         )
     }
 }
@@ -120,4 +172,30 @@ width: 500px;
 height: 500px;
 background: #D4D4D4;
 margin: 30px;
+`
+const StyledCon = styled.div`
+display: flex; 
+flex-direction: row;
+align-items: center;
+margin-bottom: 20px;
+`
+const StyledHeader = styled.div`
+margin-right: 60%;
+`
+
+const StyledIcon = styled.div`
+cursor: pointer;
+font-size: 20px;
+margin: 0 5px;
+`
+
+const StyledTable = styled.div`
+border: 1px solid grey;
+padding: 5px 20px;
+border-radius: 5px;
+`
+const StyledLine = styled.div`
+width: 100%;
+height: 1px;
+background: grey;
 `
