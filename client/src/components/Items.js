@@ -7,13 +7,14 @@ import ItemPhoto from './ItemPhotos';
 import FileUpload from './FileUpload';
 import Receipts from './Receipts';
 import { Button } from 'antd'
-import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { PlusOutlined, DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
 import ItemForm from './forms/ItemForm'
+import Uploader from './Uploader';
 
 
 class Items extends React.Component {
-  state = { locations: [], items: [], receipt: null, locationId: 0, itemId: null, tab: 'info'};
+  state = { locations: [], items: [], files: [], receipt: null, locationId: 0, itemId: null, tab: 'info'};
 
   async componentDidMount() {
     let locationData = await axios.get('/api/locations')
@@ -115,6 +116,73 @@ class Items extends React.Component {
         return (
           <ItemForm locationId={this.state.locationId} update={this.updateItemList}/>
         )
+      case 'newFile':
+        return (
+          <Uploader itemId={this.state.itemId}/>
+        )
+      default:
+        return (
+          <>
+          </>
+        )
+    }
+  }
+  // Render correct set and functions for buttons in tab area lower nav:
+  renderTabButtons = () => {
+    const { tab } = this.state
+
+    switch (tab) {
+      case 'info':
+        return (
+          <>
+          <Button shape="circle">
+            <EditOutlined />
+          </Button>
+          <Button shape="circle" onClick={() => this.deleteItem()}>
+            <DeleteOutlined />
+          </Button>
+        </>
+        )
+      case 'photos':
+        return(
+          null
+        )
+      case 'receipts':
+        return (
+          <>
+          <Button shape="circle" >
+            <PlusOutlined />
+          </Button>
+          <Button shape="circle">
+            <EditOutlined />
+          </Button>
+          <Button shape="circle" >
+            <DeleteOutlined />
+          </Button>
+          </>
+        )
+      case 'files':
+        return (
+          <>
+          <Button shape="circle" onClick={() => this.toggleTab('newFile')}>
+            <PlusOutlined />
+          </Button>
+          <Button shape="circle">
+            <EditOutlined />
+          </Button>
+          <Button shape="circle" >
+            <DeleteOutlined />
+          </Button>
+          </>
+        )
+      case 'newFile':
+        return (
+          <>
+          <Button shape="circle" onClick={() => this.toggleTab('files')}>
+            <CheckOutlined />
+          </Button>
+          </>
+        )
       default:
         return (
           <>
@@ -127,7 +195,7 @@ class Items extends React.Component {
 // delete item when delete button pressed
   deleteItem = () => {
     const { items, locationId, itemId } = this.state
-    axios.delete(`/api/locations/${locationId}/items/${itemId}`)
+    axios.delete(`/api/items/${itemId}`)
     .then(res => {
       console.log(res)
       const filteredArr = items.filter( i => i.id !== itemId)
@@ -154,7 +222,20 @@ class Items extends React.Component {
       console.log(err)
     })
   }
-
+  //delete file when delete button pressed
+  deleteFile = (id) => {
+    const { files } = this.state
+    axios.delete(`api/items/${this.props.itemId}/documents/${id}`)
+    .then(res => {
+      console.log(res)
+      const filteredArr = files.filter( f => f.id !== id )
+      this.setState({
+        files: filteredArr
+      });
+    }).catch(err => {
+      console.log(err)
+    })
+  }
   render() {
     const { tab, itemId, locationId } = this.state
 
@@ -251,12 +332,7 @@ class Items extends React.Component {
             <div style={{ ...divFoot }}>
               {this.state.itemId !== null ?
                 <>
-                  <Button shape="circle">
-                    <EditOutlined />
-                  </Button>
-                  <Button shape="circle" onClick={() => this.deleteItem()}>
-                    <DeleteOutlined />
-                  </Button>
+                {this.renderTabButtons()}
                 </>
                 : null}
             </div>
