@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
 import ItemPhoto from './ItemPhotos';
-import FileUpload from './FileUpload';
+import FileUpload from './Files';
 import Receipts from './Receipts';
 import { Button } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons'
@@ -166,9 +166,6 @@ class Items extends React.Component {
           <>
           <Button shape="circle" onClick={() => this.toggleTab('newFile')}>
             <PlusOutlined />
-          </Button>
-          <Button shape="circle">
-            <EditOutlined />
           </Button>
           <Button shape="circle" >
             <DeleteOutlined />

@@ -6,6 +6,7 @@ class FileUpload extends React.Component {
   state = {
     files: [],
     itemId: null,
+    fileId: null
   }
   componentDidMount() {
     const { itemId, } = this.props
@@ -29,11 +30,17 @@ class FileUpload extends React.Component {
       })
     }
   }
-
+  setId = (id) => {
+    console.log(id)
+    this.setState({
+      fileId: id
+    });
+  }
+  // itemId !== null ? activeTab : {}}
   renderFiles = () => {
-    const { files } = this.state
+    const { files, fileId } = this.state
     return files.map(file => (
-      <div style={{margin: '12px'}} key={file.id}>
+      <div style={fileId === file.id ? activeFileDiv : passiveFileDiv} key={file.id} onClick={() => this.setId(file.id)}>
       <List
         size="large"
         bordered
@@ -61,3 +68,13 @@ class FileUpload extends React.Component {
   }
 }
 export default FileUpload;
+
+const passiveFileDiv = {
+  margin: '12px',
+  cursor: 'pointer'
+}
+const activeFileDiv = {
+  margin: '12px',
+  cursor: 'pointer',
+  backgroundColor: 'lightgrey'
+}
