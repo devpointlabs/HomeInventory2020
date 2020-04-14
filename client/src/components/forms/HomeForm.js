@@ -1,8 +1,9 @@
 import React from "react";
 import axios from "axios";
 import { Form, Input, InputNumber, Button, DatePicker } from "antd";
-import styled from 'styled-components';
-import { Redirect } from 'react-router-dom';
+import styled from "styled-components";
+import { Redirect } from "react-router-dom";
+import Dropzone from 'react-dropzone';
 
 class HomeForm extends React.Component {
   state = {
@@ -13,10 +14,11 @@ class HomeForm extends React.Component {
     purchase_date: null,
     purchase_price: "",
     image: "",
+    file: null
   };
 
   handleSubmit = () => {
-    const newHome = { ...this.state }
+    const newHome = { ...this.state };
     axios.post("/api/homes", newHome).then((res) => {
       console.log(res);
       this.setState({
@@ -26,8 +28,9 @@ class HomeForm extends React.Component {
         lot_size: "",
         purchase_date: null,
         purchase_price: "",
-        image: "",
-      })
+        file: null
+        // image: "",
+      });
     });
   };
 
@@ -54,6 +57,47 @@ class HomeForm extends React.Component {
 
   handlePriceChange = (value) => {
     this.setState({ purchase_price: value });
+  };
+
+  onDrop = (files) => {
+    console.log('files[0]',files[0])
+    this.setState({file:files[0]})
+  };
+
+
+  handleSubmit = () => {
+    let data = new FormData();
+    const {file} = this.state
+    console.log('file: submit', file)
+    data.append("file", file);
+    const {
+      address,
+      zip_code ,
+      square_footage,
+      lot_size,
+      purchase_date,
+      purchase_price,
+    } = this.state
+    axios
+      .post(`/api/homes?address=${address}&zip_code=${zip_code}&square_footage=${square_footage}&lot_size=${lot_size}$purchase_date=${purchase_date}`, data)
+      .then((res) => {
+        console.log(res);
+        // this.setState({ homes: [...this.state.homes, res.data]}
+        // need to do something with res
+        this.setState({
+          address: "",
+          zip_code: "",
+          square_footage: "",
+          lot_size: "",
+          purchase_date: null,
+          purchase_price: "",
+          file: null
+          // image: "",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   render() {
@@ -143,10 +187,18 @@ class HomeForm extends React.Component {
                 onChange={this.handlePriceChange}
               />
             </Form.Item>
+            <Dropzone onDrop={this.onDrop} multiple={false}>
+              {({ getRootProps, getInputProps }) => (
+                <StyledDrop>
+                  <div {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <p>Drag or drop a picture of your home</p>
+                  </div>
+                </StyledDrop>
+              )}
+            </Dropzone>
             <Form.Item>
-              <StyledButton htmlType="submit">
-                Submit
-            </StyledButton>
+              <StyledButton htmlType="submit">Submit</StyledButton>
             </Form.Item>
           </Form>
         </StyledBackground>
@@ -156,33 +208,44 @@ class HomeForm extends React.Component {
 }
 
 const StyledBackground = styled.div`
-border: black 1px solid;
-margin: 10px 420px;
-padding: 10px 25px;
-`
+  border: black 1px solid;
+  margin: 10px 420px;
+  padding: 10px 25px;
+`;
 const StyledHeader = styled.h1`
-font-weight: bold;
-font-size: 30px;
-`
+  font-weight: bold;
+  font-size: 30px;
+`;
 const StyledButton = styled.button`
-border: none;
-color: white;
-font-weight: bold;
-background: #008cff;
-padding: 5px 15px;
-cursor: pointer;
-width: 100%;
-transition: all 0.3s ease-in-out;
+  border: none;
+  color: white;
+  font-weight: bold;
+  background: #008cff;
+  padding: 5px 15px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
 
-&:hover {
-box-shadow: 0 5px 10px #6bbcff;
-transition: all 0.3s ease-in-out;
-}
-`
+  &:hover {
+    box-shadow: 0 5px 10px #6bbcff;
+    transition: all 0.3s ease-in-out;
+  }
+`;
 const StyledLine2 = styled.div`
-background: #adadad;
-margin-top: 45px;
-width: 100%;
-height: 1px;
+  background: #adadad;
+  margin-top: 45px;
+  width: 100%;
+  height: 1px;
+`;
+
+const StyledDrop = styled.div`
+border: 2.5px dashed black;
+width: 200px;
+height: 200px;
+padding: 50px 10px;
+background: #e3e3e3;
+text-align: center;
+margin: 10px 10px;
+cursor: pointer;
 `
 export default HomeForm;
