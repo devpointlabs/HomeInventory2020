@@ -17,11 +17,13 @@ class Items extends React.Component {
     locations: [],
     items: [], 
     files: [], 
-    fileId: null, 
+    fileId: null,
+    filesLoaded: false, 
     receipt: null, 
     locationId: 0, 
     itemId: null, 
-    tab: 'info'};
+    tab: 'info'
+  };
 
   async componentDidMount() {
     let locationData = await axios.get('/api/locations')
@@ -32,12 +34,16 @@ class Items extends React.Component {
     this.setState({ items: itemData.data });
   }
   async componentDidUpdate(prevProps, prevState) {
-    const { itemId } = this.state
+    const { itemId, filesLoaded } = this.state
     if(prevState.itemId !== this.state.itemId){
       const receiptData = await axios.get(`/api/items/${itemId}/receipts`)
       const fileData = await axios.get(`/api/items/${itemId}/documents`)
-      this.setState({receipt: receiptData.data[0], files: fileData.data});
+      this.setState({receipt: receiptData.data[0], files: fileData.data, filesLoaded: true});
       console.log(this.state.receipt)
+    }
+    if(filesLoaded === false){
+      const fileData = await axios.get(`/api/items/${itemId}/documents`)
+      this.setState({ files: fileData.data, filesLoaded: true});
     }
   }
 
@@ -90,8 +96,12 @@ class Items extends React.Component {
       fileId: id
     });
   }
+  // Function that is passed to Uploader to trigger reload of files when adding new:
+  updateFiles = () => {
+    this.setState({filesLoaded: false});
+  }
 
-  //Function is passed to new location form / modal to hot-reload on submit. 
+  // Function is passed to new location form / modal to hot-reload on submit. 
   updateLocationList = (newLocation) => {
     const { locations } = this.state
     this.setState({locations: [...locations, newLocation.data]})
@@ -149,7 +159,7 @@ class Items extends React.Component {
         )
       case 'newFile':
         return (
-          <Uploader itemId={this.state.itemId}/>
+          <Uploader itemId={this.state.itemId} update={this.updateFiles}/>
         )
       default:
         return (
@@ -218,7 +228,6 @@ class Items extends React.Component {
         )
     }
   }
-
 
 // delete item when delete button pressed
   deleteItem = () => {
