@@ -4,17 +4,26 @@ import styled from 'styled-components';
 import axios from 'axios'
 import ItemInfo from './ItemInfo'
 import ItemPhoto from './ItemPhotos';
-import FileUpload from './FileUpload';
 import Receipts from './Receipts';
-import { Button } from 'antd'
-import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { Button, List } from 'antd'
+import { PlusOutlined, DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
 import ItemForm from './forms/ItemForm'
-import AssessmentForm from './forms/AssessmentForm';
-import MaintenanceForm from './MaintenanceForm';
+import Uploader from './Uploader';
+
 
 class Items extends React.Component {
-  state = { locations: [], items: [], receipt: null, locationId: 0, itemId: null, tab: 'info'};
+  state = { 
+    locations: [],
+    items: [], 
+    files: [], 
+    fileId: null,
+    filesLoaded: false, 
+    receipt: null, 
+    locationId: 0, 
+    itemId: null, 
+    tab: 'info'
+  };
 
   async componentDidMount() {
     let locationData = await axios.get('/api/locations')
@@ -25,11 +34,16 @@ class Items extends React.Component {
     this.setState({ items: itemData.data });
   }
   async componentDidUpdate(prevProps, prevState) {
-    const { itemId } = this.state
+    const { itemId, filesLoaded } = this.state
     if(prevState.itemId !== this.state.itemId){
       const receiptData = await axios.get(`/api/items/${itemId}/receipts`)
-      this.setState({receipt: receiptData.data[0]});
+      const fileData = await axios.get(`/api/items/${itemId}/documents`)
+      this.setState({receipt: receiptData.data[0], files: fileData.data, filesLoaded: true});
       console.log(this.state.receipt)
+    }
+    if(filesLoaded === false){
+      const fileData = await axios.get(`/api/items/${itemId}/documents`)
+      this.setState({ files: fileData.data, filesLoaded: true});
     }
   }
 
@@ -61,8 +75,33 @@ class Items extends React.Component {
       </div>
     ))
   }
+  renderFiles = () => {
+    const { files, fileId } = this.state
+    return files.map(file => (
+      <div style={fileId === file.id ? activeFileDiv : passiveFileDiv} key={file.id} onClick={() => this.setId(file.id)}>
+      <List
+        size="large"
+        bordered
+        >
+        <List.Item>
+          <a href={file.file} width='auto' height='200px'>{file.name} </a>
+        </List.Item>
+      </List>
+      </div>
+    ))
+  }
+  // Function that toggles active file ID:
+  setId = (id) => {
+    this.setState({
+      fileId: id
+    });
+  }
+  // Function that is passed to Uploader component to trigger reload of files when adding new:
+  updateFiles = () => {
+    this.setState({filesLoaded: false});
+  }
 
-  //Function is passed to new location form / modal to hot-reload on submit. 
+  // Function is passed to new location form / modal to hot-reload on submit. 
   updateLocationList = (newLocation) => {
     const { locations } = this.state
     this.setState({locations: [...locations, newLocation.data]})
@@ -106,7 +145,9 @@ class Items extends React.Component {
         )
       case 'files':
         return (
-          <FileUpload itemId={this.state.itemId} locationId={this.state.locationId} />
+          <>
+          {this.renderFiles()}
+          </>
         )
       case 'newLocation':
         return (
@@ -116,6 +157,70 @@ class Items extends React.Component {
         return (
           <ItemForm locationId={this.state.locationId} update={this.updateItemList}/>
         )
+      case 'newFile':
+        return (
+          <Uploader itemId={this.state.itemId} update={this.updateFiles}/>
+        )
+      default:
+        return (
+          <>
+          </>
+        )
+    }
+  }
+  // Render correct set and functions for buttons in tab area lower nav:
+  renderTabButtons = () => {
+    const { tab } = this.state
+
+    switch (tab) {
+      case 'info':
+        return (
+          <>
+          <Button shape="circle">
+            <EditOutlined />
+          </Button>
+          <Button shape="circle" onClick={() => this.deleteItem()}>
+            <DeleteOutlined />
+          </Button>
+        </>
+        )
+      case 'photos':
+        return(
+          null
+        )
+      case 'receipts':
+        return (
+          <>
+          <Button shape="circle" >
+            <PlusOutlined />
+          </Button>
+          <Button shape="circle">
+            <EditOutlined />
+          </Button>
+          <Button shape="circle" >
+            <DeleteOutlined />
+          </Button>
+          </>
+        )
+      case 'files':
+        return (
+          <>
+          <Button shape="circle" onClick={() => this.toggleTab('newFile')}>
+            <PlusOutlined />
+          </Button>
+          <Button shape="circle" onClick={() => this.deleteFile()}>
+            <DeleteOutlined />
+          </Button>
+          </>
+        )
+      case 'newFile':
+        return (
+          <>
+          <Button shape="circle" onClick={() => this.toggleTab('files')}>
+            <CheckOutlined />
+          </Button>
+          </>
+        )
       default:
         return (
           <>
@@ -124,11 +229,10 @@ class Items extends React.Component {
     }
   }
 
-
 // delete item when delete button pressed
   deleteItem = () => {
     const { items, locationId, itemId } = this.state
-    axios.delete(`/api/locations/${locationId}/items/${itemId}`)
+    axios.delete(`/api/items/${itemId}`)
     .then(res => {
       console.log(res)
       const filteredArr = items.filter( i => i.id !== itemId)
@@ -155,7 +259,27 @@ class Items extends React.Component {
       console.log(err)
     })
   }
-
+  // Function passed to File component to get ID for delete file below
+  setFileId = (id) => {
+    this.setState({fileId: id});
+    console.log(id)
+  }
+  //delete file when delete button pressed
+  deleteFile = (id) => {
+    const { itemId, fileId, files } = this.state
+    axios.delete(`api/items/${itemId}/documents/${fileId}`)
+    .then(res => {
+      console.log(res)
+      const filteredFiles = files.filter(f => f.id !== fileId)
+      this.setState({
+        fileId: null, 
+        tab: 'files',
+        files: filteredFiles
+      });
+    }).catch(err => {
+      console.log(err)
+    })
+  }
   render() {
     const { tab, itemId, locationId } = this.state
 
@@ -252,12 +376,7 @@ class Items extends React.Component {
             <div style={{ ...divFoot }}>
               {this.state.itemId !== null ?
                 <>
-                  <Button shape="circle">
-                    <EditOutlined />
-                  </Button>
-                  <Button shape="circle" onClick={() => this.deleteItem()}>
-                    <DeleteOutlined />
-                  </Button>
+                {this.renderTabButtons()}
                 </>
                 : null}
             </div>
@@ -268,10 +387,36 @@ class Items extends React.Component {
   }}
 
 // styling for selected menu options
-const activeDiv = {height: '50px', backgroundColor: '#f0f0f0', boxShadow: '0px 2px 5px #888888', paddingTop: '12px'}
-const passiveDiv = {height: '50px', marginLeft: '14px', paddingTop: '12px' }
-const activeA = {color:'#1890ff', marginTop: '16px', paddingLeft: '6px'}
-const activeTab = {color:'#1890ff', textDecoration: 'underline'}
+const activeDiv = {
+  height: '50px',
+  backgroundColor: '#f0f0f0', 
+  boxShadow: '0px 2px 5px #888888', 
+  paddingTop: '12px'
+}
+const passiveDiv = {
+  height: '50px', 
+  marginLeft: '14px', 
+  paddingTop: '12px' 
+}
+const activeA = {
+  color:'#1890ff', 
+  marginTop: '16px', 
+  paddingLeft: '6px'
+}
+const activeTab = {
+  color:'#1890ff', 
+  textDecoration: 'underline'
+}
+//styling for selected file in files tab
+const passiveFileDiv = {
+  margin: '12px',
+  cursor: 'pointer'
+}
+const activeFileDiv = {
+  margin: '12px',
+  cursor: 'pointer',
+  backgroundColor: '#f0f0f0'
+}
 
 // styling for layout of items page
 const divHead = {
