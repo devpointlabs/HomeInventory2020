@@ -1,12 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { List, Divider } from 'antd';
+import { List, Divider, Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import Uploader from './Uploader';
 class FileUpload extends React.Component {
   state = {
     files: [],
-    itemId: null
+    itemId: null,
+    showLoader: false
   }
   componentDidMount() {
     const { itemId, } = this.props
@@ -30,8 +32,8 @@ class FileUpload extends React.Component {
       })
     }
   }
-  onDrop = () => {
-   
+  toggleNew= () => {
+  this.setState({showLoader: !this.state.showLoader});
   }
 
   renderFiles = () => {
@@ -45,16 +47,24 @@ class FileUpload extends React.Component {
         >
         <List.Item>
             <a href={file.file} width='auto' height='200px'>{file.name}</a>
+            
         </List.Item>
       </List>
       </div>
     ))
   }
   render() {
+    const { showLoader } = this.state
     if (this.props.itemId) {
       return (
-        <div>
+        <div style={{padding: '20px'}}>
+          <Button type="primary" shape="circle" onClick={() => this.toggleNew()}>
+                <PlusOutlined />
+          </Button>
+          {showLoader ? 
           <Uploader itemId={this.state.itemId}/>
+          : null}
+          
           <Divider orientation="left"></Divider>
           {this.renderFiles()}
         </div>
