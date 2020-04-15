@@ -1,7 +1,7 @@
 class Api::MaintenancesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_home
-  before_action :set_maintenance, only: [:show, :edit, :destroy]
+  before_action :set_maintenance, only: [:show, :edit, :destroy, :update]
 
   def index
     maintenances = @home.maintenances.all
@@ -35,7 +35,7 @@ class Api::MaintenancesController < ApplicationController
 private
 
   def maintenance_params
-    params.permit(:due_date, :task)
+    params.require(:maintenance).permit(:due_date, :task)
   end
 
   def set_home

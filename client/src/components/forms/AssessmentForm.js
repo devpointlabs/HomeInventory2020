@@ -21,6 +21,7 @@ class AssessmentForm extends React.Component {
         structure_value: "",
         total_value: "",
       })
+      this.props.history.goBack()
     });
   };
 

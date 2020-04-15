@@ -3,14 +3,15 @@ import axios from "axios";
 import styled from 'styled-components';
 import { Form, Input, Button, DatePicker } from "antd";
 
-class MaintenanceForm extends React.Component {
+class EditMaintenances extends React.Component {
   state = {
     due_date: null,
     task: "",
   };
 
   handleSubmit = () => {
-    axios.post("/api/homes/1/maintenances", this.state).then((res) => {
+    const {id, home} = this.props.location
+    axios.patch(`/api/homes/${home}/maintenances/${id}`, this.state).then((res) => {
       console.log(res);
       this.setState({
         due_date: null,
@@ -104,4 +105,4 @@ margin-top: 45px;
 width: 100%;
 height: 1px;
 `
-export default MaintenanceForm;
+export default EditMaintenances;

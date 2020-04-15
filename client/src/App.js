@@ -16,7 +16,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import House from './components/House';
 import MaintenanceForm from './components/MaintenanceForm';
+import EditMaintenances from './components/EditMaintenances';
 import AssessmentForm from './components/forms/AssessmentForm';
+import EditAssessments from './components/EditAssessments';
 
 
 const App = () => (
@@ -35,7 +37,9 @@ const App = () => (
         <ProtectedRoute exact path="/inbox" component={Inbox} />
         <ProtectedRoute exact path="/userpage" component={UserPage} />
         <ProtectedRoute exact path="/add/maintenance" component={MaintenanceForm} />
+        <ProtectedRoute exact path="/edit/maintenance" component={EditMaintenances} />
         <ProtectedRoute exact path="/add/assessment" component={AssessmentForm} />
+        <ProtectedRoute exact path="/edit/assessment" component={EditAssessments} />
         <Route component={NoMatch} />
       </Switch>
     </FetchUser>
