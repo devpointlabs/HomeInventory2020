@@ -19,7 +19,7 @@ import MaintenanceForm from './components/MaintenanceForm';
 import EditMaintenances from './components/EditMaintenances';
 import AssessmentForm from './components/forms/AssessmentForm';
 import EditAssessments from './components/EditAssessments';
-
+import EditHome from './components/EditHome';
 
 const App = () => (
   <Fragment>
@@ -40,6 +40,7 @@ const App = () => (
         <ProtectedRoute exact path="/edit/maintenance" component={EditMaintenances} />
         <ProtectedRoute exact path="/add/assessment" component={AssessmentForm} />
         <ProtectedRoute exact path="/edit/assessment" component={EditAssessments} />
+        <ProtectedRoute exact path="/edit/home" component={EditHome} />
         <Route component={NoMatch} />
       </Switch>
     </FetchUser>

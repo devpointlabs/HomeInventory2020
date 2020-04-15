@@ -82,7 +82,9 @@ export default class House extends React.Component {
                         <Link to=''><PlusOutlined /></Link>
                     </StyledIcon>
                     <StyledIcon>
-                        <EditOutlined />
+                    <Link to={{ pathname: '/edit/home', home: home.id }}>
+                            <EditOutlined />
+                        </Link>
                     </StyledIcon>
                 </StyledCon>
                 <p>Address: {home.address}</p>

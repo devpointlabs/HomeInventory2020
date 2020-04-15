@@ -31,26 +31,26 @@ class Api::HomesController < ApplicationController
 
   def update
     @home.update(home_params)
-    render json: @home
+    # render json: @home
 
-    # file = params[:file]
+
+    file = params[:file]
     
-    # if file
-    #   begin
-    #     ext = File.extname(file.tempfile)
-    #     cloud_image = Cloudinary::Uploader.upload(file, public_id: file.original_filename, secure: true)
-    #     # home = image.create(file: cloud_image["secure_url"])
-    #     home.image = cloud_image["secure_url"]
-    #   # rescue => e
-    #   #   render json: { errors: e }, status: 422
-    #   #   return
-    #   end
-    # end
-    # if @home.save
-    #   render json: @home
-    # else
-    #   render json: { errors: @home.errors.full_messages }, status: 422
-    # end
+    if file
+      begin
+        ext = File.extname(file.tempfile)
+        cloud_image = Cloudinary::Uploader.upload(file, public_id: file.original_filename, secure: true)
+        @home.image = cloud_image["secure_url"]
+      rescue => e
+        render json: { errors: e }, status: 422
+        return
+      end
+    end
+    if @home.save
+      render json: @home
+    else
+      render json: { errors: @home.errors.full_messages }, status: 422
+    end
   end
 
   def destroy
