@@ -10,14 +10,14 @@ class EditMaintenances extends React.Component {
   };
 
   handleSubmit = () => {
-    const {id} = this.props.location
-    console.log(id)
-    axios.patch(`/api/homes/1/maintenances/${id}`, this.state).then((res) => {
+    const {id, home} = this.props.location
+    axios.patch(`/api/homes/${home}/maintenances/${id}`, this.state).then((res) => {
       console.log(res);
       this.setState({
         due_date: null,
         task: ""
       })
+      this.props.history.goBack()
     });
   };
 

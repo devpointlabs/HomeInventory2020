@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import Dropzone from 'react-dropzone';
 import Assessments from './Assessments';
 import Maintenances from './Maintenances';
 import HomeForm from './forms/HomeForm';
@@ -10,15 +9,59 @@ import { Link } from 'react-router-dom';
 
 export default class House extends React.Component {
     state = {
-        houses: []
+        houses: [], maintenanceId: 0, assessmentId: 0, homeId: 0,
     };
     componentDidMount() {
         axios.get('/api/homes').then((res) => {
             console.log(res)
             this.setState({ houses: res.data });
-            console.log(this.state.houses)
         })
             .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    getHomeId = (id) => {
+        const { homeId } = this.state
+        if (homeId !== id) {
+            return this.setState({ homeId: id })
+        }
+
+    }
+
+    getMaintenanceId = (id) => {
+        const { maintenanceId } = this.state
+        if (maintenanceId !== id) {
+            return this.setState({ maintenanceId: id })
+        }
+    }
+
+    deleteMaintenance = () => {
+        const { maintenanceId, homeId } = this.state
+        axios.delete(`/api/homes/${homeId}/maintenances/${maintenanceId}`)
+            .then(res => {
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+
+    getAssessmentId = (id) => {
+        const { assessmentId } = this.state
+        if (assessmentId !== id) {
+            return this.setState({ assessmentId: id })
+        }
+
+    }
+
+    // need to get home id
+    deleteAssessment = () => {
+        const { assessmentId, homeId } = this.state
+        axios.delete(`/api/homes/${homeId}/assessments/${assessmentId}`)
+            .then(res => {
+            })
+            .catch(err => {
                 console.log(err)
             })
     }
@@ -26,13 +69,14 @@ export default class House extends React.Component {
     renderHouses = () => {
         const { houses } = this.state
         return houses.map(home => (
+            this.getHomeId(home.id),
             <div key={home.id}>
                 <StyledCon>
                     <StyledHeaderHome>
                         <h2>Home Information</h2>
                     </StyledHeaderHome>
                     <StyledIcon>
-                        <MinusOutlined />
+                        <Link><MinusOutlined /></Link>
                     </StyledIcon>
                     <StyledIcon>
                         <Link to=''><PlusOutlined /></Link>
@@ -50,6 +94,42 @@ export default class House extends React.Component {
             </div >
         ))
     }
+
+    renderMaintenances = () => {
+        const { houses } = this.state
+        return houses.map(home => (
+            <div key={`maintenances-${home.id}`}>
+                <StyledCon>
+                    <StyledHeader>
+                        <p> Maintenance Schedule </p>
+                    </StyledHeader>
+                    <StyledIcon>
+                        <Link><MinusOutlined onClick={this.deleteMaintenance} /></Link>
+                    </StyledIcon>
+                    <StyledIcon>
+                        <Link to='/add/maintenance'><PlusOutlined /></Link>
+                    </StyledIcon>
+                    <StyledIcon>
+                        <Link to={{ pathname: '/edit/maintenance', id: this.state.maintenanceId, home: home.id }}>
+                            <EditOutlined />
+                        </Link>
+                    </StyledIcon>
+                </StyledCon>
+                <StyledTable>
+                    <table>
+                        <tr>
+                            <StyledTableDate >Due Date</StyledTableDate >
+                            <StyledTableTask >Task</StyledTableTask >
+                        </tr>
+                    </table>
+                    <StyledLine />
+                    <Maintenances homeId={home.id} getId={this.getMaintenanceId} />
+                </StyledTable>
+            </div>
+        ))
+
+    }
+
     renderAssessments = () => {
         const { houses } = this.state
         return houses.map(home => (
@@ -59,13 +139,15 @@ export default class House extends React.Component {
                         <p> Assessment History </p>
                     </StyledHeader>
                     <StyledIcon>
-                        <MinusOutlined />
+                        <Link><MinusOutlined onClick={this.deleteAssessment} /></Link>
                     </StyledIcon>
                     <StyledIcon>
                         <Link to='/add/assessment'><PlusOutlined /></Link>
                     </StyledIcon>
                     <StyledIcon>
-                        <EditOutlined />
+                        <Link to={{ pathname: '/edit/assessment', id: this.state.assessmentId, home: home.id }}>
+                            <EditOutlined />
+                        </Link>
                     </StyledIcon>
                 </StyledCon>
                 <StyledTable>
@@ -78,42 +160,7 @@ export default class House extends React.Component {
                         </tr>
                     </table>
                     <StyledLine />
-                    <Assessments homeId={home.id} />
-                </StyledTable>
-            </div>
-        ))
-
-    }
-
-
-    renderMaintenances = () => {
-        const { houses } = this.state
-        return houses.map(home => (
-            //make table here 
-            <div key={`maintenances-${home.id}`}>
-                <StyledCon>
-                    <StyledHeader>
-                        <p> Maintenance Schedule </p>
-                    </StyledHeader>
-                    <StyledIcon>
-                        <MinusOutlined onClick={this.deleteMaintenance} />
-                    </StyledIcon>
-                    <StyledIcon>
-                        <Link to='/add/maintenance'><PlusOutlined /></Link>
-                    </StyledIcon>
-                    <StyledIcon>
-                        <EditOutlined />
-                    </StyledIcon>
-                </StyledCon>
-                <StyledTable>
-                    <table>
-                        <tr>
-                            <StyledTableDate >Due Date</StyledTableDate >
-                            <StyledTableTask >Task</StyledTableTask >
-                        </tr>
-                    </table>
-                    <StyledLine />
-                    <Maintenances homeId={home.id} />
+                    <Assessments homeId={home.id} getId={this.getAssessmentId} />
                 </StyledTable>
             </div>
         ))
@@ -121,12 +168,12 @@ export default class House extends React.Component {
     }
 
     renderHomePhoto = () => {
-      const { houses } = this.state;
-      return houses.map((house) => (
-        <StyledImg key={house.id}>
-          <img src={house.image} width="500px" height="500px" />
-        </StyledImg>
-      ));
+        const { houses } = this.state;
+        return houses.map((house) => (
+            <StyledImg key={house.id}>
+                <img src={house.image} width="500px" height="500px" />
+            </StyledImg>
+        ));
     };
 
     renderHousePage = () => {
@@ -214,6 +261,14 @@ const StyledIcon = styled.div`
 cursor: pointer;
 font-size: 20px;
 margin: 0 5px;
+color: grey !important;
+transition: 0.2s all ease-in-out;
+
+&:hover {
+color: #1890ff;
+transition: 0.2s all ease-in-out;
+
+}
 `
 
 const StyledTable = styled.div`

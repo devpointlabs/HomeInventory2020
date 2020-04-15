@@ -20,25 +20,15 @@ export default class Assessments extends React.Component {
 
     }
 
-    deleteAssessment = () => {
-        const { homeId, } = this.props
+    componentDidUpdate() {
         const { assessmentId } = this.state
-        axios.delete(`/api/homes/${homeId}/assessments/${assessmentId}`)
-            .then(res => {
-                console.log('deleted')
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        this.props.getId(assessmentId)
     }
-
-
 
     renderAssessments = () => {
 
         // make this render columns
         const { assessments, assessmentId } = this.state
-        console.log(this.state.assessmentId)
         if (assessments.length !== 0) {
             return assessments.map(assessment => (
                 <StyledTableRow key={assessment.id} onClick={() => this.setState({ assessmentId: assessment.id })} style={assessment.id === assessmentId ? activeDiv : passiveDiv}>
@@ -60,10 +50,6 @@ export default class Assessments extends React.Component {
         return (
             <>
                 {this.renderAssessments()}
-                <div onClick={this.deleteAssessment}>delete</div>
-                <Link to={{pathname: '/edit/assessment', id: this.state.assessmentId}}>
-                    edit
-                </Link>
             </>
 
         )
@@ -71,10 +57,11 @@ export default class Assessments extends React.Component {
 }
 const StyledTableRow = styled.div`
 margin-top: 5px; 
+cursor: pointer;
 `
 const StyledTableData = styled.td`
 padding: 0px 5px; 
 `
-const activeDiv = { border: '2px solid #9ecaed', borderRadius: '5px',  boxShadow: '0 0 10px #9ecaed'}
-const passiveDiv = {border: 'none' }
+const activeDiv = { border: '2px solid #9ecaed', borderRadius: '5px', boxShadow: '0 0 10px #9ecaed', transition: '0.2s all ease-in-out' }
+const passiveDiv = { border: 'none', transition: '0.2s all ease-in-out' }
 

@@ -16,6 +16,7 @@ class MaintenanceForm extends React.Component {
         due_date: null,
         task: ""
       })
+      this.props.history.goBack()
     });
   };
 

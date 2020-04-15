@@ -12,9 +12,8 @@ class EditAssessments extends React.Component {
   };
 
   handleSubmit = () => {
-    const {id} = this.props.location
-    console.log(id)
-    axios.patch(`/api/homes/1/assessments/${id}`, this.state).then((res) => {
+    const { id, home } = this.props.location
+    axios.patch(`/api/homes/${home}/assessments/${id}`, this.state).then((res) => {
       console.log(res);
       this.setState({
         date: null,
@@ -22,6 +21,7 @@ class EditAssessments extends React.Component {
         structure_value: "",
         total_value: "",
       })
+      this.props.history.goBack()
     });
   };
 
@@ -43,8 +43,8 @@ class EditAssessments extends React.Component {
 
   render() {
     const {
-      date, 
-      land_value, 
+      date,
+      land_value,
       structure_value,
       total_value
     } = this.state;
@@ -52,69 +52,69 @@ class EditAssessments extends React.Component {
       <>
         <StyledBackground>
           <StyledHeader>Add Assessment History</StyledHeader>
-        <Form onFinish={this.handleSubmit}>
-        <Form.Item>
-        <p>Date</p>
-            <DatePicker
-              label="Date"
-              placeholder="Assessment Date"
-              autoFocus
-              required
-              name="date"
-              value={date}
-              onChange={this.handleDate}
-            />
-          </Form.Item>
-          <Form.Item>
-          <p>Land Value</p>
-            <InputNumber
-              label="Land Value"
-              required
-              name="land_value"
-              value={land_value}
-              defaultValue={0}
-              placeholder="price"
-              formatter={(value) =>
-                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              }
-              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-              onChange={this.handleLandValueChange}
+          <Form onFinish={this.handleSubmit}>
+            <Form.Item>
+              <p>Date</p>
+              <DatePicker
+                label="Date"
+                placeholder="Assessment Date"
+                autoFocus
+                required
+                name="date"
+                value={date}
+                onChange={this.handleDate}
               />
-          </Form.Item>
-          <Form.Item>
-          <p>Structure Value</p>
-            <InputNumber
-              label="Structure Value"
-              required
-              name="structure_value"
-              value={structure_value}
-              defaultValue={0}
-              placeholder="Structure Value"
-              formatter={(value) =>
-                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              }
-              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-              onChange={this.handleStructureValueChange}
-            />
-          </Form.Item>
-          <Form.Item>
-          <p>Total Value</p>
-            <InputNumber
-              label="Total Value"
-              required
-              name="total_value"
-              value={total_value}
-              defaultValue={0}
-              placeholder="Total Value"
-              formatter={(value) =>
-                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              }
-              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-              onChange={this.handleTotalValueChange}
-            />
-          </Form.Item>
-          <Form.Item>
-          <StyledButton htmlType="submit">
+            </Form.Item>
+            <Form.Item>
+              <p>Land Value</p>
+              <InputNumber
+                label="Land Value"
+                required
+                name="land_value"
+                value={land_value}
+                defaultValue={0}
+                placeholder="price"
+                formatter={(value) =>
+                  `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                onChange={this.handleLandValueChange}
+              />
+            </Form.Item>
+            <Form.Item>
+              <p>Structure Value</p>
+              <InputNumber
+                label="Structure Value"
+                required
+                name="structure_value"
+                value={structure_value}
+                defaultValue={0}
+                placeholder="Structure Value"
+                formatter={(value) =>
+                  `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                onChange={this.handleStructureValueChange}
+              />
+            </Form.Item>
+            <Form.Item>
+              <p>Total Value</p>
+              <InputNumber
+                label="Total Value"
+                required
+                name="total_value"
+                value={total_value}
+                defaultValue={0}
+                placeholder="Total Value"
+                formatter={(value) =>
+                  `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                onChange={this.handleTotalValueChange}
+              />
+            </Form.Item>
+            <Form.Item>
+              <StyledButton htmlType="submit">
                 Submit
             </StyledButton>
             </Form.Item>

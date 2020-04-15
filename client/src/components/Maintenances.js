@@ -20,28 +20,13 @@ export default class Maintenances extends React.Component {
 
     }
 
-    deleteMaintenance = () => {
-        const { homeId, } = this.props
+    componentDidUpdate() {
         const { maintenanceId } = this.state
-        axios.delete(`/api/homes/${homeId}/maintenances/${maintenanceId}`)
-            .then(res => {
-                console.log('deleted')
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
-
-
-    handleChange = (e) => {
-        this.setState({ checkbox: !this.state.checkbox })
-        console.log(this.state.checkbox)
-        console.log(e)
+        this.props.getId(maintenanceId)
     }
 
     renderMaintenances = () => {
-        const { maintenances , maintenanceId } = this.state
-        console.log(this.state.maintenanceId)
+        const { maintenances, maintenanceId } = this.state
         if (maintenances.length !== 0) {
             return maintenances.map(maintenance => (
                 <StyledTableRow key={maintenance.id} onClick={() => this.setState({ maintenanceId: maintenance.id })} style={maintenance.id === maintenanceId ? activeDiv : passiveDiv}>
@@ -61,10 +46,6 @@ export default class Maintenances extends React.Component {
         return (
             <>
                 {this.renderMaintenances()}
-                <div onClick={this.deleteMaintenance}>delete</div>
-                <Link to={{pathname: '/edit/maintenance', id: this.state.maintenanceId}}>
-                    edit
-                </Link>
             </>
 
         )
@@ -73,9 +54,10 @@ export default class Maintenances extends React.Component {
 
 const StyledTableRow = styled.div`
 margin-top: 5px; 
+cursor: pointer;
 `
 const StyledTableData = styled.td`
 padding: 0px 5px; 
 `
-const activeDiv = { border: '2px solid #9ecaed', borderRadius: '5px',  boxShadow: '0 0 10px #9ecaed'}
-const passiveDiv = {border: 'none' }
+const activeDiv = { border: '2px solid #9ecaed', borderRadius: '5px', boxShadow: '0 0 10px #9ecaed', transition: '0.2s all ease-in-out' }
+const passiveDiv = { border: 'none', transition: '0.2s all ease-in-out' }
