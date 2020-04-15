@@ -9,7 +9,7 @@ import { Button, List } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
 import ItemForm from './forms/ItemForm'
-import Uploader from './Uploader';
+import UploadModal from './modals/UploadModal'
 
 
 class Items extends React.Component {
@@ -41,7 +41,7 @@ class Items extends React.Component {
       this.setState({receipt: receiptData.data[0], files: fileData.data, filesLoaded: true});
       console.log(this.state.receipt)
     }
-    if(filesLoaded === false){
+    if(filesLoaded === false && itemId !== null){
       const fileData = await axios.get(`/api/items/${itemId}/documents`)
       this.setState({ files: fileData.data, filesLoaded: true});
     }
@@ -98,7 +98,7 @@ class Items extends React.Component {
   }
   // Function that is passed to Uploader component to trigger reload of files when adding new:
   updateFiles = () => {
-    this.setState({filesLoaded: false});
+    this.setState({filesLoaded: false, tab: 'files'});
   }
 
   // Function is passed to new location form / modal to hot-reload on submit. 
@@ -159,7 +159,8 @@ class Items extends React.Component {
         )
       case 'newFile':
         return (
-          <Uploader itemId={this.state.itemId} update={this.updateFiles}/>
+          // <Uploader itemId={this.state.itemId} update={this.updateFiles}/>
+          <UploadModal itemId={this.state.itemId} title={'Upload File'} type={'file'} update={this.updateFiles}/>
         )
       default:
         return (
@@ -213,14 +214,14 @@ class Items extends React.Component {
           </Button>
           </>
         )
-      case 'newFile':
-        return (
-          <>
-          <Button shape="circle" onClick={() => this.toggleTab('files')}>
-            <CheckOutlined />
-          </Button>
-          </>
-        )
+      // case 'newFile':
+      //   return (
+      //     <>
+      //     <Button shape="circle" onClick={() => this.toggleTab('files')}>
+      //       <CheckOutlined />
+      //     </Button>
+      //     </>
+        // )
       default:
         return (
           <>
@@ -288,7 +289,7 @@ class Items extends React.Component {
         <Row >
           <Col span={5}>
             <div style={{ ...divHead }}>
-              <p>Locations Drop Down</p>
+              <p>Locations</p>
             </div>
           </Col>
           <Col span={5}>

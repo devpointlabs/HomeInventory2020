@@ -24,7 +24,6 @@ class Uploader extends React.Component {
         this.setState({
           loadId: res.data.id
         })
-        this.props.update()
       }).catch((err) => {
         console.log(err)
       });
