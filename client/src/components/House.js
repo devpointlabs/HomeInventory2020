@@ -173,7 +173,7 @@ export default class House extends React.Component {
         const { houses } = this.state;
         return houses.map((house) => (
             <StyledImg key={house.id}>
-                <img src={house.image} width="500px" height="500px" />
+                <img src={house.image} width="100%" height="100%" />
             </StyledImg>
         ));
     };
@@ -239,13 +239,6 @@ border: 1px solid  grey;
 padding: 30px;
 height: 100%;
 `
-
-const StyledImg = styled.div`
-width: 500px;
-height: 500px;
-background: #D4D4D4;
-margin: 30px;
-`
 const StyledCon = styled.div`
 display: flex; 
 flex-direction: row;
@@ -294,4 +287,15 @@ display: inline;
 const StyledTableTask2 = styled.div`
 margin-left: 63px;
 display: inline;
+`
+const StyledImg = styled.div`
+margin: 30px;
+border: 2px solid black;
+cursor: pointer;
+transition: all 0.3s ease-in-out;
+
+&:hover {
+  box-shadow: 0 5px 10px black;
+  transition: all 0.3s ease-in-out;
+  }
 `
