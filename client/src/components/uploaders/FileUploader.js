@@ -1,7 +1,7 @@
 import React from 'react';
 import { Upload, message } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
-import axios from 'axios'
+
 
 
 const { Dragger } = Upload;
@@ -19,14 +19,7 @@ class Uploader extends React.Component {
     if (status === 'done') {
       const data = new FormData()
       data.append('file', info.file.originFileObj)
-      axios.post(`/api/items/${this.props.itemId}/documents`, data).then((res) => {
-        console.log(res)
-        this.setState({
-          loadId: res.data.id
-        })
-      }).catch((err) => {
-        console.log(err)
-      });
+      this.props.upload(data)
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
@@ -35,7 +28,7 @@ class Uploader extends React.Component {
  onRemove = () => {
     console.log('remove')
     console.log(this.state.loadId)
-    axios.delete(`api/items/${this.props.itemId}/documents/${this.state.loadId}`)
+
   }
 
  render() {
@@ -61,5 +54,7 @@ const draggerStyle = {
   display: 'flex',
   justifyContent: 'center',
   paddingTop: '20px',
-  paddingBottom: '30px'
+  paddingBottom: '30px',
+  paddingLeft: '10px',
+  paddingRight: '10px',
 }

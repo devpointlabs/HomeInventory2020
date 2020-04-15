@@ -100,6 +100,10 @@ class Items extends React.Component {
   updateFiles = () => {
     this.setState({filesLoaded: false, tab: 'files'});
   }
+  updatePhotos = () => {
+    console.log('update photos hit')
+    // this.setState({filesLoaded: false, tab: 'files'});
+  }
 
   // Function is passed to new location form / modal to hot-reload on submit. 
   updateLocationList = (newLocation) => {
@@ -159,8 +163,11 @@ class Items extends React.Component {
         )
       case 'newFile':
         return (
-          // <Uploader itemId={this.state.itemId} update={this.updateFiles}/>
           <UploadModal itemId={this.state.itemId} title={'Upload File'} type={'file'} update={this.updateFiles}/>
+        )
+      case 'newPhoto':
+        return (
+          <UploadModal itemId={this.state.itemId} title={'Upload Photo'} type={'photo'} update={this.updatePhotos}/>
         )
       default:
         return (
@@ -187,7 +194,9 @@ class Items extends React.Component {
         )
       case 'photos':
         return(
-          null
+          <Button shape="circle" onClick={() => this.toggleTab('newPhoto')}>
+            <PlusOutlined />
+          </Button>
         )
       case 'receipts':
         return (
@@ -214,14 +223,6 @@ class Items extends React.Component {
           </Button>
           </>
         )
-      // case 'newFile':
-      //   return (
-      //     <>
-      //     <Button shape="circle" onClick={() => this.toggleTab('files')}>
-      //       <CheckOutlined />
-      //     </Button>
-      //     </>
-        // )
       default:
         return (
           <>
