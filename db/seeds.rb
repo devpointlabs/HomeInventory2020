@@ -23,7 +23,7 @@ Item.create(name: 'TV', make: 'Samsung', model: 'S600', serial_num: '123456', ca
   collection: 'Electronics', condition: 'Good', quantity: 1, value: 800.00, location_id: 2, user_id: 1)
 
   ## _________________________ CREATE HOME ___________________________________
-  Home.create(address: "1234 Main Street Salt Lake City, Utah", zip_code: 84111, square_footage: 2500, lot_size: 0.08, purchase_date: "Jan 1, 2020",purchase_price: 1000000.00, user_id: 1)
+  Home.create(address: "1234 Main Street Salt Lake City, Utah", zip_code: 84111, square_footage: 2500, lot_size: 0.08, purchase_date: "Jan 1, 2020",purchase_price: 1000000.00, image: 'https://images.pexels.com/photos/1396132/pexels-photo-1396132.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', user_id: 1)
   puts "House seeded."
 
   # assessments

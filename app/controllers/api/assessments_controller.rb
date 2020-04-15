@@ -1,7 +1,7 @@
 class Api::AssessmentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_home
-  before_action :set_assessment, only: [:show, :edit, :destroy]
+  before_action :set_assessment, only: [:show, :edit, :destroy, :update]
 
   def index
     assessments = @home.assessments.all
