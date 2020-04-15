@@ -109,7 +109,7 @@ export default class House extends React.Component {
       const { houses } = this.state;
       return houses.map((house) => (
         <StyledImg key={house.id}>
-          <img src={house.image} width="500px" height="500px" />
+          <img src={house.image} width="840px" height="500px" />
         </StyledImg>
       ));
     };
@@ -177,7 +177,7 @@ height: 100%;
 `
 
 const StyledImg = styled.div`
-width: 500px;
+width: 800px;
 height: 500px;
 background: #D4D4D4;
 margin: 30px;
