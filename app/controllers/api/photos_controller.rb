@@ -24,13 +24,6 @@ class Api::PhotosController < ApplicationController
         render json: { errors: e }, status: 422
       end
     end
-
-    # photo = @item.photos.new(photo_params)
-    # if photo.save
-    #   render json: photo
-    # else
-    #   render json: {message: "ooopsie"}
-    # end
   end
 
   def update
@@ -42,7 +35,8 @@ class Api::PhotosController < ApplicationController
   end
 
   def destroy
-    @photo.destroy
+    photo = @item.photos.find(params[:id])
+    photo.destroy
   end
 
   private 

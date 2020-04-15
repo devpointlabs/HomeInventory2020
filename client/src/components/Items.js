@@ -101,8 +101,7 @@ class Items extends React.Component {
     this.setState({filesLoaded: false, tab: 'files'});
   }
   updatePhotos = () => {
-    console.log('update photos hit')
-    // this.setState({filesLoaded: false, tab: 'files'});
+    this.setState({ tab: 'photos'});
   }
 
   // Function is passed to new location form / modal to hot-reload on submit. 

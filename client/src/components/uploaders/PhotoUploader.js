@@ -11,6 +11,7 @@ class PhotoUploader extends React.Component {
     loadId: 0
   }
 
+
   onChange = (info) => {
     const { status } = info.file;
     if (status !== 'uploading') {
@@ -19,15 +20,8 @@ class PhotoUploader extends React.Component {
     if (status === 'done') {
       const data = new FormData()
       data.append('file', info.file.originFileObj)
-      // axios.post(`/api/items/${this.props.itemId}/photos`, data).then((res) => {
-      //   console.log(res)
-      //   this.setState({
-      //     loadId: res.data.id
-      //   })
-      // }).catch((err) => {
-      //   console.log(err)
-      // });
       // function passed here from parent
+      this.props.upload(data)
       message.success(`${info.file.name} file uploaded successfully.`);
     } else if (status === 'error') {
       message.error(`${info.file.name} file upload failed.`);

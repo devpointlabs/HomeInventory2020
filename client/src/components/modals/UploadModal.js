@@ -14,7 +14,8 @@ class UploadModal extends React.Component {
     visible: true,
     confirmLoading: false,
     type: 'file',
-    fileId: null
+    fileId: null,
+    photoId: null
   };
   // Must pass a type in to this component - either 'file' or 'photo' and result will change version that is rendered.
   componentDidMount() {
@@ -41,8 +42,21 @@ class UploadModal extends React.Component {
       });
   }
 
+  postPhoto = (data) => {
+    axios.post(`/api/items/${this.props.itemId}/photos`, data)
+    .then((res) => {
+      console.log(res)
+      this.setState({
+        photoId: res.data.id
+      })
+    }).catch((err) => {
+      console.log(err)
+    });
+  }
+
   handleOk =() => {
     const { type } = this.state  
+    //The function below is passed from Item.js to hot-reload and change tab on itm page.
     this.props.update()
     this.setState({
       confirmLoading: true,
@@ -61,7 +75,7 @@ class UploadModal extends React.Component {
     if (type === 'file'){
       axios.delete(`api/items/${this.props.itemId}/documents/${this.state.fileId}`).then(res => {console.log(res)})
     } else if (type === 'photo') {
-      // axios delete
+      axios.delete(`api/items/${this.props.itemId}/photos/${this.state.photoId}`).then(res => {console.log(res)})
     }
     this.setState({
       visible: false,
@@ -94,7 +108,7 @@ class UploadModal extends React.Component {
           confirmLoading={confirmLoading}
           onCancel={this.handleCancel}
         >
-          <PhotoUploader/>
+          <PhotoUploader itemId={this.props.itemId} upload={this.postPhoto}/>
         </Modal>
       </div>
     )

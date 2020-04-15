@@ -58,7 +58,7 @@ export default class ItemPhotos extends React.Component {
     if(this.props.itemId){
     return (
       <StyledCon>
-        <Dropzone onDrop={this.onDrop} multiple={false}>
+        {/* <Dropzone onDrop={this.onDrop} multiple={false}>
           {({ getRootProps, getInputProps }) => (
             <StyledDrop>
               <div {...getRootProps()}>
@@ -67,7 +67,7 @@ export default class ItemPhotos extends React.Component {
               </div>
             </ StyledDrop>
           )}
-        </Dropzone>
+        </Dropzone> */}
         {this.renderPhotos()}
       </StyledCon>
     )} else {
