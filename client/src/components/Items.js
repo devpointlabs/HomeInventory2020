@@ -8,7 +8,7 @@ import Receipts from './Receipts';
 import { Button, List } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
-import ItemForm from './forms/ItemForm'
+import ItemModal from './modals/ItemModal'
 import UploadModal from './modals/UploadModal'
 import ItemFiles from './ItemFiles'
 import ReceiptModal from './modals/ReceiptsModal';
@@ -129,7 +129,7 @@ class Items extends React.Component {
         )
       case 'newItem':
         return (
-          <ItemForm locationId={this.state.locationId} update={this.updateItemList}/>
+          <ItemModal locationId={this.state.locationId} update={this.updateItemList}/>
         )
       case 'newFile':
         return (
@@ -160,8 +160,7 @@ class Items extends React.Component {
           <>
           <Button shape="circle">
             <EditOutlined />
-          </Button>
-     
+          </Button> 
         </>
         )
       case 'photos':
@@ -337,14 +336,19 @@ class Items extends React.Component {
           </Col>
           <Col span={5}>
             <div style={{ ...divFoot }}>
-              {this.state.locationId !== null ?  
+              {this.state.locationId !== null  ?  
               <>
               <Button shape="circle" onClick={() => this.toggleTab('newItem')}>
                 <PlusOutlined />
-              </Button>
-              <Button shape="circle" onClick={() => this.deleteItem()}>
-                <DeleteOutlined />
-              </Button>
+              </Button> 
+              {this.state.itemId !== null ?
+                <>
+               
+                <Button shape="circle" onClick={() => this.deleteItem()}>
+                  <DeleteOutlined />
+                </Button>
+                </>
+                : null} 
               </>
               : null}
             </div>

@@ -43,7 +43,7 @@ class ItemForm extends React.Component {
   render() {
     const { name, make, model, serial_num, category, collection, condition, heir, purchase_date, quantity, value, tags } = this.state;
     return (
-      <> 
+      <div style={{marginTop: '25px'}}> 
         <Form onFinish={this.handleSubmit}>
           <Form.Item >
             <Input
@@ -166,7 +166,7 @@ class ItemForm extends React.Component {
             </Button>
           </Form.Item>
         </Form>
-      </>
+      </div>
     );
   };
 }

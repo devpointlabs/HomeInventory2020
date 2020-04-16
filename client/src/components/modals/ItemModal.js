@@ -1,15 +1,13 @@
 import React from 'react'
 import { Modal } from 'antd';
-import ReceiptForm from '../forms/ReceiptForm';
+import ItemForm from '../forms/ItemForm'
 
-class ReceiptModal extends React.Component {
-
+class ItemModal extends React.Component {
   state = {
     visible: true,
     confirmLoading: false,
     itemId: null
   }
-
   componentDidMount() {
     this.setState({
       itemId: this.props.itemId
@@ -24,8 +22,8 @@ class ReceiptModal extends React.Component {
 
   handleOk =() => { 
     // //The function below is passed from Item.js to hot-reload and change tab on itm page.
-    this.props.update()
-    this.refs.newReceipt.handleSubmit()
+    // this.props.update()
+    // this.refs.newReceipt.handleSubmit()
     this.setState({
       confirmLoading: true,
     });
@@ -38,23 +36,21 @@ class ReceiptModal extends React.Component {
     });
   };
 
-  render() {
+
+  render(){
     const { visible, confirmLoading, itemId } = this.state;
-  
-    return (
-      <div>
-        <Modal
-          title={this.props.title}
-          visible={visible}
-          onOk={this.handleOk}
-          confirmLoading={confirmLoading}
-          onCancel={this.handleCancel}
-        >
-          <ReceiptForm ref='newReceipt' itemId={itemId}/>
-        </Modal>
-      </div>
-    );
+
+    return(
+      <Modal
+        title={this.props.title}
+        visible={visible}
+        onOk={this.handleOk}
+        confirmLoading={confirmLoading}
+        onCancel={this.handleCancel}
+      >
+        <ItemForm ref='newItem' itemId={this.props.itemId}/>
+      </Modal>
+    )
   }
 }
-
-export default ReceiptModal
+export default ItemModal
