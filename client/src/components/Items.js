@@ -77,6 +77,10 @@ class Items extends React.Component {
   updateReceipts = () => {
     this.setState({ tab: 'receipt'});
   }
+  //Function is passed to receipt component to see if item has receipt. Result keeps or removes new receipt button.
+  receiptLoaded = (bool) => {
+    this.setState({receiptLoaded: bool});
+  }
 
   // Function is passed to new location form / modal to hot-reload on submit. 
   updateLocationList = (newLocation) => {
@@ -88,10 +92,7 @@ class Items extends React.Component {
     const { items } = this.state
     this.setState({items: [...items, newItem.data], tab: 'info', itemId: newItem.data.id})
   }
-  //Function is passed to receipt component to see if item has receipt. Result keeps or removes new receipt button.
-  receiptLoaded = (bool) => {
-    this.setState({receiptLoaded: bool});
-  }
+
     
   //Toggles item number for info display:
   toggleItemId = (e) => {
