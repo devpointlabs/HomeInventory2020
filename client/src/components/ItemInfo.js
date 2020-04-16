@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { List, Divider } from 'antd'
+import { Divider } from 'antd'
 
 export default class RenderItem extends React.Component {
   state = {
@@ -35,7 +35,7 @@ export default class RenderItem extends React.Component {
     const { item } = this.state
     if (this.state.item.id) {
       return (
-        <div style={{ margin: '18px' }}>
+        <div style={{ margin: '16px' }}>
           <div>
             <h3>{item.name}</h3>
             <Divider />
