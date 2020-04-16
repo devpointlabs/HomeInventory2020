@@ -34,10 +34,9 @@ export default class RenderPolicy extends React.Component {
         <h3>{policy.name}</h3>
         <p>Issuer: {policy.issuer}</p>
         <p>{policy.issue_date}</p>
-        <p>Model: {item.model}</p>
         <p>Policy Number: {policy.policy_num}</p>
         <p>Policy Type: {policy.type}</p>
-        <p>Contact Info: {policy.contact}</p>
+        <p>Contact Info: {policy.contact_info}</p>
       </>
     )}
     return (

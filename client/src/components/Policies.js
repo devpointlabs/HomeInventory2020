@@ -6,6 +6,7 @@ import Uploader from './Uploader';
 import { Button, List } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
+import PolicyForm from '../components/forms/PolicyForm'
 
 
 class Policies extends React.Component {
@@ -165,6 +166,7 @@ class Policies extends React.Component {
     const { tab, locationId } = this.state
     return (
       <>
+      <PolicyForm></PolicyForm>
         <Row >
           <Col span={5}>
             <div style={{ ...divHead }}>
