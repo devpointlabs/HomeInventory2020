@@ -34,7 +34,7 @@ class Api::ReceiptsController < ApplicationController
  private
 
   def receipt_params
-    params.require(:receipt).permit(:date, :receipt_num, :purchase_from, :price, :tax, :image, :item_id)
+    params.require(:receipt).permit(:date, :receipt_num, :purchased_from, :price, :tax, :img, :item_id)
   end
 
   def set_item

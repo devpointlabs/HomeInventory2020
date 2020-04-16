@@ -7,12 +7,9 @@ class ReceiptForm extends React.Component {
   state = {date: null, receipt_num: "", purchased_from: "", price: "", tax: "", img: "" };
   
   handleSubmit = () => {
-    axios.post(`/api/items/${this.props.itemId}/receipts`, { ...this.state, })
+    axios.post(`/api/items/${this.props.itemId}/receipts`, { ...this.state })
       .then( res => {
         console.log(res)
-        this.setState({
-          date: null, receipt_num: "", purchased_from: "", price: "", tax: "", img: ""
-        });
       })
   }
 
@@ -26,7 +23,7 @@ class ReceiptForm extends React.Component {
 
   handleChange = (e) => {
     const { name, value, } = e.target;
-    this.setState({ [name]: value, });
+    this.setState({ [name]: value });
   };
 
   handleDate = (date) => {

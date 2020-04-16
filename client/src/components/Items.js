@@ -73,6 +73,9 @@ class Items extends React.Component {
   updatePhotos = () => {
     this.setState({ tab: 'photos'});
   }
+  updateReceipts = () => {
+    this.setState({ tab: 'receipts'});
+  }
 
   // Function is passed to new location form / modal to hot-reload on submit. 
   updateLocationList = (newLocation) => {
@@ -87,12 +90,12 @@ class Items extends React.Component {
     
   //Toggles item number for info display:
   toggleItemId = (e) => {
-    this.setState({ ...this.state, itemId: e ,});
+    this.setState({ ...this.state, itemId: e , tab: 'info'});
   }
 
   // Toggles the location id for calling up item list. 
   toggleItems = (targetId) => {
-    this.setState({ ...this.state, locationId: targetId, itemId: null});
+    this.setState({ ...this.state, locationId: targetId, itemId: null, tab: 'blank'});
   }
 
 // Toggles Info display for info / photos / etc. 
@@ -138,7 +141,7 @@ class Items extends React.Component {
         )
       case 'newReceipt':
         return (
-          <ReceiptModal itemId={this.state.itemId}/>
+          <ReceiptModal itemId={this.state.itemId} update={this.updateReceipts}/>
         )
       default:
         return (
@@ -158,9 +161,7 @@ class Items extends React.Component {
           <Button shape="circle">
             <EditOutlined />
           </Button>
-          <Button shape="circle" onClick={() => this.deleteItem()}>
-            <DeleteOutlined />
-          </Button>
+     
         </>
         )
       case 'photos':
@@ -224,7 +225,7 @@ class Items extends React.Component {
       console.log(res)
       const filteredArr = items.filter( i => i.id !== itemId)
       this.setState({
-        items: filteredArr, locationId: 0, itemId: null, tab: 'blank'
+        items: filteredArr, itemId: null, tab: 'blank'
       });
     })
     .catch(err => {
@@ -333,9 +334,14 @@ class Items extends React.Component {
           <Col span={5}>
             <div style={{ ...divFoot }}>
               {this.state.locationId !== null ?  
+              <>
               <Button shape="circle" onClick={() => this.toggleTab('newItem')}>
                 <PlusOutlined />
               </Button>
+              <Button shape="circle" onClick={() => this.deleteItem()}>
+                <DeleteOutlined />
+              </Button>
+              </>
               : null}
             </div>
           </Col>

@@ -24,17 +24,11 @@ class ReceiptModal extends React.Component {
 
   handleOk =() => { 
     // //The function below is passed from Item.js to hot-reload and change tab on itm page.
-    // this.props.update()
+    this.props.update()
     this.refs.newReceipt.handleSubmit()
     this.setState({
       confirmLoading: true,
     });
-    setTimeout(() => {
-      this.setState({
-        visible: false,
-        confirmLoading: false,
-      });
-    }, 1500);
   };
 
   handleCancel = async() => {

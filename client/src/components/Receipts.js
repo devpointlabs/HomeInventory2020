@@ -5,18 +5,21 @@ class  Receipts extends React.Component {
   
   state = {
     receipts: [],
+    itemId: null
   }
 
   async componentDidMount() {
     const receiptData = await axios.get(`/api/items/${this.props.itemId}/receipts`)
     console.log(receiptData)
     this.setState({
+      itemId: this.props.itemId,
       receipts: receiptData.data
     });
   }
 
   render() {
-    const { receipts } = this.state
+    const { receipts, itemId } = this.state
+
     const receipt = receipts[0]
     if (receipts.length > 0) {
       return (
@@ -29,11 +32,17 @@ class  Receipts extends React.Component {
           <p>Tax: ${receipt.tax}</p>
           <p>Image: {receipt.img}</p>
         </>
-      )} else {
+      )} else if ( itemId === null) {
         return (
           <>
           </>
-        )}
+        )} else {
+          return (
+            <>
+            <p>No Receipt Found</p>
+            </>
+          )
+        }
   }
 }
 
