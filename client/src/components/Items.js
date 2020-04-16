@@ -88,6 +88,7 @@ class Items extends React.Component {
     const { items } = this.state
     this.setState({items: [...items, newItem.data], tab: 'info', itemId: newItem.data.id})
   }
+  //Function is passed to receipt component to see if item has receipt. Result keeps or removes new receipt button.
   receiptLoaded = (bool) => {
     this.setState({receiptLoaded: bool});
   }
@@ -181,17 +182,20 @@ class Items extends React.Component {
       case 'receipt':
         return (
           <>
-          {receiptLoaded ? null : 
-          <Button shape="circle" onClick={() => this.toggleTab('newReceipt')} >
-            <PlusOutlined />
-          </Button>
-          }
+          {receiptLoaded ? 
+          <>
           <Button shape="circle">
             <EditOutlined />
           </Button>
           <Button shape="circle" onClick={() => this.deleteReceipt()}>
             <DeleteOutlined />
           </Button>
+          </>
+          : 
+          <Button shape="circle" onClick={() => this.toggleTab('newReceipt')} >
+            <PlusOutlined />
+          </Button>
+          }
           </>
         )
       case 'files':

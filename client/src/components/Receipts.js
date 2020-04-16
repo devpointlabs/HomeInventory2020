@@ -82,7 +82,7 @@ class  Receipts extends React.Component {
           </>
         )} else {
           return (
-            <div style={{margin: '18px'}}>
+            <div style={{margin: '10px'}}>
             <p>No Receipt Found</p>
             </div>
           )
