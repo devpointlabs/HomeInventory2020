@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col } from 'antd';
 import styled from 'styled-components';
 import axios from 'axios'
-import Uploader from './Uploader';
+import Uploader from './uploaders/FileUploader';
 import { Button, List } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
