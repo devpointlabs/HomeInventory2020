@@ -11,15 +11,12 @@ import LocationForm from '../components/forms/LocationForm'
 import ItemForm from './forms/ItemForm'
 import UploadModal from './modals/UploadModal'
 import ItemFiles from './ItemFiles'
+import ReceiptModal from './modals/ReceiptsModal';
 
 class Items extends React.Component {
   state = { 
     locations: [],
     items: [], 
-    files: [], 
-    fileId: null,
-    filesLoaded: false, 
-    receipt: null, 
     locationId: 0, 
     itemId: null, 
     tab: 'info'
@@ -32,16 +29,6 @@ class Items extends React.Component {
     let itemData = await axios.get('/api/items')
     console.log(itemData)
     this.setState({ items: itemData.data });
-  }
-  async componentDidUpdate(prevProps, prevState) {
-    const { itemId } = this.state
-    if(prevState.itemId !== this.state.itemId){
-      const receiptData = await axios.get(`/api/items/${itemId}/receipts`)
-      const fileData = await axios.get(`/api/items/${itemId}/documents`)
-      this.setState({receipt: receiptData.data[0], files: fileData.data, filesLoaded: true});
-      console.log(this.state.receipt)
-    }
-    
   }
 
   renderLocations = () => {
@@ -149,6 +136,10 @@ class Items extends React.Component {
         return (
           <UploadModal itemId={this.state.itemId} title={'Upload Photo'} type={'photo'} update={this.updatePhotos}/>
         )
+      case 'newReceipt':
+        return (
+          <ReceiptModal itemId={this.state.itemId}/>
+        )
       default:
         return (
           <>
@@ -186,7 +177,7 @@ class Items extends React.Component {
       case 'receipts':
         return (
           <>
-          <Button shape="circle" >
+          <Button shape="circle" onClick={() => this.toggleTab('newReceipt')} >
             <PlusOutlined />
           </Button>
           <Button shape="circle">
@@ -215,10 +206,12 @@ class Items extends React.Component {
         )
     }
   }
+  //calls delete function in ItemPhoto.js
   deletePhoto = () => {
     this.refs.photo.deletePhoto()
   }
 
+  //calls delete function in ItemFile.js
   deleteFile = () => {
     this.refs.file.deleteFile()
   }
