@@ -13,7 +13,7 @@ class Api::ReceiptsController < ApplicationController
   end
 
   def create
-    receipt = @location.receipts.new(receipt_params)
+    receipt = @item.receipts.new(receipt_params)
     if receipt.save
      render json: receipt
     else
@@ -34,7 +34,7 @@ class Api::ReceiptsController < ApplicationController
  private
 
   def receipt_params
-    params.require(:receipts).permit(:date, :receipt_num, :purchase_from, :price, :tax, :image, :item_id)
+    params.require(:receipt).permit(:date, :receipt_num, :purchased_from, :price, :tax, :img, :item_id)
   end
 
   def set_item

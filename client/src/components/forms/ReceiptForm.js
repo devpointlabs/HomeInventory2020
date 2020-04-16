@@ -1,18 +1,15 @@
 import React from "react";
 import axios from "axios";
 import { Form, Input, DatePicker, InputNumber, Button } from "antd";
-import moment from 'moment'
+
 
 class ReceiptForm extends React.Component {
   state = {date: null, receipt_num: "", purchased_from: "", price: "", tax: "", img: "" };
   
-  handleSubmit = (e) => {
-    axios.post("/api/receipts", { ...this.state, })
+  handleSubmit = () => {
+    axios.post(`/api/items/${this.props.itemId}/receipts`, { ...this.state })
       .then( res => {
         console.log(res)
-        this.setState({
-          date: null, receipt_num: "", purchased_from: "", price: "", tax: "", img: ""
-        });
       })
   }
 
@@ -26,7 +23,7 @@ class ReceiptForm extends React.Component {
 
   handleChange = (e) => {
     const { name, value, } = e.target;
-    this.setState({ [name]: value, });
+    this.setState({ [name]: value });
   };
 
   handleDate = (date) => {
@@ -105,17 +102,11 @@ class ReceiptForm extends React.Component {
             onChange={this.handleChange}
             />
           </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
         </Form>
       </>
     );
   };
 }
 export default ReceiptForm;
-
 
 

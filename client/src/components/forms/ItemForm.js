@@ -4,7 +4,7 @@ import { Form, Input, DatePicker, InputNumber, Button } from "antd";
 
 
 class ItemForm extends React.Component {
-  state = { name: "", make: "", model: "", serial_num: "", category: "", collection: "", condition: "", heir: "", purchase_date: null, quantity: "", value: "", tags: "", location_id: null };
+  state = { name: "", make: "", model: "", serial_num: "", category: "", collection: "", condition: "", purchase_date: null, quantity: "", value: "", tags: "", location_id: null };
 
   componentDidMount(){
     const { locationId } = this.props
@@ -12,8 +12,7 @@ class ItemForm extends React.Component {
   }
 
   handleSubmit = (e) => {
-    const newItem = {...this.state}
-    axios.post("/api/items", newItem)
+    axios.post("/api/items", {...this.state})
       .then( res => {
         console.log(res)
         this.setState({
@@ -41,9 +40,9 @@ class ItemForm extends React.Component {
   }
 
   render() {
-    const { name, make, model, serial_num, category, collection, condition, heir, purchase_date, quantity, value, tags } = this.state;
+    const { name, make, model, serial_num, category, collection, condition, purchase_date, quantity, value, tags } = this.state;
     return (
-      <> 
+      <div> 
         <Form onFinish={this.handleSubmit}>
           <Form.Item >
             <Input
@@ -160,13 +159,8 @@ class ItemForm extends React.Component {
             onChange={this.handleChange}
             />
           </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
         </Form>
-      </>
+      </div>
     );
   };
 }

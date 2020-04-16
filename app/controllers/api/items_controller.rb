@@ -34,7 +34,7 @@ class Api::ItemsController < ApplicationController
 private
 
   def item_params
-    params.permit(:name, :make, :model, :serial_num, :category, :collection, :condition, :purchase_date, :quantity, :value, :tags, :location_id)
+    params.require(:item).permit(:name, :make, :model, :serial_num, :category, :collection, :condition, :purchase_date, :quantity, :value, :tags, :location_id)
   end
 
   def set_item

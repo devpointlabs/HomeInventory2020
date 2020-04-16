@@ -8,18 +8,15 @@ import Receipts from './Receipts';
 import { Button, List } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
-import ItemForm from './forms/ItemForm'
+import ItemModal from './modals/ItemModal'
 import UploadModal from './modals/UploadModal'
 import ItemFiles from './ItemFiles'
+import ReceiptModal from './modals/ReceiptsModal';
 
 class Items extends React.Component {
   state = { 
     locations: [],
     items: [], 
-    files: [], 
-    fileId: null,
-    filesLoaded: false, 
-    receipt: null, 
     locationId: 0, 
     itemId: null, 
     tab: 'info'
@@ -32,16 +29,6 @@ class Items extends React.Component {
     let itemData = await axios.get('/api/items')
     console.log(itemData)
     this.setState({ items: itemData.data });
-  }
-  async componentDidUpdate(prevProps, prevState) {
-    const { itemId } = this.state
-    if(prevState.itemId !== this.state.itemId){
-      const receiptData = await axios.get(`/api/items/${itemId}/receipts`)
-      const fileData = await axios.get(`/api/items/${itemId}/documents`)
-      this.setState({receipt: receiptData.data[0], files: fileData.data, filesLoaded: true});
-      console.log(this.state.receipt)
-    }
-    
   }
 
   renderLocations = () => {
@@ -86,6 +73,9 @@ class Items extends React.Component {
   updatePhotos = () => {
     this.setState({ tab: 'photos'});
   }
+  updateReceipts = () => {
+    this.setState({ tab: 'receipt'});
+  }
 
   // Function is passed to new location form / modal to hot-reload on submit. 
   updateLocationList = (newLocation) => {
@@ -100,7 +90,7 @@ class Items extends React.Component {
     
   //Toggles item number for info display:
   toggleItemId = (e) => {
-    this.setState({ ...this.state, itemId: e ,});
+    this.setState({ ...this.state, itemId: e });
   }
 
   // Toggles the location id for calling up item list. 
@@ -125,9 +115,9 @@ class Items extends React.Component {
         return(
           <ItemPhoto ref='photo' itemId={this.state.itemId} locationId={this.state.locationId} />
         )
-      case 'receipts':
+      case 'receipt':
         return (
-          <Receipts itemId={this.state.itemId} receipt={this.state.receipt}/>
+          <Receipts ref='receipt' itemId={this.state.itemId} receipt={this.state.receipt}/>
         )
       case 'files':
         return (
@@ -139,7 +129,7 @@ class Items extends React.Component {
         )
       case 'newItem':
         return (
-          <ItemForm locationId={this.state.locationId} update={this.updateItemList}/>
+          <ItemModal locationId={this.state.locationId} update={this.updateItemList}/>
         )
       case 'newFile':
         return (
@@ -148,6 +138,10 @@ class Items extends React.Component {
       case 'newPhoto':
         return (
           <UploadModal itemId={this.state.itemId} title={'Upload Photo'} type={'photo'} update={this.updatePhotos}/>
+        )
+      case 'newReceipt':
+        return (
+          <ReceiptModal itemId={this.state.itemId} update={this.updateReceipts}/>
         )
       default:
         return (
@@ -166,10 +160,7 @@ class Items extends React.Component {
           <>
           <Button shape="circle">
             <EditOutlined />
-          </Button>
-          <Button shape="circle" onClick={() => this.deleteItem()}>
-            <DeleteOutlined />
-          </Button>
+          </Button> 
         </>
         )
       case 'photos':
@@ -183,16 +174,16 @@ class Items extends React.Component {
           </Button>
           </>
         )
-      case 'receipts':
+      case 'receipt':
         return (
           <>
-          <Button shape="circle" >
+          <Button shape="circle" onClick={() => this.toggleTab('newReceipt')} >
             <PlusOutlined />
           </Button>
           <Button shape="circle">
             <EditOutlined />
           </Button>
-          <Button shape="circle" >
+          <Button shape="circle" onClick={() => this.deleteReceipt()}>
             <DeleteOutlined />
           </Button>
           </>
@@ -215,12 +206,18 @@ class Items extends React.Component {
         )
     }
   }
+  //calls delete function in ItemPhoto.js
   deletePhoto = () => {
     this.refs.photo.deletePhoto()
   }
 
+  //calls delete function in ItemFile.js
   deleteFile = () => {
     this.refs.file.deleteFile()
+  }
+  //calls delete function in Receipt.js
+  deleteReceipt = () => {
+    this.refs.receipt.deleteReceipt()
   }
 
 // delete item when delete button pressed
@@ -231,7 +228,7 @@ class Items extends React.Component {
       console.log(res)
       const filteredArr = items.filter( i => i.id !== itemId)
       this.setState({
-        items: filteredArr, locationId: 0, itemId: null, tab: 'blank'
+        items: filteredArr, itemId: null, tab: 'blank'
       });
     })
     .catch(err => {
@@ -282,9 +279,9 @@ class Items extends React.Component {
               style={tab === 'photos' && itemId !== null ? activeTab : {}}>
                 Photos
               </StyledA>
-              <StyledA onClick={() => this.toggleTab('receipts')} 
-              style={tab === 'receipts' && itemId !== null ? activeTab : {}}>
-                Receipts
+              <StyledA onClick={() => this.toggleTab('receipt')} 
+              style={tab === 'receipt' && itemId !== null ? activeTab : {}}>
+                Receipt
               </StyledA>
               <StyledA 
               onClick={() => this.toggleTab('files')} 
@@ -339,10 +336,19 @@ class Items extends React.Component {
           </Col>
           <Col span={5}>
             <div style={{ ...divFoot }}>
-              {this.state.locationId !== null ?  
+              {this.state.locationId !== 0  ?  
+              <>
               <Button shape="circle" onClick={() => this.toggleTab('newItem')}>
                 <PlusOutlined />
-              </Button>
+              </Button> 
+              {this.state.itemId !== null ?
+                <>
+                <Button shape="circle" onClick={() => this.deleteItem()}>
+                  <DeleteOutlined />
+                </Button>
+                </>
+                : null} 
+              </>
               : null}
             </div>
           </Col>
