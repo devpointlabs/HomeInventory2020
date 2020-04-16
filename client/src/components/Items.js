@@ -19,7 +19,8 @@ class Items extends React.Component {
     items: [], 
     locationId: 0, 
     itemId: null, 
-    tab: 'info'
+    tab: 'info',
+    receiptLoaded: false
   };
 
   async componentDidMount() {
@@ -76,18 +77,26 @@ class Items extends React.Component {
   updateReceipts = () => {
     this.setState({ tab: 'receipt'});
   }
+  //Function is passed to receipt component to see if item has receipt. Result keeps or removes new receipt button.
+  receiptLoaded = (bool) => {
+    this.setState({receiptLoaded: bool});
+  }
 
   // Function is passed to new location form / modal to hot-reload on submit. 
   updateLocationList = (newLocation) => {
     const { locations } = this.state
     this.setState({locations: [...locations, newLocation.data]})
   }
-  //Function is passed to new item form to hot-reload added item. 
+  //Function is passed to new item form through modal to hot-reload added item. 
   updateItemList = (newItem) => {
     const { items } = this.state
-    this.setState({items: [...items, newItem.data], tab: 'info', itemId: newItem.data.id})
+    this.setState({items: [...items, newItem.data], itemId: newItem.data.id})
   }
-    
+  //function is passed to new item modal to be called in conjunction with closing animation:
+  updateItemView = () => {
+    this.setState({tab: 'info'});
+  }
+
   //Toggles item number for info display:
   toggleItemId = (e) => {
     this.setState({ ...this.state, itemId: e });
@@ -117,7 +126,7 @@ class Items extends React.Component {
         )
       case 'receipt':
         return (
-          <Receipts ref='receipt' itemId={this.state.itemId} receipt={this.state.receipt}/>
+          <Receipts ref='receipt' itemId={this.state.itemId} receipt={this.state.receipt} update={this.receiptLoaded}/>
         )
       case 'files':
         return (
@@ -129,7 +138,7 @@ class Items extends React.Component {
         )
       case 'newItem':
         return (
-          <ItemModal locationId={this.state.locationId} update={this.updateItemList}/>
+          <ItemModal locationId={this.state.locationId} update={this.updateItemList} tab={this.updateItemView}/>
         )
       case 'newFile':
         return (
@@ -152,7 +161,7 @@ class Items extends React.Component {
   }
   // Render correct set and functions for buttons in tab area lower nav:
   renderTabButtons = () => {
-    const { tab } = this.state
+    const { tab, receiptLoaded } = this.state
 
     switch (tab) {
       case 'info':
@@ -177,15 +186,20 @@ class Items extends React.Component {
       case 'receipt':
         return (
           <>
-          <Button shape="circle" onClick={() => this.toggleTab('newReceipt')} >
-            <PlusOutlined />
-          </Button>
+          {receiptLoaded ? 
+          <>
           <Button shape="circle">
             <EditOutlined />
           </Button>
           <Button shape="circle" onClick={() => this.deleteReceipt()}>
             <DeleteOutlined />
           </Button>
+          </>
+          : 
+          <Button shape="circle" onClick={() => this.toggleTab('newReceipt')} >
+            <PlusOutlined />
+          </Button>
+          }
           </>
         )
       case 'files':
@@ -402,36 +416,36 @@ const divHead = {
   fontWeight: '400'
 }
 const divField = {
-display: 'flex !important',
-flexDirection: 'row !important',
-height: '30em',
-width: '100%',
-fontSize: '18px',
-color: '#272829',
-border: '1px solid grey',
-fontWeight: '300',
-overflow: 'scroll'
+  display: 'flex !important',
+  flexDirection: 'row !important',
+  height: '30em',
+  width: '100%',
+  fontSize: '18px',
+  color: '#272829',
+  border: '1px solid grey',
+  fontWeight: '300',
+  overflow: 'scroll'
 }
 const divFoot = {
-display: 'flex',
-alignItems: 'center',
-justifyContent: 'space-around',
-minHeight: '58px',
-width: 'auto',
-fontSize: '19px',
-color: '#272829',
-border: '1px solid grey',
-padding: '12px',
-fontWeight: '400'
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-around',
+  minHeight: '58px',
+  width: 'auto',
+  fontSize: '19px',
+  color: '#272829',
+  border: '1px solid grey',
+  padding: '12px',
+  fontWeight: '400'
 }
 //styling for item and location name links
 const StyledA = styled.a`
-color: #272829;
-text-decoration: none;
+  color: #272829;
+  text-decoration: none;
 `
 const StyledA2 = styled.a`
-color: #272829;
-text-decoration: none;
+  color: #272829;
+  text-decoration: none;
 `
 
 export default Items;

@@ -21,12 +21,17 @@ class ItemModal extends React.Component {
   };
 
   handleOk =() => { 
-    // //The function below is passed from Item.js to hot-reload and change tab on itm page.
-    // this.props.update()
     this.refs.newItem.handleSubmit()
     this.setState({
       confirmLoading: true,
     });
+    setTimeout(() => {
+      this.setState({
+        visible: false,
+        confirmLoading: false,
+      });
+      this.props.tab()
+    }, 1000);
   };
 
   handleCancel = async() => {

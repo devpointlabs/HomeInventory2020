@@ -6,14 +6,25 @@ import { List } from 'antd'
 class ItemFiles extends React.Component {
   state = {
     files: [],
-    fileId: null
+    fileId: null,
+    itemId: null
   }
 
  async componentDidMount() {
   const { itemId } = this.props
+  if (itemId !== null) {
   const fileData = await axios.get(`/api/items/${itemId}/documents`)
-    this.setState({ files: fileData.data })
+    this.setState({ files: fileData.data, itemId })
   }
+}
+
+async componentDidUpdate() {
+  const { itemId } = this.props
+  if (itemId !== null && itemId !== this.state.itemId) {
+    const fileData = await axios.get(`/api/items/${itemId}/documents`)
+    this.setState({ files: fileData.data, itemId })
+  }
+}
 
   setId = (id) => {
     this.setState({fileId: id});
@@ -35,8 +46,16 @@ class ItemFiles extends React.Component {
     })
   }
 
-  renderFiles = () => {
-    const { files, fileId } = this.state
+  render() {
+    const { files, fileId, itemId } = this.state
+
+    if( itemId === null){
+      return(
+        <>
+        </>
+      )
+    }
+    if (files.length > 0) {
     return files.map(file => (
       <div style={fileId === file.id ? activeFileDiv : passiveFileDiv} key={file.id} onClick={() => this.setId(file.id)}>
         <List
@@ -49,16 +68,15 @@ class ItemFiles extends React.Component {
         </List>
       </div>
     ))
-  }
-
-  render() {
+    }
     return (
-      <>
-        {this.renderFiles()}
-      </>
+      <div style={{margin: '10px'}}>
+        <p>No Files Found</p>
+      </div>
     )
   }
 }
+
 export default ItemFiles
 
 //styling for selected file in files tab
