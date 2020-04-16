@@ -6,7 +6,8 @@ import Dropzone from 'react-dropzone';
 export default class ItemPhotos extends React.Component {
   state = {
     photos: [],
-    itemId: null
+    itemId: null,
+    photoId: null
   };
 
   componentDidMount() {
@@ -32,25 +33,35 @@ export default class ItemPhotos extends React.Component {
    }
   }
 
-  onDrop = (files) => {
-    let data = new FormData()
-    data.append('file', files[0])
-  console.log('Photo File:',files[0])
-    const { itemId, } = this.props
-    axios.post(`/api/items/${itemId}/photos`, data).then((res) => {
+  setPhotoId = (id) => {
+    this.setState({
+      photoId: id
+    });
+  }
+
+  deletePhoto = () => {
+    const { photoId, photos } = this.state
+    const { itemId } = this.props
+    
+    axios.delete(`/api/items/${itemId}/photos/${photoId}`).then(res => {
       console.log(res)
-      this.setState({ photos: [...this.state.photos, res.data] });
-    }).catch((err) => {
-      console.log(err)
+      const filteredPhotos = photos.filter(photo => photo.id !== photoId)
+      this.setState({
+        photos: filteredPhotos
+      });
     })
   }
 
   renderPhotos = () => {
-    const { photos } = this.state
+    const { photos, photoId } = this.state
     return photos.map(photo => (
       <StyledImg key={photo.id}>
-        <img src={photo.file} width='auto' height='200px' />
-        {/* <p>{photo.name}</p> */}
+        <img src={photo.file} 
+        width='auto' 
+        height='200px' 
+        style={photoId === photo.id ? activeImg : {}}
+        onClick={() => this.setPhotoId(photo.id)}
+        />
       </StyledImg>
     ))
   }
@@ -58,16 +69,6 @@ export default class ItemPhotos extends React.Component {
     if(this.props.itemId){
     return (
       <StyledCon>
-        <Dropzone onDrop={this.onDrop} multiple={false}>
-          {({ getRootProps, getInputProps }) => (
-            <StyledDrop>
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                <p>Drag 'n' drop image here, or click to select image</p>
-              </div>
-            </ StyledDrop>
-          )}
-        </Dropzone>
         {this.renderPhotos()}
       </StyledCon>
     )} else {
@@ -88,19 +89,8 @@ margin-left: 2%;
 margin-right: 2%;
 `
 
-const StyledDrop = styled.div`
-border: 2.5px dashed black;
-width: 200px;
-height: 200px;
-padding: 50px 10px;
-background: #e3e3e3;
-text-align: center;
-margin: 10px 10px;
-cursor: pointer;
-`
 const StyledImg = styled.div`
 margin: 10px 10px;
-border: 2px solid black;
 cursor: pointer;
 transition: all 0.3s ease-in-out;
 
@@ -109,4 +99,9 @@ transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
   }
 `
+const activeImg = {
+  boxShadow: '0 5px 10px black',
+  transition: 'all 0.3s ease-in-out',
+  transform: 'scale(1.06)'
+}
 
