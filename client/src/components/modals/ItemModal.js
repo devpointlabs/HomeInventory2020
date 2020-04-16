@@ -25,6 +25,13 @@ class ItemModal extends React.Component {
     this.setState({
       confirmLoading: true,
     });
+    setTimeout(() => {
+      this.setState({
+        visible: false,
+        confirmLoading: false,
+      });
+      this.props.tab()
+    }, 1000);
   };
 
   handleCancel = async() => {
