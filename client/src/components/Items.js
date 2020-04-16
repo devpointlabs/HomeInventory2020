@@ -140,6 +140,10 @@ class Items extends React.Component {
         return (
           <ItemModal locationId={this.state.locationId} update={this.updateItemList} tab={this.updateItemView}/>
         )
+      case 'editItem':
+        return (
+          <ItemModal itemId={this.state.itemId}/>
+        )
       case 'newFile':
         return (
           <UploadModal itemId={this.state.itemId} title={'Upload File'} type={'file'} update={this.updateFiles}/>
@@ -149,6 +153,10 @@ class Items extends React.Component {
           <UploadModal itemId={this.state.itemId} title={'Upload Photo'} type={'photo'} update={this.updatePhotos}/>
         )
       case 'newReceipt':
+        return (
+          <ReceiptModal itemId={this.state.itemId} update={this.updateReceipts}/>
+        )
+      case 'editReceipt':
         return (
           <ReceiptModal itemId={this.state.itemId} update={this.updateReceipts}/>
         )
@@ -167,7 +175,7 @@ class Items extends React.Component {
       case 'info':
         return (
           <>
-          <Button shape="circle">
+          <Button shape="circle" onClick={() => this.toggleTab('editItem')}>
             <EditOutlined />
           </Button> 
         </>
@@ -188,7 +196,7 @@ class Items extends React.Component {
           <>
           {receiptLoaded ? 
           <>
-          <Button shape="circle">
+          <Button shape="circle" onClick={() => this.toggleTab('editReceipt')}>
             <EditOutlined />
           </Button>
           <Button shape="circle" onClick={() => this.deleteReceipt()}>
