@@ -37,18 +37,18 @@ export default class RenderItem extends React.Component {
       return (
         <div style={{ margin: '18px' }}>
           <div>
-            <h2>{item.name}</h2>
+            <h3>{item.name}</h3>
             <Divider />
-            <h4>Make: {item.make}</h4>
-            <h4>Model: {item.model}</h4>
-            <h4>Serial Number: {item.serial_num}</h4>
-            <h4>Category: {item.category}</h4>
-            <h4>Collection: {item.collection}</h4>
-            <h4>Condition: {item.condition}</h4>
-            <h4>{item.purchase_date}</h4>
-            <h4>Quantity: {item.quantity}</h4>
-            <h4>Stated Value: {item.value}</h4>
-            <h4>Tags: {item.tags}</h4>
+            <h5>Make: {item.make}</h5>
+            <h5>Model: {item.model}</h5>
+            <h5>Serial Number: {item.serial_num}</h5>
+            <h5>Category: {item.category}</h5>
+            <h5>Collection: {item.collection}</h5>
+            <h5>Condition: {item.condition}</h5>
+            <h5>{item.purchase_date}</h5>
+            <h5>Quantity: {item.quantity}</h5>
+            <h5>Stated Value: {item.value}</h5>
+            <h5>Tags: {item.tags}</h5>
           </div>
         </div>
       )

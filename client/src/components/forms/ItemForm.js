@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Form, Input, DatePicker, InputNumber, Button } from "antd";
+import { Form, Input, DatePicker, InputNumber } from "antd";
 
 
 class ItemForm extends React.Component {
