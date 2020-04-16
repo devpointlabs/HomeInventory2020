@@ -19,7 +19,8 @@ class Items extends React.Component {
     items: [], 
     locationId: 0, 
     itemId: null, 
-    tab: 'info'
+    tab: 'info',
+    receiptLoaded: false
   };
 
   async componentDidMount() {
@@ -87,6 +88,9 @@ class Items extends React.Component {
     const { items } = this.state
     this.setState({items: [...items, newItem.data], tab: 'info', itemId: newItem.data.id})
   }
+  receiptLoaded = (bool) => {
+    this.setState({receiptLoaded: bool});
+  }
     
   //Toggles item number for info display:
   toggleItemId = (e) => {
@@ -117,7 +121,7 @@ class Items extends React.Component {
         )
       case 'receipt':
         return (
-          <Receipts ref='receipt' itemId={this.state.itemId} receipt={this.state.receipt}/>
+          <Receipts ref='receipt' itemId={this.state.itemId} receipt={this.state.receipt} update={this.receiptLoaded}/>
         )
       case 'files':
         return (
@@ -152,7 +156,7 @@ class Items extends React.Component {
   }
   // Render correct set and functions for buttons in tab area lower nav:
   renderTabButtons = () => {
-    const { tab } = this.state
+    const { tab, receiptLoaded } = this.state
 
     switch (tab) {
       case 'info':
@@ -177,9 +181,11 @@ class Items extends React.Component {
       case 'receipt':
         return (
           <>
+          {receiptLoaded ? null : 
           <Button shape="circle" onClick={() => this.toggleTab('newReceipt')} >
             <PlusOutlined />
           </Button>
+          }
           <Button shape="circle">
             <EditOutlined />
           </Button>

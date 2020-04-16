@@ -15,7 +15,12 @@ class  Receipts extends React.Component {
     if (itemId !== null) {
       axios.get(`/api/items/${itemId}/receipts`).then((res) => {
         console.log(res)
-        this.setState({receipt: res.data[0], itemId: itemId});
+        this.setState({receipt: res.data[0], itemId});   
+        if (this.state.receipt) {
+          this.props.update(true)
+        } else {
+          this.props.update(false)
+        }
       }).catch((err) => {
         console.log(err)
       })
@@ -28,20 +33,24 @@ class  Receipts extends React.Component {
     axios.get(`/api/items/${itemId}/receipts`).then((res) => {
       console.log(res)
       this.setState({receipt: res.data[0], itemId});
+      if (this.state.receipt) {
+        this.props.update(true)
+      } else {
+        this.props.update(false)
+      }
     }).catch((err) => {
       console.log(err)
     })
    }
   }
   
-
   deleteReceipt() {
-    const { receiptId, itemId } = this.state
-    console.log('delete receipt hit', receiptId)
-    axios.delete(`/api/items/${itemId}/receipts/${receiptId}`).then(res => {console.log(res)})
+    const { receipt, itemId } = this.state
+    axios.delete(`/api/items/${itemId}/receipts/${receipt.id}`).then(res => {console.log(res)})
     this.setState({
-      receipt: {}
+      receipt: null
     });
+    this.props.update(false)
   }
 
   render() {
