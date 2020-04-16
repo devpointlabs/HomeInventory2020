@@ -336,14 +336,13 @@ class Items extends React.Component {
           </Col>
           <Col span={5}>
             <div style={{ ...divFoot }}>
-              {this.state.locationId !== null  ?  
+              {this.state.locationId !== 0  ?  
               <>
               <Button shape="circle" onClick={() => this.toggleTab('newItem')}>
                 <PlusOutlined />
               </Button> 
               {this.state.itemId !== null ?
                 <>
-               
                 <Button shape="circle" onClick={() => this.deleteItem()}>
                   <DeleteOutlined />
                 </Button>

@@ -44,7 +44,7 @@ class ReceiptModal extends React.Component {
     return (
       <div>
         <Modal
-          title={this.props.title}
+          title='Enter Item Receipt'
           visible={visible}
           onOk={this.handleOk}
           confirmLoading={confirmLoading}

@@ -23,7 +23,7 @@ class ItemModal extends React.Component {
   handleOk =() => { 
     // //The function below is passed from Item.js to hot-reload and change tab on itm page.
     // this.props.update()
-    // this.refs.newReceipt.handleSubmit()
+    this.refs.newItem.handleSubmit()
     this.setState({
       confirmLoading: true,
     });
@@ -42,13 +42,13 @@ class ItemModal extends React.Component {
 
     return(
       <Modal
-        title={this.props.title}
+        title='Create New Item'
         visible={visible}
         onOk={this.handleOk}
         confirmLoading={confirmLoading}
         onCancel={this.handleCancel}
       >
-        <ItemForm ref='newItem' itemId={this.props.itemId}/>
+        <ItemForm ref='newItem' itemId={itemId} update={this.props.update} locationId={this.props.locationId}/>
       </Modal>
     )
   }
