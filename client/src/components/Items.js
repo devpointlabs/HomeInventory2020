@@ -74,7 +74,7 @@ class Items extends React.Component {
     this.setState({ tab: 'photos'});
   }
   updateReceipts = () => {
-    this.setState({ tab: 'receipts'});
+    this.setState({ tab: 'receipt'});
   }
 
   // Function is passed to new location form / modal to hot-reload on submit. 
@@ -90,12 +90,12 @@ class Items extends React.Component {
     
   //Toggles item number for info display:
   toggleItemId = (e) => {
-    this.setState({ ...this.state, itemId: e , tab: 'info'});
+    this.setState({ ...this.state, itemId: e });
   }
 
   // Toggles the location id for calling up item list. 
   toggleItems = (targetId) => {
-    this.setState({ ...this.state, locationId: targetId, itemId: null, tab: 'blank'});
+    this.setState({ ...this.state, locationId: targetId, itemId: null});
   }
 
 // Toggles Info display for info / photos / etc. 
@@ -115,9 +115,9 @@ class Items extends React.Component {
         return(
           <ItemPhoto ref='photo' itemId={this.state.itemId} locationId={this.state.locationId} />
         )
-      case 'receipts':
+      case 'receipt':
         return (
-          <Receipts itemId={this.state.itemId} receipt={this.state.receipt}/>
+          <Receipts ref='receipt' itemId={this.state.itemId} receipt={this.state.receipt}/>
         )
       case 'files':
         return (
@@ -175,7 +175,7 @@ class Items extends React.Component {
           </Button>
           </>
         )
-      case 'receipts':
+      case 'receipt':
         return (
           <>
           <Button shape="circle" onClick={() => this.toggleTab('newReceipt')} >
@@ -184,7 +184,7 @@ class Items extends React.Component {
           <Button shape="circle">
             <EditOutlined />
           </Button>
-          <Button shape="circle" >
+          <Button shape="circle" onClick={() => this.deleteReceipt()}>
             <DeleteOutlined />
           </Button>
           </>
@@ -215,6 +215,10 @@ class Items extends React.Component {
   //calls delete function in ItemFile.js
   deleteFile = () => {
     this.refs.file.deleteFile()
+  }
+  //calls delete function in Receipt.js
+  deleteReceipt = () => {
+    this.refs.receipt.deleteReceipt()
   }
 
 // delete item when delete button pressed
@@ -276,9 +280,9 @@ class Items extends React.Component {
               style={tab === 'photos' && itemId !== null ? activeTab : {}}>
                 Photos
               </StyledA>
-              <StyledA onClick={() => this.toggleTab('receipts')} 
-              style={tab === 'receipts' && itemId !== null ? activeTab : {}}>
-                Receipts
+              <StyledA onClick={() => this.toggleTab('receipt')} 
+              style={tab === 'receipt' && itemId !== null ? activeTab : {}}>
+                Receipt
               </StyledA>
               <StyledA 
               onClick={() => this.toggleTab('files')} 
