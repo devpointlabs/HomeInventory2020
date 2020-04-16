@@ -1,13 +1,15 @@
 import React from 'react';
 import axios from 'axios';
+
 export default class RenderPolicy extends React.Component {
   state = {
     policy: {}
   };
+
   componentDidMount() {
-    const { policyId } = this.props
+    const { policyId, homeId } = this.props
     if (policyId !== null) {
-      axios.get(`/api/items/${policyId}`).then((res) => {
+      axios.get(`/api/homes/${homeId}/policies/${policyId}`).then((res) => {
         console.log(res)
         this.setState({policy: res.data});
       }).catch((err) => {
@@ -16,9 +18,9 @@ export default class RenderPolicy extends React.Component {
     }
   }
   componentDidUpdate() {
-    const { policyId } = this.props
+    const { policyId, homeId } = this.props
     if( policyId !== null && policyId !== this.state.policy.id ) {
-    axios.get(`/api/policies/${policyId}`).then((res) => {
+    axios.get(`/api/homes/${homeId}/policies/${policyId}`).then((res) => {
       console.log(res)
       this.setState({policy: res.data});
     }).catch((err) => {
