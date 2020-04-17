@@ -7,7 +7,7 @@ import ItemPhoto from './ItemPhotos';
 import Receipts from './Receipts';
 import { Button } from 'antd'
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import LocationForm from '../components/forms/LocationForm'
+import LocationModal from '../components/modals/LocationModal'
 import ItemModal from './modals/ItemModal'
 import UploadModal from './modals/UploadModal'
 import ItemFiles from './ItemFiles'
@@ -138,7 +138,7 @@ class Items extends React.Component {
         )
       case 'newLocation':
         return (
-          <LocationForm update={this.updateLocationList}/>
+          <LocationModal update={this.updateLocationList} tab={this.toggleTab}/>
         )
       case 'editLocation':
         return (
