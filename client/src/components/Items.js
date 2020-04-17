@@ -5,13 +5,14 @@ import axios from 'axios'
 import ItemInfo from './ItemInfo'
 import ItemPhoto from './ItemPhotos';
 import Receipts from './Receipts';
-import { Button, List } from 'antd'
-import { PlusOutlined, DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons'
+import { Button } from 'antd'
+import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import LocationForm from '../components/forms/LocationForm'
 import ItemModal from './modals/ItemModal'
 import UploadModal from './modals/UploadModal'
 import ItemFiles from './ItemFiles'
 import ReceiptModal from './modals/ReceiptsModal';
+import EditItemModal from './modals/EditItemModal'
 
 class Items extends React.Component {
   state = { 
@@ -142,7 +143,7 @@ class Items extends React.Component {
         )
       case 'editItem':
         return (
-          <ItemModal itemId={this.state.itemId}/>
+          <EditItemModal itemId={this.state.itemId} tab={this.updateItemView}/>
         )
       case 'newFile':
         return (
@@ -244,7 +245,7 @@ class Items extends React.Component {
 
 // delete item when delete button pressed
   deleteItem = () => {
-    const { items, locationId, itemId } = this.state
+    const { items, itemId } = this.state
     axios.delete(`/api/items/${itemId}`)
     .then(res => {
       console.log(res)

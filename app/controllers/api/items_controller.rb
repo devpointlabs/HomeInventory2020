@@ -1,6 +1,6 @@
 class Api::ItemsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_item, only: [:show, :edit, :destroy]
+  before_action :set_item, only: [:show, :update, :destroy]
 
   def index
     items = current_user.items.all
