@@ -352,7 +352,7 @@ class Items extends React.Component {
               <Button type="primary" shape="circle" onClick={() => this.toggleTab('newLocation')}>
                 <PlusOutlined />
               </Button>
-              {this.state.locationId !== null ?  
+              {this.state.locationId !== 0 ?  
               <>
               <Button type="primary" shape="circle" onClick={() => this.deleteLocation()}>
                 <DeleteOutlined />
