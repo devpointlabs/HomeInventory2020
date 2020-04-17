@@ -39,6 +39,7 @@ class ReceiptModal extends React.Component {
 
   handleCancel = async() => {
     console.log('Clicked cancel button');
+    this.props.update()
     this.setState({
       visible: false,
     });

@@ -1,7 +1,7 @@
 class Api::ReceiptsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item
-  before_action :set_receipt, only: [:show, :edit, :destroy]
+  before_action :set_receipt, only: [:show, :update, :destroy]
   
   def index
     receipts = @item.receipts.all

@@ -36,6 +36,7 @@ class ItemModal extends React.Component {
 
   handleCancel = async() => {
     console.log('Clicked cancel button');
+    this.props.tab()
     this.setState({
       visible: false,
     });

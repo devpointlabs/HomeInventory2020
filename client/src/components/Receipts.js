@@ -7,7 +7,6 @@ class  Receipts extends React.Component {
   state = {
     receipt: null,
     itemId: null,
-    receiptid: null
   }
 
   async componentDidMount() {
@@ -17,7 +16,7 @@ class  Receipts extends React.Component {
         console.log(res)
         this.setState({receipt: res.data[0], itemId});   
         if (this.state.receipt) {
-          this.props.update(true)
+          this.props.update(true, res.data[0].id)
         } else {
           this.props.update(false)
         }
@@ -34,7 +33,7 @@ class  Receipts extends React.Component {
       console.log(res)
       this.setState({receipt: res.data[0], itemId});
       if (this.state.receipt) {
-        this.props.update(true)
+        this.props.update(true, res.data[0].id)
       } else {
         this.props.update(false)
       }

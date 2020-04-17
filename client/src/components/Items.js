@@ -13,6 +13,8 @@ import UploadModal from './modals/UploadModal'
 import ItemFiles from './ItemFiles'
 import ReceiptModal from './modals/ReceiptsModal';
 import EditItemModal from './modals/EditItemModal'
+import EditReceiptModal from './modals/EditReceiptModal'
+
 
 class Items extends React.Component {
   state = { 
@@ -21,7 +23,8 @@ class Items extends React.Component {
     locationId: 0, 
     itemId: null, 
     tab: 'info',
-    receiptLoaded: false
+    receiptLoaded: false,
+    receiptId: null
   };
 
   async componentDidMount() {
@@ -79,8 +82,8 @@ class Items extends React.Component {
     this.setState({ tab: 'receipt'});
   }
   //Function is passed to receipt component to see if item has receipt. Result keeps or removes new receipt button.
-  receiptLoaded = (bool) => {
-    this.setState({receiptLoaded: bool});
+  receiptLoaded = (bool, id) => {
+    this.setState({receiptLoaded: bool, receiptId: id});
   }
 
   // Function is passed to new location form / modal to hot-reload on submit. 
@@ -159,7 +162,7 @@ class Items extends React.Component {
         )
       case 'editReceipt':
         return (
-          <ReceiptModal itemId={this.state.itemId} update={this.updateReceipts}/>
+          <EditReceiptModal itemId={this.state.itemId} tab={this.updateReceipts} receiptId={this.state.receiptId}/>
         )
       default:
         return (
