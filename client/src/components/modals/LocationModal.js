@@ -1,18 +1,13 @@
 import React from 'react'
 import { Modal } from 'antd';
-import ItemForm from '../forms/ItemForm'
+import LocationForm from '../forms/LocationForm'
 
 class ItemModal extends React.Component {
   state = {
     visible: true,
     confirmLoading: false,
-    itemId: null
   }
-  componentDidMount() {
-    this.setState({
-      itemId: this.props.itemId
-    });
-  }
+ 
 
   showModal = () => {
     this.setState({
@@ -21,7 +16,7 @@ class ItemModal extends React.Component {
   };
 
   handleOk =() => { 
-    this.refs.newItem.handleSubmit()
+    this.refs.newLocation.handleSubmit()
     this.setState({
       confirmLoading: true,
     });
@@ -30,13 +25,13 @@ class ItemModal extends React.Component {
         visible: false,
         confirmLoading: false,
       });
-      this.props.tab()
+      this.props.tab('blank')
     }, 1000);
   };
 
   handleCancel = async() => {
     console.log('Clicked cancel button');
-    this.props.tab()
+    this.props.tab('blank')
     this.setState({
       visible: false,
     });
@@ -44,17 +39,17 @@ class ItemModal extends React.Component {
 
 
   render(){
-    const { visible, confirmLoading, itemId } = this.state;
+    const { visible, confirmLoading } = this.state;
 
     return(
       <Modal
-        title='Create New Item'
+        title='Enter New Location'
         visible={visible}
         onOk={this.handleOk}
         confirmLoading={confirmLoading}
         onCancel={this.handleCancel}
       >
-        <ItemForm ref='newItem' itemId={itemId} update={this.props.update} locationId={this.props.locationId}/>
+        <LocationForm ref='newLocation' update={this.props.update}/>
       </Modal>
     )
   }

@@ -5,13 +5,16 @@ import axios from 'axios'
 import ItemInfo from './ItemInfo'
 import ItemPhoto from './ItemPhotos';
 import Receipts from './Receipts';
-import { Button, List } from 'antd'
-import { PlusOutlined, DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons'
-import LocationForm from '../components/forms/LocationForm'
+import { Button } from 'antd'
+import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import LocationModal from '../components/modals/LocationModal'
 import ItemModal from './modals/ItemModal'
 import UploadModal from './modals/UploadModal'
 import ItemFiles from './ItemFiles'
 import ReceiptModal from './modals/ReceiptsModal';
+import EditItemModal from './modals/EditItemModal'
+import EditReceiptModal from './modals/EditReceiptModal'
+import EditLocationModal from './modals/EditLocationModal'
 
 class Items extends React.Component {
   state = { 
@@ -20,7 +23,8 @@ class Items extends React.Component {
     locationId: 0, 
     itemId: null, 
     tab: 'info',
-    receiptLoaded: false
+    receiptLoaded: false,
+    receiptId: null
   };
 
   async componentDidMount() {
@@ -78,8 +82,8 @@ class Items extends React.Component {
     this.setState({ tab: 'receipt'});
   }
   //Function is passed to receipt component to see if item has receipt. Result keeps or removes new receipt button.
-  receiptLoaded = (bool) => {
-    this.setState({receiptLoaded: bool});
+  receiptLoaded = (bool, id) => {
+    this.setState({receiptLoaded: bool, receiptId: id});
   }
 
   // Function is passed to new location form / modal to hot-reload on submit. 
@@ -134,11 +138,19 @@ class Items extends React.Component {
         )
       case 'newLocation':
         return (
-          <LocationForm update={this.updateLocationList}/>
+          <LocationModal update={this.updateLocationList} tab={this.toggleTab}/>
+        )
+      case 'editLocation':
+        return (
+          <EditLocationModal locationId={this.state.locationId} tab={this.toggleTab}/>
         )
       case 'newItem':
         return (
           <ItemModal locationId={this.state.locationId} update={this.updateItemList} tab={this.updateItemView}/>
+        )
+      case 'editItem':
+        return (
+          <EditItemModal itemId={this.state.itemId} tab={this.updateItemView}/>
         )
       case 'newFile':
         return (
@@ -151,6 +163,10 @@ class Items extends React.Component {
       case 'newReceipt':
         return (
           <ReceiptModal itemId={this.state.itemId} update={this.updateReceipts}/>
+        )
+      case 'editReceipt':
+        return (
+          <EditReceiptModal itemId={this.state.itemId} tab={this.updateReceipts} receiptId={this.state.receiptId} />
         )
       default:
         return (
@@ -167,7 +183,7 @@ class Items extends React.Component {
       case 'info':
         return (
           <>
-          <Button shape="circle">
+          <Button shape="circle" onClick={() => this.toggleTab('editItem')}>
             <EditOutlined />
           </Button> 
         </>
@@ -188,7 +204,7 @@ class Items extends React.Component {
           <>
           {receiptLoaded ? 
           <>
-          <Button shape="circle">
+          <Button shape="circle" onClick={() => this.toggleTab('editReceipt')}>
             <EditOutlined />
           </Button>
           <Button shape="circle" onClick={() => this.deleteReceipt()}>
@@ -236,7 +252,7 @@ class Items extends React.Component {
 
 // delete item when delete button pressed
   deleteItem = () => {
-    const { items, locationId, itemId } = this.state
+    const { items, itemId } = this.state
     axios.delete(`/api/items/${itemId}`)
     .then(res => {
       console.log(res)
@@ -341,7 +357,7 @@ class Items extends React.Component {
               <Button type="primary" shape="circle" onClick={() => this.deleteLocation()}>
                 <DeleteOutlined />
               </Button>
-              <Button type="primary" shape="circle">
+              <Button type="primary" shape="circle" onClick={() => this.toggleTab('editLocation')}>
                 <EditOutlined />
               </Button>
               </>
