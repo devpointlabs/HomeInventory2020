@@ -54,6 +54,7 @@ class EditLocationModal extends React.Component {
     });
     setTimeout(() => {
       this.props.tab('blank')
+      this.props.update()
       this.setState({
         visible: false,
         confirmLoading: false,

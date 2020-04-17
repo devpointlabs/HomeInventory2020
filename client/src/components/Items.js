@@ -91,6 +91,11 @@ class Items extends React.Component {
     const { locations } = this.state
     this.setState({locations: [...locations, newLocation.data]})
   }
+  //Function passed to edit location modal to hot-reload list on submit of edit.
+   updateLocation = async() => {
+   const locationData =  await axios.get('/api/locations')
+    this.setState({locations: locationData.data});
+  }
   //Function is passed to new item form through modal to hot-reload added item. 
   updateItemList = (newItem) => {
     const { items } = this.state
@@ -142,7 +147,7 @@ class Items extends React.Component {
         )
       case 'editLocation':
         return (
-          <EditLocationModal locationId={this.state.locationId} tab={this.toggleTab}/>
+          <EditLocationModal locationId={this.state.locationId} tab={this.toggleTab} update={this.updateLocation}/>
         )
       case 'newItem':
         return (

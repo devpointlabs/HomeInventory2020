@@ -44,9 +44,8 @@ export default class RenderItem extends React.Component {
   render() {
     const { item, photo } = this.state
     if (this.state.item.id) {
-      return (
-        
-          <div style={{width: '100%'}}>
+      return (       
+          <div style={{width: '100%', margin: '16px'}}>
             <h3>{item.name}</h3>
             <Divider />
             <div style={containerDiv}>
