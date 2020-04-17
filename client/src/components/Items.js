@@ -14,7 +14,7 @@ import ItemFiles from './ItemFiles'
 import ReceiptModal from './modals/ReceiptsModal';
 import EditItemModal from './modals/EditItemModal'
 import EditReceiptModal from './modals/EditReceiptModal'
-
+import EditLocationModal from './modals/EditLocationModal'
 
 class Items extends React.Component {
   state = { 
@@ -140,6 +140,10 @@ class Items extends React.Component {
         return (
           <LocationForm update={this.updateLocationList}/>
         )
+      case 'editLocation':
+        return (
+          <EditLocationModal locationId={this.state.locationId} tab={this.toggleTab}/>
+        )
       case 'newItem':
         return (
           <ItemModal locationId={this.state.locationId} update={this.updateItemList} tab={this.updateItemView}/>
@@ -162,7 +166,7 @@ class Items extends React.Component {
         )
       case 'editReceipt':
         return (
-          <EditReceiptModal itemId={this.state.itemId} tab={this.updateReceipts} receiptId={this.state.receiptId}/>
+          <EditReceiptModal itemId={this.state.itemId} tab={this.updateReceipts} receiptId={this.state.receiptId} />
         )
       default:
         return (
@@ -353,7 +357,7 @@ class Items extends React.Component {
               <Button type="primary" shape="circle" onClick={() => this.deleteLocation()}>
                 <DeleteOutlined />
               </Button>
-              <Button type="primary" shape="circle">
+              <Button type="primary" shape="circle" onClick={() => this.toggleTab('editLocation')}>
                 <EditOutlined />
               </Button>
               </>

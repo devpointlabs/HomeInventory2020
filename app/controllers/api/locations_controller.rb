@@ -1,6 +1,6 @@
 class Api::LocationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_location, only: [:show, :edit, :destroy]
+  before_action :set_location, only: [:show, :update, :destroy]
   
   def index
     render json: current_user.locations.all
@@ -13,6 +13,10 @@ class Api::LocationsController < ApplicationController
     else
       render json: location.errors, status: 422
     end
+  end
+
+  def show
+    render json: @location
   end
 
   def update
