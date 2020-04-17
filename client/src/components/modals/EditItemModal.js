@@ -173,7 +173,7 @@ class EditItemModal extends React.Component {
               required
               name='purchase_date'
               value={purchase_date}
-              onChange={this.handleDate}
+              onChange={this.handleChange}
               />
             </Form.Item>
             <Form.Item >
