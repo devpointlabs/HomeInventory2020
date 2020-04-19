@@ -1,42 +1,76 @@
 import React from "react";
 import axios from "axios";
-import { Form, InputNumber, DatePicker } from "antd";
+import { Form, Modal, Input, InputNumber } from "antd";
 
-class AssessmentForm extends React.Component {
+
+class EditAssessmentModal extends React.Component {
   state = {
-    date: null,
-    land_value: "",
-    structure_value: "",
-    total_value: "",
+    visible: false,
+    confirmLoading: false,
+    assessment: {
+      id: null,
+      date: null,
+      land_value: "",
+      structure_value: "",
+      total_value: ""
+    }
+  };
+  componentDidMount() {   
+    const {  assessmentId, home } = this.props
+
+    axios.get(`/api/homes/${home}/assessments/${assessmentId}`)
+    .then(res => {
+      console.log(res)
+      this.setState({assessment: res.data});
+    })
+  }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
   };
 
-  handleSubmit = () => {
-    //gonna need a home to post this assessment to
-    axios.post("/api/homes/1/assessments", this.state).then((res) => {
-      console.log(res);
+  handleOk =() => { 
+    const { assessmentId, home } = this.props
+
+    axios.patch(`/api/homes/${home}/assessments/${assessmentId}`, { ...this.state.assessment })
+    .then( res => {
+      console.log(res)
+    })
+    this.setState({
+      confirmLoading: true,
+    });
+    setTimeout(() => {
+      this.props.update()
       this.setState({
-        date: null,
-        land_value: "",
-        structure_value: "",
-        total_value: "",
-      })
+        visible: false,
+        confirmLoading: false,
+      });
+    }, 1000);
+  };
+
+  handleCancel = () => {
+    console.log('Clicked cancel button');
+    this.setState({
+      visible: false,
     });
   };
 
   handleDate = (date) => {
-    this.setState({ date: date });
+    this.setState({assessment: {...this.state.assessment, date: date.target.value }});
   };
 
   handleLandValueChange = (value) => {
-    this.setState({ land_value: value });
+    this.setState({assessment: {...this.state.assessment,  land_value: value }});
   };
 
   handleStructureValueChange = (value) => {
-    this.setState({ structure_value: value });
+    this.setState({assessment: {...this.state.assessment,  structure_value: value }});
   };
 
   handleTotalValueChange = (value) => {
-    this.setState({ total_value: value });
+    this.setState({assessment: {...this.state.assessment,  total_value: value }});
   };
 
   render() {
@@ -45,14 +79,24 @@ class AssessmentForm extends React.Component {
       land_value, 
       structure_value,
       total_value
-    } = this.state;
+    } = this.state.assessment
+    const { visible, confirmLoading } = this.state
+
     return (
+      <Modal
+      title='Edit Assessment'
+      visible={visible}
+      onOk={this.handleOk}
+      confirmLoading={confirmLoading}
+      onCancel={this.handleCancel}
+    >
+      {/* _________________________FORM_________________________ */}
       <>
         <div>
-        <Form onFinish={this.handleSubmit}>
+        <Form>
         <Form.Item >
         <p>Date</p>
-            <DatePicker
+            <Input
               label="Date"
               placeholder="Assessment Date"
               autoFocus
@@ -117,6 +161,7 @@ class AssessmentForm extends React.Component {
           </Form>
         </div>
       </>
+      </Modal>
     );
   }
 }
@@ -126,4 +171,4 @@ const inputWidth = {
 }
 
 
-export default AssessmentForm;
+export default EditAssessmentModal;
