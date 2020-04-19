@@ -45,6 +45,7 @@ export default class House extends React.Component {
         const { maintenanceId, homeId } = this.state
         axios.delete(`/api/homes/${homeId}/maintenances/${maintenanceId}`)
             .then(res => {
+                this.refs.maintenances.reload()
             })
             .catch(err => {
                 console.log(err)
