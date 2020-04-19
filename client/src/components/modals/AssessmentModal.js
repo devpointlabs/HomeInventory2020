@@ -6,7 +6,6 @@ class AssessmentModal extends React.Component {
   state = {
     visible: false,
     confirmLoading: false,
-    itemId: null
   }
 
 
@@ -30,7 +29,7 @@ class AssessmentModal extends React.Component {
     }, 1000);
   };
 
-  handleCancel = async() => {
+  handleCancel = () => {
     console.log('Clicked cancel button');
     this.setState({
       visible: false,

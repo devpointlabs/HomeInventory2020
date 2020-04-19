@@ -6,7 +6,6 @@ class MaintenanceModal extends React.Component {
   state = {
     visible: false,
     confirmLoading: false,
-    itemId: null
   }
 
   showModal = () => {
@@ -29,7 +28,7 @@ class MaintenanceModal extends React.Component {
     }, 1000);
   };
 
-  handleCancel = async() => {
+  handleCancel = () => {
     console.log('Clicked cancel button');
     this.setState({
       visible: false,

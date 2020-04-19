@@ -141,8 +141,10 @@ export default class House extends React.Component {
                     : null }
                     <StyledIcon onClick={() => this.openMaintenance()}>
                         <Link><PlusOutlined /></Link>
-                        <MaintenanceModal ref='maintenance' update={this.updateMaintenance}/>
                     </StyledIcon>
+                    <div onClick={e => e.stopPropagation()}>
+                        <MaintenanceModal ref='maintenance' update={this.updateMaintenance}/>
+                    </div>
                 </StyledCon>
                 <StyledTable>
                     <table>
@@ -181,8 +183,11 @@ export default class House extends React.Component {
                     : null}                  
                     <StyledIcon onClick={() => this.openAssessment()}>
                        <Link><PlusOutlined /></Link>
-                       <AssessmentModal ref='assessment' update={this.updateAssessment}/>
+                       
                     </StyledIcon>
+                    <div onClick={e => e.stopPropagation()}>
+                        <AssessmentModal ref='assessment' update={this.updateAssessment}/>
+                    </div>
                 </StyledCon>
                 <StyledTable>
                     <table>
