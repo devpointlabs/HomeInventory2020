@@ -8,6 +8,7 @@ import { MinusOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import AssessmentModal from './modals/AssessmentModal';
 import MaintenanceModal from './modals/MaintenanceModal';
+import EditAssessmentsModal from './modals/EditAssessmentModal'
 
 export default class House extends React.Component {
     state = {
@@ -77,6 +78,9 @@ export default class House extends React.Component {
     // Function to open assessment modal on click of new button:
     openAssessment = () => {
         this.refs.assessment.showModal()
+    }
+    openEditAssessment = () => {
+        this.refs.editAssessment.showModal()
     }
     updateAssessment = () => {
         this.refs.assessments.reload()
@@ -172,19 +176,26 @@ export default class House extends React.Component {
                     </StyledHeader>
                     {this.state.assessmentId !== 0 ? 
                     <>
-                     <StyledIcon>
-                        <Link to={{ pathname: '/edit/assessment', id: this.state.assessmentId, home: home.id }}>
+                     <StyledIcon onClick={() => this.openEditAssessment()}>
+                        <Link>
                             <EditOutlined />
                         </Link>
                     </StyledIcon>
+                    <div onClick={e => e.stopPropagation()}>
+                        <EditAssessmentsModal 
+                            ref='editAssessment'
+                            home= {this.state.homeId} 
+                            assessmentId={this.state.assessmentId} 
+                            update={this.updateAssessment}
+                        />
+                     </div>
                     <StyledIcon>
                         <Link><MinusOutlined onClick={this.deleteAssessment} /></Link>
                     </StyledIcon>
                     </>
                     : null}                  
                     <StyledIcon onClick={() => this.openAssessment()}>
-                       <Link><PlusOutlined /></Link>
-                       
+                       <Link><PlusOutlined /></Link>   
                     </StyledIcon>
                     <div onClick={e => e.stopPropagation()}>
                         <AssessmentModal ref='assessment' update={this.updateAssessment}/>
