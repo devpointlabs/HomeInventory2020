@@ -61,10 +61,12 @@ export default class House extends React.Component {
         const { assessmentId, homeId } = this.state
         axios.delete(`/api/homes/${homeId}/assessments/${assessmentId}`)
             .then(res => {
+                this.refs.assessments.reload()
             })
             .catch(err => {
                 console.log(err)
             })
+    
     }
 
     // Function to open assessment modal on click of new button:
@@ -119,7 +121,7 @@ export default class House extends React.Component {
                     </StyledIcon>
                     <StyledIcon >
                         <PlusOutlined />
-                        <AssessmentModal ref='assessment' update={this.updateAssessment}/>
+                       
                     </StyledIcon>
                     <StyledIcon>
                         <Link to={{ pathname: '/edit/maintenance', id: this.state.maintenanceId, home: home.id }}>
@@ -155,6 +157,7 @@ export default class House extends React.Component {
                     </StyledIcon>
                     <StyledIcon onClick={() => this.openAssessment()}>
                        <PlusOutlined />
+                       <AssessmentModal ref='assessment' update={this.updateAssessment}/>
                     </StyledIcon>
                     <StyledIcon>
                         <Link to={{ pathname: '/edit/assessment', id: this.state.assessmentId, home: home.id }}>

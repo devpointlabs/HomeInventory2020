@@ -17,7 +17,6 @@ export default class Assessments extends React.Component {
         }).catch((err) => {
             console.log(err)
         })
-
     }
 
     componentDidUpdate() {
