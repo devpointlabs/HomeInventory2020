@@ -44,6 +44,13 @@
   Maintenance.create(due_date: '01/01/01', task: 'Change Heating Filter', home_id: 1)
   Maintenance.create(due_date: '02/02/02', task: 'Fix Door', home_id: 1)
   Maintenance.create(due_date: '03/03/03', task: 'Change Dog', home_id: 1)
+
+  Receipt.create(img: 'https://bloximages.chicago2.vip.townnews.com/dailylocal.com/content/tncms/assets/v3/editorial/d/77/d7745b82-1c1f-11e9-b3bb-032816e700e0/5c43798f9d036.image.jpg', item_id: 1)
+  Receipt.create(img: 'https://cdn.shopify.com/s/files/1/0398/5025/products/Hello_Gift_Receipt_1_order_printer_template_for_Shopify_1024x1024.png?v=1568193160', item_id: 1)
+  Receipt.create(img: 'https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/772/951/datas/original.JPG', item_id: 1)
+  Receipt.create(img: 'https://omextemplates.content.office.net/support/templates/en-us/lt16410220.png', item_id: 1)
+  Receipt.create(img: 'https://www.godlyplayfoundation.org/wp-content/uploads/2016/06/Target-receipt-2.jpg', item_id: 1)
+
   
 puts "Items seeded."
   
