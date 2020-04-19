@@ -19,6 +19,15 @@ export default class Maintenances extends React.Component {
         })
 
     }
+    reload = () => {
+        const { homeId, } = this.props
+        axios.get(`/api/homes/${homeId}/maintenances`).then((res) => {
+            console.log(res)
+            this.setState({ maintenances: res.data });
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
 
     componentDidUpdate() {
         const { maintenanceId } = this.state

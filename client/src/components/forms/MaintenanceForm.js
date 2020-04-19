@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import styled from 'styled-components';
 import { Form, Input, Button, DatePicker } from "antd";
 
 class MaintenanceForm extends React.Component {
@@ -16,7 +15,6 @@ class MaintenanceForm extends React.Component {
         due_date: null,
         task: ""
       })
-      this.props.history.goBack()
     });
   };
 
@@ -36,8 +34,7 @@ class MaintenanceForm extends React.Component {
     } = this.state;
     return (
       <>
-        <StyledBackground>
-          <StyledHeader>Add Maintenance Schedule</StyledHeader>
+        <div>
           <Form onFinish={this.handleSubmit}>
             <Form.Item>
               <p>Due Date</p>
@@ -49,6 +46,7 @@ class MaintenanceForm extends React.Component {
                 name="due_date"
                 value={due_date}
                 onChange={this.handleDate}
+                style={inputWidth}
               />
             </Form.Item>
             <Form.Item>
@@ -60,48 +58,19 @@ class MaintenanceForm extends React.Component {
                 value={task}
                 placeholder="Description"
                 onChange={this.handleChange}
+                style={{width: '280px'}}
               />
             </Form.Item>
-            <Form.Item>
-              <StyledButton htmlType="submit">
-                Submit
-            </StyledButton>
-            </Form.Item>
           </Form>
-        </StyledBackground>
+        </div>
       </>
     );
   }
 }
 
-const StyledBackground = styled.div`
-border: black 1px solid;
-margin: 10px 420px;
-padding: 10px 25px;
-`
-const StyledHeader = styled.h1`
-font-weight: bold;
-font-size: 25px;
-`
-const StyledButton = styled.button`
-border: none;
-color: white;
-font-weight: bold;
-background: #008cff;
-padding: 5px 15px;
-cursor: pointer;
-width: 100%;
-transition: all 0.3s ease-in-out;
 
-&:hover {
-box-shadow: 0 5px 10px #6bbcff;
-transition: all 0.3s ease-in-out;
-}
-`
-const StyledLine2 = styled.div`
-background: #adadad;
-margin-top: 45px;
-width: 100%;
-height: 1px;
-`
 export default MaintenanceForm;
+
+const inputWidth = {
+  width: '180px'
+}

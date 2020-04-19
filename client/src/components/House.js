@@ -7,6 +7,7 @@ import HomeForm from './forms/HomeForm';
 import { MinusOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import AssessmentModal from './modals/AssessmentModal';
+import MaintenanceModal from './modals/MaintenanceModal';
 
 export default class House extends React.Component {
     state = {
@@ -80,6 +81,13 @@ export default class House extends React.Component {
         this.refs.assessments.reload()
     }
 
+    openMaintenance = () => {
+        this.refs.maintenance.showModal()
+    }
+    updateMaintenance = () => {
+        this.refs.maintenances.reload()
+    }
+
     renderHouses = () => {
         const { houses } = this.state
         return houses.map(home => (
@@ -119,8 +127,6 @@ export default class House extends React.Component {
                     <StyledHeader>
                         <p> Maintenance Schedule </p>
                     </StyledHeader>
-                 
-                 
                     {this.state.maintenanceId !== 0 ? 
                     <>               
                     <StyledIcon>
@@ -133,8 +139,9 @@ export default class House extends React.Component {
                     </StyledIcon>
                     </>
                     : null }
-                    <StyledIcon >
+                    <StyledIcon onClick={() => this.openMaintenance()}>
                         <Link><PlusOutlined /></Link>
+                        <MaintenanceModal ref='maintenance' update={this.updateMaintenance}/>
                     </StyledIcon>
                 </StyledCon>
                 <StyledTable>
@@ -145,7 +152,7 @@ export default class House extends React.Component {
                         </tr>
                     </table>
                     <StyledLine />
-                    <Maintenances homeId={home.id} getId={this.getMaintenanceId} />
+                    <Maintenances ref='maintenances' homeId={home.id} getId={this.getMaintenanceId} />
                 </StyledTable>
             </div>
         ))

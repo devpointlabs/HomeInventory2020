@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import styled from 'styled-components';
 import { Form, InputNumber, DatePicker } from "antd";
 
 class AssessmentForm extends React.Component {
@@ -121,13 +120,7 @@ class AssessmentForm extends React.Component {
     );
   }
 }
-const StyledBackground = styled.div`
 
-`
-const StyledHeader = styled.h1`
-font-weight: bold;
-font-size: 25px;
-`
 const inputWidth = {
   width: '180px'
 }
