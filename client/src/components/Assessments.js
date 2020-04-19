@@ -25,6 +25,16 @@ export default class Assessments extends React.Component {
         this.props.getId(assessmentId)
     }
 
+    reload = () => {
+        const { homeId, } = this.props
+        axios.get(`/api/homes/${homeId}/assessments`).then((res) => {
+            console.log(res)
+            this.setState({ assessments: res.data });
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
     renderAssessments = () => {
 
         // make this render columns

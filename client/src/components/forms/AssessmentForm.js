@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import styled from 'styled-components';
-import { Form, Input, InputNumber, Button, DatePicker } from "antd";
+import { Form, InputNumber, DatePicker } from "antd";
 
 class AssessmentForm extends React.Component {
   state = {
@@ -21,7 +21,6 @@ class AssessmentForm extends React.Component {
         structure_value: "",
         total_value: "",
       })
-      this.props.history.goBack()
     });
   };
 
@@ -50,10 +49,9 @@ class AssessmentForm extends React.Component {
     } = this.state;
     return (
       <>
-        <StyledBackground>
-          <StyledHeader>Add Assessment History</StyledHeader>
+        <div>
         <Form onFinish={this.handleSubmit}>
-        <Form.Item>
+        <Form.Item >
         <p>Date</p>
             <DatePicker
               label="Date"
@@ -63,6 +61,7 @@ class AssessmentForm extends React.Component {
               name="date"
               value={date}
               onChange={this.handleDate}
+              style={inputWidth}
             />
           </Form.Item>
           <Form.Item>
@@ -79,6 +78,7 @@ class AssessmentForm extends React.Component {
               }
               parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
               onChange={this.handleLandValueChange}
+              style={inputWidth}
               />
           </Form.Item>
           <Form.Item>
@@ -95,6 +95,7 @@ class AssessmentForm extends React.Component {
               }
               parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
               onChange={this.handleStructureValueChange}
+              style={inputWidth}
             />
           </Form.Item>
           <Form.Item>
@@ -111,47 +112,25 @@ class AssessmentForm extends React.Component {
               }
               parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
               onChange={this.handleTotalValueChange}
+              style={inputWidth}
             />
           </Form.Item>
-          <Form.Item>
-          <StyledButton htmlType="submit">
-                Submit
-            </StyledButton>
-            </Form.Item>
           </Form>
-        </StyledBackground>
+        </div>
       </>
     );
   }
 }
 const StyledBackground = styled.div`
-border: black 1px solid;
-margin: 10px 420px;
-padding: 10px 25px;
+
 `
 const StyledHeader = styled.h1`
 font-weight: bold;
 font-size: 25px;
 `
-const StyledButton = styled.button`
-border: none;
-color: white;
-font-weight: bold;
-background: #008cff;
-padding: 5px 15px;
-cursor: pointer;
-width: 100%;
-transition: all 0.3s ease-in-out;
-
-&:hover {
-box-shadow: 0 5px 10px #6bbcff;
-transition: all 0.3s ease-in-out;
+const inputWidth = {
+  width: '180px'
 }
-`
-const StyledLine2 = styled.div`
-background: #adadad;
-margin-top: 45px;
-width: 100%;
-height: 1px;
-`
+
+
 export default AssessmentForm;

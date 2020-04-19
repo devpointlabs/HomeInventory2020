@@ -6,6 +6,7 @@ import Maintenances from './Maintenances';
 import HomeForm from './forms/HomeForm';
 import { MinusOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import AssessmentModal from './modals/AssessmentModal';
 
 export default class House extends React.Component {
     state = {
@@ -66,6 +67,14 @@ export default class House extends React.Component {
             })
     }
 
+    // Function to open assessment modal on click of new button:
+    openAssessment = () => {
+        this.refs.assessment.showModal()
+    }
+    updateAssessment = () => {
+        this.refs.assessments.reload()
+    }
+
     renderHouses = () => {
         const { houses } = this.state
         return houses.map(home => (
@@ -108,8 +117,9 @@ export default class House extends React.Component {
                     <StyledIcon>
                         <Link><MinusOutlined onClick={this.deleteMaintenance} /></Link>
                     </StyledIcon>
-                    <StyledIcon>
-                        <Link to='/add/maintenance'><PlusOutlined /></Link>
+                    <StyledIcon >
+                        <PlusOutlined />
+                        <AssessmentModal ref='assessment' update={this.updateAssessment}/>
                     </StyledIcon>
                     <StyledIcon>
                         <Link to={{ pathname: '/edit/maintenance', id: this.state.maintenanceId, home: home.id }}>
@@ -143,8 +153,8 @@ export default class House extends React.Component {
                     <StyledIcon>
                         <Link><MinusOutlined onClick={this.deleteAssessment} /></Link>
                     </StyledIcon>
-                    <StyledIcon>
-                        <Link to='/add/assessment'><PlusOutlined /></Link>
+                    <StyledIcon onClick={() => this.openAssessment()}>
+                       <PlusOutlined />
                     </StyledIcon>
                     <StyledIcon>
                         <Link to={{ pathname: '/edit/assessment', id: this.state.assessmentId, home: home.id }}>
@@ -162,7 +172,7 @@ export default class House extends React.Component {
                         </tr>
                     </table>
                     <StyledLine />
-                    <Assessments homeId={home.id} getId={this.getAssessmentId} />
+                    <Assessments ref='assessments' homeId={home.id} getId={this.getAssessmentId} />
                 </StyledTable>
             </div>
         ))
