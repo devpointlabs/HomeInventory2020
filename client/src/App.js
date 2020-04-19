@@ -15,8 +15,6 @@ import { Switch, Route, } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import House from './components/House';
-import EditMaintenances from './components/EditMaintenances';
-import EditAssessments from './components/EditAssessments';
 import EditHome from './components/EditHome';
 import PolicyForm from './components/forms/PolicyForm';
 import EditPolicy from './components/EditPolicy'
@@ -37,8 +35,6 @@ const App = () => (
         <ProtectedRoute exact path="/inbox" component={Inbox} />
         <ProtectedRoute exact path="/userpage" component={UserPage} />
         <ProtectedRoute exact path="/add/policy" component={PolicyForm} />
-        <ProtectedRoute exact path="/edit/maintenance" component={EditMaintenances} />
-        <ProtectedRoute exact path="/edit/assessment" component={EditAssessments} />
         <ProtectedRoute exact path="/edit/home" component={EditHome} />
         <ProtectedRoute exact path="/edit/policy" component={EditPolicy} />
         <Route component={NoMatch} />

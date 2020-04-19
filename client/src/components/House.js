@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import AssessmentModal from './modals/AssessmentModal';
 import MaintenanceModal from './modals/MaintenanceModal';
 import EditAssessmentsModal from './modals/EditAssessmentModal'
+import EditMaintenanceModal from './modals/EditMaintenanceModal';
 
 export default class House extends React.Component {
     state = {
@@ -89,6 +90,9 @@ export default class House extends React.Component {
     openMaintenance = () => {
         this.refs.maintenance.showModal()
     }
+    openEditMaintenance = () => {
+        this.refs.editMaintenance.showModal()
+    }
     updateMaintenance = () => {
         this.refs.maintenances.reload()
     }
@@ -134,11 +138,17 @@ export default class House extends React.Component {
                     </StyledHeader>
                     {this.state.maintenanceId !== 0 ? 
                     <>               
-                    <StyledIcon>
-                        <Link to={{ pathname: '/edit/maintenance', id: this.state.maintenanceId, home: home.id }}>
-                            <EditOutlined />
-                        </Link>
+                    <StyledIcon onClick={() => this.openEditMaintenance()}>
+                        <Link><EditOutlined /></Link>
                     </StyledIcon>
+                    <div onClick={e => e.stopPropagation()}>
+                        <EditMaintenanceModal 
+                            ref='editMaintenance'
+                            home={home.id} 
+                            id={this.state.maintenanceId} 
+                            update={this.updateMaintenance}
+                        />
+                    </div>
                     <StyledIcon>
                         <Link><MinusOutlined onClick={this.deleteMaintenance} /></Link>
                     </StyledIcon>
@@ -177,14 +187,12 @@ export default class House extends React.Component {
                     {this.state.assessmentId !== 0 ? 
                     <>
                      <StyledIcon onClick={() => this.openEditAssessment()}>
-                        <Link>
-                            <EditOutlined />
-                        </Link>
+                        <Link><EditOutlined /></Link>
                     </StyledIcon>
                     <div onClick={e => e.stopPropagation()}>
                         <EditAssessmentsModal 
                             ref='editAssessment'
-                            home= {this.state.homeId} 
+                            home= {home.id} 
                             assessmentId={this.state.assessmentId} 
                             update={this.updateAssessment}
                         />

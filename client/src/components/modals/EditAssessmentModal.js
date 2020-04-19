@@ -16,9 +16,9 @@ class EditAssessmentModal extends React.Component {
     }
   };
   componentDidMount() {   
-    const {  assessmentId } = this.props
+    const {  assessmentId, home } = this.props
 
-    axios.get(`/api/homes/1/assessments/${assessmentId}`)
+    axios.get(`/api/homes/${home}/assessments/${assessmentId}`)
     .then(res => {
       console.log(res)
       this.setState({assessment: res.data});
@@ -32,9 +32,9 @@ class EditAssessmentModal extends React.Component {
   };
 
   handleOk =() => { 
-    const { assessmentId } = this.props
+    const { assessmentId, home } = this.props
 
-    axios.patch(`/api/homes/1/assessments/${assessmentId}`, { ...this.state.assessment })
+    axios.patch(`/api/homes/${home}/assessments/${assessmentId}`, { ...this.state.assessment })
     .then( res => {
       console.log(res)
     })
@@ -50,7 +50,7 @@ class EditAssessmentModal extends React.Component {
     }, 1000);
   };
 
-  handleCancel = async() => {
+  handleCancel = () => {
     console.log('Clicked cancel button');
     this.setState({
       visible: false,
