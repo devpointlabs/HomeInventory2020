@@ -10,7 +10,10 @@ import AssessmentModal from './modals/AssessmentModal';
 
 export default class House extends React.Component {
     state = {
-        houses: [], maintenanceId: 0, assessmentId: 0, homeId: 0,
+        houses: [],
+        maintenanceId: 0,
+        assessmentId: 0, 
+        homeId: 0,
     };
     componentDidMount() {
         axios.get('/api/homes').then((res) => {
@@ -121,13 +124,14 @@ export default class House extends React.Component {
                     </StyledIcon>
                     <StyledIcon >
                         <PlusOutlined />
-                       
                     </StyledIcon>
+                    {this.state.maintenanceId !== 0 ? 
                     <StyledIcon>
                         <Link to={{ pathname: '/edit/maintenance', id: this.state.maintenanceId, home: home.id }}>
                             <EditOutlined />
                         </Link>
                     </StyledIcon>
+                    : null }
                 </StyledCon>
                 <StyledTable>
                     <table>
@@ -159,11 +163,13 @@ export default class House extends React.Component {
                        <PlusOutlined />
                        <AssessmentModal ref='assessment' update={this.updateAssessment}/>
                     </StyledIcon>
-                    <StyledIcon>
+                    {this.state.assessmentId !== 0 ? 
+                     <StyledIcon>
                         <Link to={{ pathname: '/edit/assessment', id: this.state.assessmentId, home: home.id }}>
                             <EditOutlined />
                         </Link>
                     </StyledIcon>
+                    : null}                  
                 </StyledCon>
                 <StyledTable>
                     <table>

@@ -6,7 +6,8 @@ import styled from 'styled-components';
 
 export default class Assessments extends React.Component {
     state = {
-        assessments: [], assessmentId: 0,
+        assessments: [], 
+        assessmentId: 0,
     };
 
     componentDidMount() {
@@ -33,6 +34,7 @@ export default class Assessments extends React.Component {
             console.log(err)
         })
     }
+
 
     renderAssessments = () => {
 
