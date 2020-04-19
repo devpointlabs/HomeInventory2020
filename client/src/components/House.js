@@ -119,19 +119,23 @@ export default class House extends React.Component {
                     <StyledHeader>
                         <p> Maintenance Schedule </p>
                     </StyledHeader>
-                    <StyledIcon>
-                        <Link><MinusOutlined onClick={this.deleteMaintenance} /></Link>
-                    </StyledIcon>
-                    <StyledIcon >
-                        <PlusOutlined />
-                    </StyledIcon>
+                 
+                 
                     {this.state.maintenanceId !== 0 ? 
+                    <>               
                     <StyledIcon>
                         <Link to={{ pathname: '/edit/maintenance', id: this.state.maintenanceId, home: home.id }}>
                             <EditOutlined />
                         </Link>
                     </StyledIcon>
+                    <StyledIcon>
+                        <Link><MinusOutlined onClick={this.deleteMaintenance} /></Link>
+                    </StyledIcon>
+                    </>
                     : null }
+                    <StyledIcon >
+                        <Link><PlusOutlined /></Link>
+                    </StyledIcon>
                 </StyledCon>
                 <StyledTable>
                     <table>
@@ -156,20 +160,22 @@ export default class House extends React.Component {
                     <StyledHeader>
                         <p> Assessment History </p>
                     </StyledHeader>
-                    <StyledIcon>
-                        <Link><MinusOutlined onClick={this.deleteAssessment} /></Link>
-                    </StyledIcon>
-                    <StyledIcon onClick={() => this.openAssessment()}>
-                       <PlusOutlined />
-                       <AssessmentModal ref='assessment' update={this.updateAssessment}/>
-                    </StyledIcon>
                     {this.state.assessmentId !== 0 ? 
+                    <>
                      <StyledIcon>
                         <Link to={{ pathname: '/edit/assessment', id: this.state.assessmentId, home: home.id }}>
                             <EditOutlined />
                         </Link>
                     </StyledIcon>
+                    <StyledIcon>
+                        <Link><MinusOutlined onClick={this.deleteAssessment} /></Link>
+                    </StyledIcon>
+                    </>
                     : null}                  
+                    <StyledIcon onClick={() => this.openAssessment()}>
+                       <Link><PlusOutlined /></Link>
+                       <AssessmentModal ref='assessment' update={this.updateAssessment}/>
+                    </StyledIcon>
                 </StyledCon>
                 <StyledTable>
                     <table>
