@@ -6,19 +6,22 @@ import Uploader from "./uploaders/FileUploader";
 import { Button, List } from "antd";
 import { PlusOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import PolicyForm from "../components/forms/PolicyForm";
-import PolicyInfo from "../components/PolicyInfo"
+import PolicyInfo from "../components/PolicyInfo";
+import { Link } from "react-router-dom";
 
 class Policies extends React.Component {
   state = { homes: [], policies: [], policyId: null, homeId: 1, tab: "info" };
 
   async componentDidMount() {
-    let policyData = await axios.get("/api/homes/1/policies");
+    const { homeId } = this.state;
+    let policyData = await axios.get(`/api/homes/${homeId}/policies`);
     console.log(policyData);
     this.setState({ policies: policyData.data });
-    let homeData = await axios.get('/api/homes')
-    console.log(homeData)
-    this.setState({ homes: homeData.data })
+    // let homeData = await axios.get("/api/homes");
+    // console.log(homeData);
+    // this.setState({ homes: homeData.data });
   }
+
   renderPolicies = () => {
     const { policies, policyId } = this.state;
     return policies.map((policy) => (
@@ -27,106 +30,68 @@ class Policies extends React.Component {
         style={policy.id === policyId ? activeDiv : passiveDiv}
       >
         <StyledA2
-          onClick={() => this.toggleItems(policy.id)}
+          onClick={() => this.togglePolicies(policy.id)}
           style={policy.id === policyId ? activeA : {}}
         >
-        {policy.name}
+          {policy.name}
         </StyledA2>
         <br />
       </div>
     ));
   };
 
-  toggleItems = (targetId) => {
-    this.setState({ ...this.state, policyId: targetId, 
-
-    });
-  }
-
-  //Function is passed to new location form / modal to hot-reload on submit.
-  updateLocationList = (newLocation) => {
-    const { locations } = this.state;
-    this.setState({ locations: [...locations, newLocation.data] });
+  togglePolicies = (targetId) => {
+    this.setState({ ...this.state, policyId: targetId });
   };
-  // Toggles Info display for info / photos / etc.
+
+  // Toggles Info display
   toggleTab = (t) => {
     this.setState({ tab: t });
   };
+
   // Render information panel based on function above / active tab.
   renderPolicyInfo = () => {
     const { tab } = this.state;
     switch (tab) {
-      case 'info':
+      case "info":
         return (
-          <PolicyInfo policyId={this.state.policyId} homeId={this.state.homeId}/>
-        )
+          <PolicyInfo
+            policyId={this.state.policyId}
+            homeId={this.state.homeId}
+          />
+        );
       case "files":
         return (
           <Uploader itemId={this.state.itemId} update={this.updateFiles} />
         );
-      case "newPolicy":
-        return <PolicyForm update={this.updateLocationList} />;
+      // case "newPolicy":
+      //   return (
+      //     <PolicyForm
+      //       update={this.updateLocationList}
+      //       homeId={this.state.homeId}
+      //     />
+      //   );
       default:
         return <></>;
     }
   };
 
-  renderTabButtons = () => {
-    const { tab } = this.state;
-
-    switch (tab) {
-      case "info":
-        return (
-          <>
-            <Button shape="circle">
-              <EditOutlined />
-            </Button>
-            <Button shape="circle" onClick={() => this.deleteItem()}>
-              <DeleteOutlined />
-            </Button>
-          </>
-        );
-      case "files":
-        return (
-          <>
-            <Button shape="circle" onClick={() => this.toggleTab("newFile")}>
-              <PlusOutlined />
-            </Button>
-            <Button shape="circle" onClick={() => this.deleteFile()}>
-              <DeleteOutlined />
-            </Button>
-          </>
-        );
-      case "newFile":
-        return (
-          <>
-            <Button
-              shape="circle"
-              onClick={() => this.toggleTab("files")}
-            ></Button>
-          </>
-        );
-      default:
-        return <></>;
-    }
-  };
-
-  // delete location when delete button pressed
-  deleteLocation = () => {
-    const { locationId, locations } = this.state;
+  deletePolicy = () => {
+    const { homeId, policyId, policies } = this.state;
     axios
-      .delete(`/api/locations/${locationId}`)
+      .delete(`/api/homes/${homeId}/policies/${policyId}`)
       .then((res) => {
         console.log(res);
-        const filteredLocations = locations.filter(
-          (location) => location.id !== locationId
+        const filteredPolicies = policies.filter(
+          (policy) => policy.id !== policyId
         );
         this.setState({
-          locations: filteredLocations,
-          LocationId: 0,
-          itemId: null,
+          policies: filteredPolicies,
+          homeId: 0,
+          policyId: null,
           tab: "blank",
         });
+        this.props.history.push('/policies')
       })
       .catch((err) => {
         console.log(err);
@@ -151,6 +116,7 @@ class Policies extends React.Component {
       </div>
     ));
   };
+
   // Function that toggles active file ID:
   setId = (id) => {
     this.setState({
@@ -165,7 +131,7 @@ class Policies extends React.Component {
   deleteFile = (id) => {
     const { itemId, fileId, files } = this.state;
     axios
-      .delete(`api/items/${itemId}/documents/${fileId}`)
+      .delete(``)
       .then((res) => {
         console.log(res);
         const filteredFiles = files.filter((f) => f.id !== fileId);
@@ -184,7 +150,6 @@ class Policies extends React.Component {
     const { tab, policyId } = this.state;
     return (
       <>
-      <PolicyForm></PolicyForm>
         <Row>
           <Col span={6}>
             <div style={{ ...divHead }}>
@@ -220,41 +185,35 @@ class Policies extends React.Component {
           {/* this is right below the names of the policies */}
           <Col span={6}>
             <div style={{ ...divFoot }}>
-              <Button
-                type="primary"
-                shape="circle"
-                onClick={() => this.toggleTab("newLocation")}
-              >
-                <PlusOutlined />
+              <Button type="primary" shape="circle">
+                <Link
+                  to={{ pathname: "/add/policy", homeId: this.state.homeId }}
+                >
+                  <PlusOutlined />
+                </Link>
               </Button>
               {this.state.locationId !== null ? (
                 <>
                   <Button
                     type="primary"
                     shape="circle"
-                    onClick={() => this.deleteLocation()}
+                    onClick={() => this.deletePolicy()}
                   >
                     <DeleteOutlined />
                   </Button>
-                  <Button type="primary" shape="circle">
+                  <Button
+                    type="primary"
+                    // onClick={() => this.updatePolicy()}
+                    shape="circle"
+                  ><Link 
+                  to={{ pathname: "/edit/policy", homeId:this.state.homeId, policyId:this.state.policyId}}>
                     <EditOutlined />
+                  </Link>
                   </Button>
                 </>
               ) : null}
             </div>
           </Col>
-          {/* <Col span={2}>
-            <div style={{ ...divFoot }}>
-              {this.state.locationId !== null ? (
-                <Button
-                  shape="circle"
-                  onClick={() => this.toggleTab("newItem")}
-                >
-                  <PlusOutlined />
-                </Button>
-              ) : null}
-            </div>
-          </Col> */}
           <Col span={18}>
             <div style={{ ...divFoot }}>
               {this.state.itemId !== null ? (
@@ -274,6 +233,7 @@ class Policies extends React.Component {
     );
   }
 }
+
 // styling for selected menu options
 const activeDiv = {
   height: "50px",
@@ -329,7 +289,7 @@ const divFoot = {
   padding: "12px",
   fontWeight: "400",
 };
-//styling for item and location name links
+//styling for name links
 const StyledA = styled.a`
   color: #272829;
   text-decoration: none;

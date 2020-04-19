@@ -15,7 +15,7 @@ class PolicyForm extends React.Component {
 
   handleSubmit = (props) => {
     const newPolicy = {...this.state}
-    axios.post(`/api/homes/${this.props.location.homeId}/policies`, newPolicy).then( res => {
+    axios.patch(`/api/homes/${this.props.location.homeId}/policies/${this.props.location.policyId}`, newPolicy).then( res => {
       this.setState({
         name: "",
         issuer: "",

@@ -96,7 +96,7 @@ export default class House extends React.Component {
             </div >
         ))
     }
-
+ 
     renderMaintenances = () => {
         const { houses } = this.state
         return houses.map(home => (

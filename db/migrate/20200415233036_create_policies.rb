@@ -7,6 +7,7 @@ class CreatePolicies < ActiveRecord::Migration[6.0]
       t.string :policy_num
       t.string :policy_type
       t.text :contact_info
+      t.string :policy_file
       t.belongs_to :home, null: false, foreign_key: true
 
       t.timestamps

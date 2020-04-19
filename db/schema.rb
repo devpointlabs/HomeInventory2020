@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2020_04_15_233036) do
     t.string "policy_num"
     t.string "policy_type"
     t.text "contact_info"
+    t.string "policy_file"
     t.bigint "home_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

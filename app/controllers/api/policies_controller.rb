@@ -23,12 +23,12 @@ class Api::PoliciesController < ApplicationController
   end
  
   def update
-    @policies.update(policies_params)
+    @policy.update(policy_params)
     render json: @policy
   end
 
   def destroy
-    @policies.destroy
+    @policy.destroy
     render json: { message: 'Policy deleted.' }
   end
 
