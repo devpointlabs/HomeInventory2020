@@ -36,7 +36,7 @@ class RecieptPhotoUploader extends React.Component {
 
     render() {
         let data = {
-            name: 'file', // does this need to be img, same as schema
+            name: 'img', // does this need to be img, same as schema
             multiple: false,
             action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
         }

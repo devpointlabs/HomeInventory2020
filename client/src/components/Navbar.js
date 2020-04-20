@@ -2,7 +2,10 @@ import React, { useContext } from 'react'
 import styled from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthProvider';
-import { HomeOutlined, UserOutlined  } from '@ant-design/icons';
+import { HomeOutlined, UserOutlined } from '@ant-design/icons';
+import { Input } from 'antd';
+
+const { Search } = Input;
 // import { Menu, Icon, Button } from 'antd';
 // import Search from 'antd/lib/transfer/search';
 
@@ -15,34 +18,38 @@ const Navbar = (props) => {
     if (isLoggedIn) {
       return (
         <>
-        <Redirect to='/items' />
-        <StyledNav>
-          <StyledUl>
-            <StyledItem as={Link} to='/house'><StyledIcon><HomeOutlined /></StyledIcon></StyledItem>
-            <StyledItem><StyledA as={Link} to='/items'>Items</StyledA></StyledItem>
-            <StyledItem><StyledA as={Link} to='/album'>Album</StyledA></StyledItem>
-            <StyledItem><StyledA as={Link} to='/policies'>Policies</StyledA></StyledItem>
-            <StyledItem><StyledA as={Link} to='/reports'>Reports</StyledA></StyledItem>
-            <StyledItem><StyledA as={Link} to='/inbox'>Inbox</StyledA></StyledItem>
-            <RightNavCon>
-            <StyledItem><StyledA onClick={() => data.handleLogout(props.history)}>Sign Out</StyledA></StyledItem>
-            <StyledItem as={Link} to='/user/page'><StyledIconRight><UserOutlined /></StyledIconRight></StyledItem>
-            </RightNavCon>
-          </StyledUl>
-        </StyledNav>
+          <Redirect to='/items' />
+          <StyledNav>
+            <StyledUl>
+              <StyledItem as={Link} to='/house'><StyledIcon><HomeOutlined /></StyledIcon></StyledItem>
+              <StyledItem><StyledA as={Link} to='/items'>Items</StyledA></StyledItem>
+              <StyledItem><StyledA as={Link} to='/album'>Album</StyledA></StyledItem>
+              <StyledItem><StyledA as={Link} to='/policies'>Policies</StyledA></StyledItem>
+              {/* <StyledItem><StyledA as={Link} to='/reports'>Reports</StyledA></StyledItem>
+              <StyledItem><StyledA as={Link} to='/inbox'>Inbox</StyledA></StyledItem> */}
+              <RightNavCon>
+                <StyledItem><Search
+                  placeholder="input search text"
+                  onSearch={value => console.log(value)}
+                  style={{ width: 350}} 
+                /></StyledItem>
+                <StyledItem as={Link} to='/userpage'><StyledIconRight><UserOutlined /></StyledIconRight></StyledItem>
+              </RightNavCon>
+            </StyledUl>
+          </StyledNav>
         </>
       )
     } else {
       return (
         <>
-        <Redirect to='/' />
-        <StyledNav>
-          <StyledUl>
-            <StyledLogo><StyledA as={Link} to='/'>LOGO</StyledA></StyledLogo>
-            <StyledLi><StyledButton as={Link} to='/register'>SIGN UP</StyledButton></StyledLi>
-            <StyledLi><StyledA as={Link} to='/login'>SIGN IN</StyledA></StyledLi>
-          </StyledUl>
-        </StyledNav>
+          <Redirect to='/' />
+          <StyledNav>
+            <StyledUl>
+              <StyledLogo><StyledA as={Link} to='/'>LOGO</StyledA></StyledLogo>
+              <StyledLi><StyledButton as={Link} to='/register'>SIGN UP</StyledButton></StyledLi>
+              <StyledLi><StyledA as={Link} to='/login'>SIGN IN</StyledA></StyledLi>
+            </StyledUl>
+          </StyledNav>
         </>
       )
     }
@@ -58,7 +65,7 @@ export default Navbar;
 
 
 const StyledNav = styled.nav`
-margin: 5vh 0px;
+margin: 2.5vh 0px;
 color: black;
 font-size: 22px;
 `
@@ -108,7 +115,7 @@ display: flex;
 margin: 0 1.5vw;
 flex-direction: row;
 align-items: center;
-margin-left: 380px;
+margin-left: 350px;
 cursor: pointer;
 font-size: 22px;
 `
