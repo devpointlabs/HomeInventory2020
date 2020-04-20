@@ -406,21 +406,25 @@ const activeDiv = {
   height: '50px',
   backgroundColor: '#f0f0f0', 
   boxShadow: '0px 2px 5px #888888', 
-  paddingTop: '12px'
+  paddingTop: '12px',
+  transition: 'all 0.2s ease-in-out',
 }
 const passiveDiv = {
   height: '50px', 
   marginLeft: '14px', 
-  paddingTop: '12px' 
+  paddingTop: '12px' ,
+  transition: 'all 0.2s ease-in-out',
 }
 const activeA = {
   color:'#1890ff', 
   marginTop: '16px', 
-  paddingLeft: '6px'
+  paddingLeft: '6px',
+  transition: 'all 0.2s ease-in-out'
 }
 const activeTab = {
   color:'#1890ff', 
-  textDecoration: 'underline'
+  textDecoration: 'underline',
+  transition: 'all 0.2s ease-in-out'
 }
 
 // styling for layout of items page
