@@ -34,7 +34,7 @@ class ReceiptModal extends React.Component {
         visible: false,
         confirmLoading: false,
       });
-    }, 1000);
+    }, 2000);
   };
 
   handleCancel = async() => {
