@@ -19,7 +19,8 @@ class RecieptPhotoUploader extends React.Component {
         }
         if (status === 'done') {
             const data = new FormData()
-            data.append('img', info.file.originFileObj) // does this need to be img, same as schema
+            data.append('file', info.file.originFileObj)
+            // does this need to be img, same as schema
             // function passed here from parent
             this.props.upload(data)
             message.success(`${info.file.name} file uploaded successfully.`);

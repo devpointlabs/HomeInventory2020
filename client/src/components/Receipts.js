@@ -7,7 +7,7 @@ class Receipts extends React.Component {
   state = {
     receipt: null,
     itemId: null,
-    photoId: null
+    photoId: null,
   }
 
   async componentDidMount() {
@@ -16,6 +16,7 @@ class Receipts extends React.Component {
       axios.get(`/api/items/${itemId}/receipts`).then((res) => {
         console.log(res)
         this.setState({ receipt: res.data[0], itemId: itemId });
+        this.props.update(true, res.data[0].id)
       }).catch((err) => {
         console.log(err)
       })
@@ -28,6 +29,7 @@ class Receipts extends React.Component {
       axios.get(`/api/items/${itemId}/receipts`).then((res) => {
         console.log(res)
         this.setState({ receipt: res.data[0], itemId });
+        this.props.update(true, res.data[0].id)
       }).catch((err) => {
         console.log(err)
       })
@@ -36,9 +38,9 @@ class Receipts extends React.Component {
 
 
   deleteReceipt() {
-    const { receiptId, itemId } = this.state
-    console.log('delete receipt hit', receiptId)
-    axios.delete(`/api/items/${itemId}/receipts/${receiptId}`).then(res => { console.log(res) })
+    const { receipt, itemId } = this.state
+    console.log('delete receipt hit', receipt.id)
+    axios.delete(`/api/items/${itemId}/receipts/${receipt.id}`).then(res => { console.log(res) })
     this.setState({
       receipt: null
     });

@@ -5,10 +5,12 @@ import RecieptPhotoUploader from "../uploaders/RecieptPhotoUploader";
 
 
 class ReceiptForm extends React.Component {
-  state = { date: null, receipt_num: "", purchased_from: "", price: "", tax: "", img: "" };
+  state = { date: null, receipt_num: "", purchased_from: "", price: "", tax: "", img: "" , file:""};
 
   handleSubmit = () => {
-    axios.post(`/api/items/${this.props.itemId}/receipts`, { ...this.state })
+    const { receipt_num, purchased_from, price, tax, file, date} = this.state
+
+    axios.post(`/api/items/${this.props.itemId}/receipts?date=${date}&receipt_num=${receipt_num}&purchased_from=${purchased_from}&price=${price}&tax=${tax}`, file)
       .then(res => {
         console.log(res)
       })
@@ -32,9 +34,10 @@ class ReceiptForm extends React.Component {
   }
   
   postPhoto = (data) => {
-    console.log(`this - ${data}`)
+    console.log(`this`)
+    console.log(data)
         this.setState({
-          img: data
+          file: data
         })
   }
 

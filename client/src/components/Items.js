@@ -167,7 +167,7 @@ class Items extends React.Component {
         )
       case 'newReceipt':
         return (
-          <ReceiptModal itemId={this.state.itemId} update={this.updateReceipts}/>
+          <ReceiptModal itemId={this.state.itemId} update={this.updateReceipts} />
         )
       case 'editReceipt':
         return (
@@ -216,7 +216,7 @@ class Items extends React.Component {
             <DeleteOutlined />
           </Button>
           </>
-          : 
+         : 
           <Button shape="circle" onClick={() => this.toggleTab('newReceipt')} >
             <PlusOutlined />
           </Button>
