@@ -48,7 +48,7 @@ export default class RenderItem extends React.Component {
       return (       
           <div style={{width: '100%', margin: '16px'}}>
             <h3>{item.name}</h3>
-            <Divider />
+            <StyledDivider />
             <div style={containerDiv}>
               <div style={{width: '55%'}}>
                 <h5>Make: {item.make}</h5>
@@ -98,4 +98,13 @@ margin: 10px 10px;
 margin-top: 16px;
 cursor: pointer;
 transition: all 0.3s ease-in-out;
+`
+const StyledDivider = styled.div`
+clear: both;
+display: block;
+width: 95%;
+height: 1px;
+margin: 24px 0;
+background: #919191;
+
 `
