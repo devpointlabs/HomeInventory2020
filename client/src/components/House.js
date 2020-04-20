@@ -112,11 +112,11 @@ export default class House extends React.Component {
                     <StyledIcon>
                         <Link><PlusOutlined /></Link>
                     </StyledIcon> */}
-                    <StyledIcon>
+                    <StyledIconHome>
                     <Link to={{ pathname: '/edit/home', home: home.id }}>
                             <EditOutlined />
                         </Link>
-                    </StyledIcon>
+                    </StyledIconHome>
                 </StyledCon>
                 <p>Address: {home.address}</p>
                 <p>Zip: {home.zip_code}</p>
@@ -313,6 +313,20 @@ const StyledIcon = styled.div`
 cursor: pointer;
 font-size: 20px;
 margin: 0 5px;
+color: grey !important;
+transition: 0.2s all ease-in-out;
+
+&:hover {
+color: #1890ff;
+transition: 0.2s all ease-in-out;
+
+}
+`
+
+const StyledIconHome = styled.div`
+cursor: pointer;
+font-size: 20px;
+margin-left: 70px;
 color: grey !important;
 transition: 0.2s all ease-in-out;
 
