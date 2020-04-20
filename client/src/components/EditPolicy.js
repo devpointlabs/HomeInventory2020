@@ -46,7 +46,7 @@ class PolicyForm extends React.Component {
     return (
       <>
         <StyledBackground>
-          <StyledHeader>Add Policy</StyledHeader>
+          <StyledHeader>Edit Policy</StyledHeader>
           <Form onFinish={this.handleSubmit}>
             <p>Name</p>
             <Form.Item>
