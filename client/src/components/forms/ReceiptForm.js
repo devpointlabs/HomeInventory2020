@@ -1,24 +1,27 @@
 import React from "react";
 import axios from "axios";
 import { Form, Input, DatePicker, InputNumber, Button } from "antd";
+import RecieptPhotoUploader from "../uploaders/RecieptPhotoUploader";
 
 
 class ReceiptForm extends React.Component {
-  state = {date: null, receipt_num: "", purchased_from: "", price: "", tax: "", img: "" };
-  
+  state = { date: null, receipt_num: "", purchased_from: "", price: "", tax: "", img: "" , file:""};
+
   handleSubmit = () => {
-    axios.post(`/api/items/${this.props.itemId}/receipts`, { ...this.state })
-      .then( res => {
+    const { receipt_num, purchased_from, price, tax, file, date} = this.state
+
+    axios.post(`/api/items/${this.props.itemId}/receipts?date=${date}&receipt_num=${receipt_num}&purchased_from=${purchased_from}&price=${price}&tax=${tax}`, file)
+      .then(res => {
         console.log(res)
       })
   }
 
   handlePriceChange = (value) => {
-    this.setState({price: value})
+    this.setState({ price: value })
   };
 
   handleTaxChange = (value) => {
-    this.setState({tax: value})
+    this.setState({ tax: value })
   };
 
   handleChange = (e) => {
@@ -27,43 +30,51 @@ class ReceiptForm extends React.Component {
   };
 
   handleDate = (date) => {
-    this.setState({date: date})
+    this.setState({ date: date })
+  }
+  
+  postPhoto = (data) => {
+    console.log(`this`)
+    console.log(data)
+        this.setState({
+          file: data
+        })
   }
 
   render() {
-    const { date, receipt_num, purchased_from, price, tax, img} = this.state;
+    const { date, receipt_num, purchased_from, price, tax, img } = this.state;
     return (
-      <> 
+      <>
         <Form onFinish={this.handleSubmit}>
           <Form.Item >
-            <DatePicker 
-            label="Purchase Date"
-            placeholder="Purchase Date"
-            autoFocus
-            required
-            name='date'
-            value={date}
-            onChange={this.handleDate}
+            <DatePicker
+              label="Purchase Date"
+              placeholder="Purchase Date"
+              autoFocus
+              required
+              name='date'
+              value={date}
+              onChange={this.handleDate}
             />
           </Form.Item>
           <Form.Item>
             <Input
-            label="Receipt Number"
-            required
-            name='receipt_num'
-            value={receipt_num}
-            placeholder='Receipt Number'
-            onChange={this.handleChange}
+              label="Receipt Number"
+              required
+              name='receipt_num'
+              value={receipt_num}
+              placeholder='Receipt Number'
+              onChange={this.handleChange}
             />
           </Form.Item>
           <Form.Item>
             <Input
-            label="Purchased From"
-            required
-            name='purchased_from'
-            value={purchased_from}
-            placeholder='Purchased From'
-            onChange={this.handleChange}
+              label="Purchased From"
+              required
+              name='purchased_from'
+              value={purchased_from}
+              placeholder='Purchased From'
+              onChange={this.handleChange}
             />
           </Form.Item>
           <Form.Item>
@@ -93,14 +104,7 @@ class ReceiptForm extends React.Component {
             />
           </Form.Item>
           <Form.Item>
-            <Input
-            label="Image"
-            required
-            name='img'
-            value={img}
-            placeholder='Image'
-            onChange={this.handleChange}
-            />
+            <RecieptPhotoUploader itemId={this.props.itemId} upload={this.postPhoto} />
           </Form.Item>
         </Form>
       </>

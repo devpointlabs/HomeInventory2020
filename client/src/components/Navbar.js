@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import styled from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthProvider';
+import { HomeOutlined, UserOutlined  } from '@ant-design/icons';
 // import { Menu, Icon, Button } from 'antd';
 // import Search from 'antd/lib/transfer/search';
 
@@ -17,13 +18,16 @@ const Navbar = (props) => {
         <Redirect to='/items' />
         <StyledNav>
           <StyledUl>
-            <StyledItem as={Link} to='/house'><StyledDot></StyledDot></StyledItem>
+            <StyledItem as={Link} to='/house'><StyledIcon><HomeOutlined /></StyledIcon></StyledItem>
             <StyledItem><StyledA as={Link} to='/items'>Items</StyledA></StyledItem>
             <StyledItem><StyledA as={Link} to='/album'>Album</StyledA></StyledItem>
             <StyledItem><StyledA as={Link} to='/policies'>Policies</StyledA></StyledItem>
             <StyledItem><StyledA as={Link} to='/reports'>Reports</StyledA></StyledItem>
             <StyledItem><StyledA as={Link} to='/inbox'>Inbox</StyledA></StyledItem>
+            <RightNavCon>
             <StyledItem><StyledA onClick={() => data.handleLogout(props.history)}>Sign Out</StyledA></StyledItem>
+            <StyledItem as={Link} to='/user/page'><StyledIconRight><UserOutlined /></StyledIconRight></StyledItem>
+            </RightNavCon>
           </StyledUl>
         </StyledNav>
         </>
@@ -99,10 +103,43 @@ margin: 0 1.5vw;
 cursor: pointer;
 font-size: 22px;
 `
+const RightNavCon = styled.div`
+display: flex;
+margin: 0 1.5vw;
+flex-direction: row;
+align-items: center;
+margin-left: 380px;
+cursor: pointer;
+font-size: 22px;
+`
 
-const StyledDot = styled.div`
-height: 45px;
-width: 45px;
+const StyledIcon = styled.div`
+height: 40px;
+width: 40px;
+color: white;
+font-size: 25px;
+text-align: center;
 background-color: #3381ff;
 border-radius: 50%;
+transition: all 0.3s ease-in-out;
+
+&:hover {
+  color: #0053BF;
+  transition: all 0.3s ease-in-out;
+  }
+`
+const StyledIconRight = styled.div`
+height: 40px;
+width: 40px;
+color: black;
+font-size: 25px;
+text-align: center;
+background-color: #D4D4D4;
+border-radius: 50%;
+transition: all 0.3s ease-in-out;
+
+&:hover {
+  color: white;
+  transition: all 0.3s ease-in-out;
+  }
 `

@@ -9,15 +9,29 @@ class Api::ReceiptsController < ApplicationController
   end
 
   def show
-    render json: @receipt
+    render json: @items.receipts.find(params[:id])
   end
 
   def create
     receipt = @item.receipts.new(receipt_params)
+    file = params[:file]
+
+    if file
+      begin
+        ext = File.extname(file.tempfile)
+        cloud_image = Cloudinary::Uploader.upload(file, public_id: file.original_filename, secure: true)
+
+        receipt.img = cloud_image["secure_url"]
+
+      rescue => e
+        render json: { errors: e }, status: 422
+        return
+      end
+    end
     if receipt.save
-     render json: receipt
+      render json: receipt
     else
-     render json: receipt.errors, status: 422
+      render json: { errors: receipt.errors.full_messages }, status: 422
     end
   end
 
@@ -34,7 +48,7 @@ class Api::ReceiptsController < ApplicationController
  private
 
   def receipt_params
-    params.require(:receipt).permit(:date, :receipt_num, :purchased_from, :price, :tax, :img, :item_id)
+    params.permit(:date, :receipt_num, :purchased_from, :price, :tax, :img, :item_id)
   end
 
   def set_item
