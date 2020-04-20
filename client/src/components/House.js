@@ -158,7 +158,7 @@ export default class House extends React.Component {
                         <Link><PlusOutlined /></Link>
                     </StyledIcon>
                     <div onClick={e => e.stopPropagation()}>
-                        <MaintenanceModal ref='maintenance' update={this.updateMaintenance}/>
+                        <MaintenanceModal ref='maintenance' update={this.updateMaintenance} homeId={home.id}/>
                     </div>
                 </StyledCon>
                 <StyledTable>
