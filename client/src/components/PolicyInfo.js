@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 
 export default class RenderPolicy extends React.Component {
   state = {
@@ -11,7 +12,7 @@ export default class RenderPolicy extends React.Component {
     if (policyId !== null) {
       axios.get(`/api/homes/${homeId}/policies/${policyId}`).then((res) => {
         console.log(res)
-        this.setState({policy: res.data});
+        this.setState({ policy: res.data });
       }).catch((err) => {
         console.log(err)
       })
@@ -19,31 +20,43 @@ export default class RenderPolicy extends React.Component {
   }
   componentDidUpdate() {
     const { policyId, homeId } = this.props
-    if( policyId !== null && policyId !== this.state.policy.id ) {
-    axios.get(`/api/homes/${homeId}/policies/${policyId}`).then((res) => {
-      console.log(res)
-      this.setState({policy: res.data});
-    }).catch((err) => {
-      console.log(err)
-    })
-   }
+    if (policyId !== null && policyId !== this.state.policy.id) {
+      axios.get(`/api/homes/${homeId}/policies/${policyId}`).then((res) => {
+        console.log(res)
+        this.setState({ policy: res.data });
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
   }
   render() {
     const { policy } = this.state
     if (this.state.policy.id) {
-    return (
-      <>
-        <h3>{policy.name}</h3>
-        <p>Issuer: {policy.issuer}</p>
-        <p>{policy.issue_date}</p>
-        <p>Policy Number: {policy.policy_num}</p>
-        <p>Policy Type: {policy.policy_type}</p>
-        <p>Contact Info: {policy.contact_info}</p>
-      </>
-    )}
+      return (
+        <div style={{ width: '100%', margin: '16px' }}>
+          <h3>{policy.name}</h3>
+          <StyledDivider />
+          <p>Issuer: {policy.issuer}</p>
+          <p>{policy.issue_date}</p>
+          <p>Policy Number: {policy.policy_num}</p>
+          <p>Policy Type: {policy.policy_type}</p>
+          <p>Contact Info: {policy.contact_info}</p>
+        </div>
+      )
+    }
     return (
       <>
       </>
     )
   }
 }
+
+const StyledDivider = styled.div`
+clear: both;
+display: block;
+width: 95%;
+height: 1px;
+margin: 24px 0;
+background: #919191;
+
+`
