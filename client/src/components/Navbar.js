@@ -26,7 +26,7 @@ const Navbar = (props) => {
             <StyledItem><StyledA as={Link} to='/inbox'>Inbox</StyledA></StyledItem>
             <RightNavCon>
             <StyledItem><StyledA onClick={() => data.handleLogout(props.history)}>Sign Out</StyledA></StyledItem>
-            <StyledItem as={Link} to='/user/page'><StyledIcon><UserOutlined /></StyledIcon></StyledItem>
+            <StyledItem as={Link} to='/user/page'><StyledIconRight><UserOutlined /></StyledIconRight></StyledItem>
             </RightNavCon>
           </StyledUl>
         </StyledNav>
@@ -125,6 +125,21 @@ transition: all 0.3s ease-in-out;
 
 &:hover {
   color: #0053BF;
+  transition: all 0.3s ease-in-out;
+  }
+`
+const StyledIconRight = styled.div`
+height: 40px;
+width: 40px;
+color: black;
+font-size: 25px;
+text-align: center;
+background-color: #D4D4D4;
+border-radius: 50%;
+transition: all 0.3s ease-in-out;
+
+&:hover {
+  color: white;
   transition: all 0.3s ease-in-out;
   }
 `
