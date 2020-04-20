@@ -10,16 +10,17 @@ import PolicyInfo from "../components/PolicyInfo";
 import { Link } from "react-router-dom";
 
 class Policies extends React.Component {
-  state = { homes: [], policies: [], policyId: null, homeId: 1, tab: "info" };
+  state = { homes: [], policies: [], policyId: null, homeId: 0, tab: "info" };
 
   async componentDidMount() {
+    let homeData = await axios.get("/api/homes");
+    console.log(homeData);
+    this.setState({homeId: homeData.data[0].id}) 
     const { homeId } = this.state;
     let policyData = await axios.get(`/api/homes/${homeId}/policies`);
     console.log(policyData);
     this.setState({ policies: policyData.data });
-    // let homeData = await axios.get("/api/homes");
-    // console.log(homeData);
-    // this.setState({ homes: homeData.data });
+    this.setState({ homes: homeData.data });
   }
 
   renderPolicies = () => {
