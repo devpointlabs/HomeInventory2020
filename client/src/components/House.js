@@ -192,7 +192,7 @@ export default class House extends React.Component {
                     <div onClick={e => e.stopPropagation()}>
                         <EditAssessmentsModal 
                             ref='editAssessment'
-                            home= {home.id} 
+                            homeId={home.id} 
                             assessmentId={this.state.assessmentId} 
                             update={this.updateAssessment}
                         />
@@ -206,7 +206,11 @@ export default class House extends React.Component {
                        <Link><PlusOutlined /></Link>   
                     </StyledIcon>
                     <div onClick={e => e.stopPropagation()}>
-                        <AssessmentModal ref='assessment' update={this.updateAssessment}/>
+                        <AssessmentModal 
+                            ref='assessment' 
+                            update={this.updateAssessment} 
+                            homeId={home.id}
+                         />
                     </div>
                 </StyledCon>
                 <StyledTable>
