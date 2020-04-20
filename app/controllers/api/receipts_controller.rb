@@ -13,17 +13,26 @@ class Api::ReceiptsController < ApplicationController
   end
 
   def create
+    receipt = @item.receipts.new(receipt_params)
     file = params[:file]
-     receipt = @item.receipts.new(receipt_params)
-     if receipt.save
-      ext = File.extname(file.tempfile)
-      cloud_image = Cloudinary::Uploader.upload(file, public_id: file.original_filename, secure: true)
-      image = @item.receipts.create(img: cloud_image['secure_url'], name: file.original_filename) 
+    
+    if file
+      begin
+        ext = File.extname(file.tempfile)
+        cloud_image = Cloudinary::Uploader.upload(file, public_id: file.original_filename, secure: true)
 
-      render json: receipt, json: image
-     else
-     render json: receipt.errors, status: 422
-     end
+        receipt.image = cloud_image["secure_url"]
+        
+      rescue => e
+        render json: { errors: e }, status: 422
+        return
+      end
+    end
+    if receipt.save
+      render json: receipt
+    else
+      render json: { errors: receipt.errors.full_messages }, status: 422
+    end
   end
 
   def update
