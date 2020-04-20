@@ -91,6 +91,7 @@ margin-right: 2%;
 
 const StyledImg = styled.div`
 margin: 10px 10px;
+margin-top: 16px;
 cursor: pointer;
 transition: all 0.3s ease-in-out;
 

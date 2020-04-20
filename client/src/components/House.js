@@ -6,10 +6,17 @@ import Maintenances from './Maintenances';
 import HomeForm from './forms/HomeForm';
 import { MinusOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import AssessmentModal from './modals/AssessmentModal';
+import MaintenanceModal from './modals/MaintenanceModal';
+import EditAssessmentsModal from './modals/EditAssessmentModal'
+import EditMaintenanceModal from './modals/EditMaintenanceModal';
 
 export default class House extends React.Component {
     state = {
-        houses: [], maintenanceId: 0, assessmentId: 0, homeId: 0,
+        houses: [],
+        maintenanceId: 0,
+        assessmentId: 0, 
+        homeId: 0,
     };
     componentDidMount() {
         axios.get('/api/homes').then((res) => {
@@ -40,6 +47,7 @@ export default class House extends React.Component {
         const { maintenanceId, homeId } = this.state
         axios.delete(`/api/homes/${homeId}/maintenances/${maintenanceId}`)
             .then(res => {
+                this.refs.maintenances.reload()
             })
             .catch(err => {
                 console.log(err)
@@ -60,10 +68,33 @@ export default class House extends React.Component {
         const { assessmentId, homeId } = this.state
         axios.delete(`/api/homes/${homeId}/assessments/${assessmentId}`)
             .then(res => {
+                this.refs.assessments.reload()
             })
             .catch(err => {
                 console.log(err)
             })
+    
+    }
+
+    // Function to open assessment modal on click of new button:
+    openAssessment = () => {
+        this.refs.assessment.showModal()
+    }
+    openEditAssessment = () => {
+        this.refs.editAssessment.showModal()
+    }
+    updateAssessment = () => {
+        this.refs.assessments.reload()
+    }
+
+    openMaintenance = () => {
+        this.refs.maintenance.showModal()
+    }
+    openEditMaintenance = () => {
+        this.refs.editMaintenance.showModal()
+    }
+    updateMaintenance = () => {
+        this.refs.maintenances.reload()
     }
 
     renderHouses = () => {
@@ -75,6 +106,12 @@ export default class House extends React.Component {
                     <StyledHeaderHome>
                         <h2>Home Information</h2>
                     </StyledHeaderHome>
+                    {/* <StyledIcon>
+                        <Link><MinusOutlined /></Link>
+                    </StyledIcon>
+                    <StyledIcon>
+                        <Link><PlusOutlined /></Link>
+                    </StyledIcon> */}
                     <StyledIcon>
                     <Link to={{ pathname: '/edit/home', home: home.id }}>
                             <EditOutlined />
@@ -90,7 +127,7 @@ export default class House extends React.Component {
             </div >
         ))
     }
-
+ 
     renderMaintenances = () => {
         const { houses } = this.state
         return houses.map(home => (
@@ -99,17 +136,30 @@ export default class House extends React.Component {
                     <StyledHeader>
                         <p> Maintenance Schedule </p>
                     </StyledHeader>
+                    {this.state.maintenanceId !== 0 ? 
+                    <>               
+                    <StyledIcon onClick={() => this.openEditMaintenance()}>
+                        <Link><EditOutlined /></Link>
+                    </StyledIcon>
+                    <div onClick={e => e.stopPropagation()}>
+                        <EditMaintenanceModal 
+                            ref='editMaintenance'
+                            home={home.id} 
+                            id={this.state.maintenanceId} 
+                            update={this.updateMaintenance}
+                        />
+                    </div>
                     <StyledIcon>
                         <Link><MinusOutlined onClick={this.deleteMaintenance} /></Link>
                     </StyledIcon>
-                    <StyledIcon>
-                        <Link to='/add/maintenance'><PlusOutlined /></Link>
+                    </>
+                    : null }
+                    <StyledIcon onClick={() => this.openMaintenance()}>
+                        <Link><PlusOutlined /></Link>
                     </StyledIcon>
-                    <StyledIcon>
-                        <Link to={{ pathname: '/edit/maintenance', id: this.state.maintenanceId, home: home.id }}>
-                            <EditOutlined />
-                        </Link>
-                    </StyledIcon>
+                    <div onClick={e => e.stopPropagation()}>
+                        <MaintenanceModal ref='maintenance' update={this.updateMaintenance}/>
+                    </div>
                 </StyledCon>
                 <StyledTable>
                     <table>
@@ -119,7 +169,7 @@ export default class House extends React.Component {
                         </tr>
                     </table>
                     <StyledLine />
-                    <Maintenances homeId={home.id} getId={this.getMaintenanceId} />
+                    <Maintenances ref='maintenances' homeId={home.id} getId={this.getMaintenanceId} />
                 </StyledTable>
             </div>
         ))
@@ -134,17 +184,30 @@ export default class House extends React.Component {
                     <StyledHeader>
                         <p> Assessment History </p>
                     </StyledHeader>
+                    {this.state.assessmentId !== 0 ? 
+                    <>
+                     <StyledIcon onClick={() => this.openEditAssessment()}>
+                        <Link><EditOutlined /></Link>
+                    </StyledIcon>
+                    <div onClick={e => e.stopPropagation()}>
+                        <EditAssessmentsModal 
+                            ref='editAssessment'
+                            home= {home.id} 
+                            assessmentId={this.state.assessmentId} 
+                            update={this.updateAssessment}
+                        />
+                     </div>
                     <StyledIcon>
                         <Link><MinusOutlined onClick={this.deleteAssessment} /></Link>
                     </StyledIcon>
-                    <StyledIcon>
-                        <Link to='/add/assessment'><PlusOutlined /></Link>
+                    </>
+                    : null}                  
+                    <StyledIcon onClick={() => this.openAssessment()}>
+                       <Link><PlusOutlined /></Link>   
                     </StyledIcon>
-                    <StyledIcon>
-                        <Link to={{ pathname: '/edit/assessment', id: this.state.assessmentId, home: home.id }}>
-                            <EditOutlined />
-                        </Link>
-                    </StyledIcon>
+                    <div onClick={e => e.stopPropagation()}>
+                        <AssessmentModal ref='assessment' update={this.updateAssessment}/>
+                    </div>
                 </StyledCon>
                 <StyledTable>
                     <table>
@@ -156,7 +219,7 @@ export default class House extends React.Component {
                         </tr>
                     </table>
                     <StyledLine />
-                    <Assessments homeId={home.id} getId={this.getAssessmentId} />
+                    <Assessments ref='assessments' homeId={home.id} getId={this.getAssessmentId} />
                 </StyledTable>
             </div>
         ))

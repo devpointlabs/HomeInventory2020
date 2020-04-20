@@ -1,17 +1,11 @@
 import React from 'react'
 import { Modal } from 'antd';
-import ItemForm from '../forms/ItemForm'
+import MaintenanceForm from '../forms/MaintenanceForm'
 
-class ItemModal extends React.Component {
+class MaintenanceModal extends React.Component {
   state = {
-    visible: true,
+    visible: false,
     confirmLoading: false,
-    itemId: null
-  }
-  componentDidMount() {
-    this.setState({
-      itemId: this.props.itemId
-    });
   }
 
   showModal = () => {
@@ -21,22 +15,21 @@ class ItemModal extends React.Component {
   };
 
   handleOk =() => { 
-    this.refs.newItem.handleSubmit()
+    this.refs.newMaint.handleSubmit()
     this.setState({
       confirmLoading: true,
     });
     setTimeout(() => {
+      this.props.update()
       this.setState({
         visible: false,
         confirmLoading: false,
       });
-      this.props.tab()
     }, 1000);
   };
 
-  handleCancel = async() => {
+  handleCancel = () => {
     console.log('Clicked cancel button');
-    this.props.tab()
     this.setState({
       visible: false,
     });
@@ -44,19 +37,19 @@ class ItemModal extends React.Component {
 
 
   render(){
-    const { visible, confirmLoading, itemId } = this.state;
+    const { visible, confirmLoading } = this.state;
 
     return(
       <Modal
-        title='Create New Item'
+        title='Add Maintenance Item'
         visible={visible}
         onOk={this.handleOk}
         confirmLoading={confirmLoading}
         onCancel={this.handleCancel}
       >
-        <ItemForm ref='newItem' itemId={itemId} update={this.props.update} locationId={this.props.locationId}/>
+        <MaintenanceForm ref='newMaint' />
       </Modal>
     )
   }
 }
-export default ItemModal
+export default MaintenanceModal

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :homes do
       resources :assessments
       resources :maintenances
+      resources :policies
     end
   end
 end

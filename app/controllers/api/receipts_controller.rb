@@ -1,7 +1,7 @@
 class Api::ReceiptsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item
-  before_action :set_receipt, only: [:show, :edit, :destroy, :update]
+  before_action :set_receipt, only: [:show, :update, :destroy]
   
   def index
     receipts = @item.receipts.all
@@ -15,14 +15,14 @@ class Api::ReceiptsController < ApplicationController
   def create
     receipt = @item.receipts.new(receipt_params)
     file = params[:file]
-    
+
     if file
       begin
         ext = File.extname(file.tempfile)
         cloud_image = Cloudinary::Uploader.upload(file, public_id: file.original_filename, secure: true)
 
-        receipt.image = cloud_image["secure_url"]
-        
+        receipt.img = cloud_image["secure_url"]
+
       rescue => e
         render json: { errors: e }, status: 422
         return
@@ -48,7 +48,7 @@ class Api::ReceiptsController < ApplicationController
  private
 
   def receipt_params
-    params.require(:receipt).permit(:date, :receipt_num, :purchased_from, :price, :tax, :img, :item_id)
+    params.permit(:date, :receipt_num, :purchased_from, :price, :tax, :img, :item_id)
   end
 
   def set_item

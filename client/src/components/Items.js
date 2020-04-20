@@ -5,13 +5,16 @@ import axios from 'axios'
 import ItemInfo from './ItemInfo'
 import ItemPhoto from './ItemPhotos';
 import Receipts from './Receipts';
-import { Button, List } from 'antd'
-import { PlusOutlined, DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons'
-import LocationForm from '../components/forms/LocationForm'
+import { Button } from 'antd'
+import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import LocationModal from '../components/modals/LocationModal'
 import ItemModal from './modals/ItemModal'
 import UploadModal from './modals/UploadModal'
 import ItemFiles from './ItemFiles'
 import ReceiptModal from './modals/ReceiptsModal';
+import EditItemModal from './modals/EditItemModal'
+import EditReceiptModal from './modals/EditReceiptModal'
+import EditLocationModal from './modals/EditLocationModal'
 
 class Items extends React.Component {
   state = { 
@@ -19,7 +22,9 @@ class Items extends React.Component {
     items: [], 
     locationId: 0, 
     itemId: null, 
-    tab: 'info'
+    tab: 'info',
+    receiptLoaded: false,
+    receiptId: null
   };
 
   async componentDidMount() {
@@ -76,18 +81,31 @@ class Items extends React.Component {
   updateReceipts = () => {
     this.setState({ tab: 'receipt'});
   }
+  //Function is passed to receipt component to see if item has receipt. Result keeps or removes new receipt button.
+  receiptLoaded = (bool, id) => {
+    this.setState({receiptLoaded: bool, receiptId: id});
+  }
 
   // Function is passed to new location form / modal to hot-reload on submit. 
   updateLocationList = (newLocation) => {
     const { locations } = this.state
     this.setState({locations: [...locations, newLocation.data]})
   }
-  //Function is passed to new item form to hot-reload added item. 
+  //Function passed to edit location modal to hot-reload list on submit of edit.
+   updateLocation = async() => {
+   const locationData =  await axios.get('/api/locations')
+    this.setState({locations: locationData.data});
+  }
+  //Function is passed to new item form through modal to hot-reload added item. 
   updateItemList = (newItem) => {
     const { items } = this.state
-    this.setState({items: [...items, newItem.data], tab: 'info', itemId: newItem.data.id})
+    this.setState({items: [...items, newItem.data], itemId: newItem.data.id})
   }
-    
+  //function is passed to new item modal to be called in conjunction with closing animation:
+  updateItemView = () => {
+    this.setState({tab: 'info'});
+  }
+
   //Toggles item number for info display:
   toggleItemId = (e) => {
     this.setState({ ...this.state, itemId: e });
@@ -117,7 +135,7 @@ class Items extends React.Component {
         )
       case 'receipt':
         return (
-          <Receipts ref='receipt' itemId={this.state.itemId} receipt={this.state.receipt}/>
+          <Receipts ref='receipt' itemId={this.state.itemId} receipt={this.state.receipt} update={this.receiptLoaded}/>
         )
       case 'files':
         return (
@@ -125,11 +143,19 @@ class Items extends React.Component {
         )
       case 'newLocation':
         return (
-          <LocationForm update={this.updateLocationList}/>
+          <LocationModal update={this.updateLocationList} tab={this.toggleTab}/>
+        )
+      case 'editLocation':
+        return (
+          <EditLocationModal locationId={this.state.locationId} tab={this.toggleTab} update={this.updateLocation}/>
         )
       case 'newItem':
         return (
-          <ItemModal locationId={this.state.locationId} update={this.updateItemList}/>
+          <ItemModal locationId={this.state.locationId} update={this.updateItemList} tab={this.updateItemView}/>
+        )
+      case 'editItem':
+        return (
+          <EditItemModal itemId={this.state.itemId} tab={this.updateItemView}/>
         )
       case 'newFile':
         return (
@@ -141,7 +167,11 @@ class Items extends React.Component {
         )
       case 'newReceipt':
         return (
-          <ReceiptModal itemId={this.state.itemId} update={this.updateReceipts}/>
+          <ReceiptModal itemId={this.state.itemId} update={this.updateReceipts} />
+        )
+      case 'editReceipt':
+        return (
+          <EditReceiptModal itemId={this.state.itemId} tab={this.updateReceipts} receiptId={this.state.receiptId} />
         )
       default:
         return (
@@ -152,13 +182,13 @@ class Items extends React.Component {
   }
   // Render correct set and functions for buttons in tab area lower nav:
   renderTabButtons = () => {
-    const { tab } = this.state
+    const { tab, receiptLoaded } = this.state
 
     switch (tab) {
       case 'info':
         return (
           <>
-          <Button shape="circle">
+          <Button shape="circle" onClick={() => this.toggleTab('editItem')}>
             <EditOutlined />
           </Button> 
         </>
@@ -177,15 +207,20 @@ class Items extends React.Component {
       case 'receipt':
         return (
           <>
-          <Button shape="circle" onClick={() => this.toggleTab('newReceipt')} >
-            <PlusOutlined />
-          </Button>
-          <Button shape="circle">
+          {receiptLoaded ? 
+          <>
+          <Button shape="circle" onClick={() => this.toggleTab('editReceipt')}>
             <EditOutlined />
           </Button>
           <Button shape="circle" onClick={() => this.deleteReceipt()}>
             <DeleteOutlined />
           </Button>
+          </>
+         : 
+          <Button shape="circle" onClick={() => this.toggleTab('newReceipt')} >
+            <PlusOutlined />
+          </Button>
+          }
           </>
         )
       case 'files':
@@ -222,7 +257,7 @@ class Items extends React.Component {
 
 // delete item when delete button pressed
   deleteItem = () => {
-    const { items, locationId, itemId } = this.state
+    const { items, itemId } = this.state
     axios.delete(`/api/items/${itemId}`)
     .then(res => {
       console.log(res)
@@ -322,12 +357,12 @@ class Items extends React.Component {
               <Button type="primary" shape="circle" onClick={() => this.toggleTab('newLocation')}>
                 <PlusOutlined />
               </Button>
-              {this.state.locationId !== null ?  
+              {this.state.locationId !== 0 ?  
               <>
               <Button type="primary" shape="circle" onClick={() => this.deleteLocation()}>
                 <DeleteOutlined />
               </Button>
-              <Button type="primary" shape="circle">
+              <Button type="primary" shape="circle" onClick={() => this.toggleTab('editLocation')}>
                 <EditOutlined />
               </Button>
               </>
@@ -402,36 +437,36 @@ const divHead = {
   fontWeight: '400'
 }
 const divField = {
-display: 'flex !important',
-flexDirection: 'row !important',
-height: '30em',
-width: '100%',
-fontSize: '18px',
-color: '#272829',
-border: '1px solid grey',
-fontWeight: '300',
-overflow: 'scroll'
+  display: 'flex !important',
+  flexDirection: 'row !important',
+  height: '30em',
+  width: '100%',
+  fontSize: '18px',
+  color: '#272829',
+  border: '1px solid grey',
+  fontWeight: '300',
+  overflow: 'scroll'
 }
 const divFoot = {
-display: 'flex',
-alignItems: 'center',
-justifyContent: 'space-around',
-minHeight: '58px',
-width: 'auto',
-fontSize: '19px',
-color: '#272829',
-border: '1px solid grey',
-padding: '12px',
-fontWeight: '400'
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-around',
+  minHeight: '58px',
+  width: 'auto',
+  fontSize: '19px',
+  color: '#272829',
+  border: '1px solid grey',
+  padding: '12px',
+  fontWeight: '400'
 }
 //styling for item and location name links
 const StyledA = styled.a`
-color: #272829;
-text-decoration: none;
+  color: #272829;
+  text-decoration: none;
 `
 const StyledA2 = styled.a`
-color: #272829;
-text-decoration: none;
+  color: #272829;
+  text-decoration: none;
 `
 
 export default Items;

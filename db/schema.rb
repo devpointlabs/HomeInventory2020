@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_08_224717) do
+ActiveRecord::Schema.define(version: 2020_04_15_233036) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,20 @@ ActiveRecord::Schema.define(version: 2020_04_08_224717) do
     t.index ["item_id"], name: "index_photos_on_item_id"
   end
 
+  create_table "policies", force: :cascade do |t|
+    t.string "name"
+    t.string "issuer"
+    t.date "issue_date"
+    t.string "policy_num"
+    t.string "policy_type"
+    t.text "contact_info"
+    t.string "policy_file"
+    t.bigint "home_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["home_id"], name: "index_policies_on_home_id"
+  end
+
   create_table "receipts", force: :cascade do |t|
     t.date "date"
     t.string "receipt_num"
@@ -149,5 +163,6 @@ ActiveRecord::Schema.define(version: 2020_04_08_224717) do
   add_foreign_key "locations", "users"
   add_foreign_key "maintenances", "homes"
   add_foreign_key "photos", "items"
+  add_foreign_key "policies", "homes"
   add_foreign_key "receipts", "items"
 end
