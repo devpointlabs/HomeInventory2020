@@ -8,7 +8,6 @@ class AssessmentModal extends React.Component {
     confirmLoading: false,
   }
 
-
   showModal = () => {
     this.setState({
       visible: true,
@@ -48,7 +47,7 @@ class AssessmentModal extends React.Component {
         confirmLoading={confirmLoading}
         onCancel={this.handleCancel}
       >
-        <AssessmentForm ref='newAsmt' />
+        <AssessmentForm ref='newAsmt' homeId={this.props.homeId}/>
       </Modal>
     )
   }

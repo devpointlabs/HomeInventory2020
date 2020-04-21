@@ -47,7 +47,7 @@ class MaintenanceModal extends React.Component {
         confirmLoading={confirmLoading}
         onCancel={this.handleCancel}
       >
-        <MaintenanceForm ref='newMaint' />
+        <MaintenanceForm ref='newMaint' homeId={this.props.homeId}/>
       </Modal>
     )
   }

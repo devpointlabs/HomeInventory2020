@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 import FileUploader from '../uploaders/FileUploader'
 import PhotoUploader from '../uploaders/PhotoUploader'
 import axios from 'axios'
