@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import { Divider, List } from 'antd'
 
 export default class RenderPolicy extends React.Component {
   state = {
@@ -33,6 +34,7 @@ export default class RenderPolicy extends React.Component {
     const { policy } = this.state
     if (this.state.policy.id) {
       return (
+        <>
         <div style={{ width: '100%', margin: '16px' }}>
           <h3>{policy.name}</h3>
           <StyledDivider />
@@ -42,6 +44,23 @@ export default class RenderPolicy extends React.Component {
           <p>Policy Type: {policy.policy_type}</p>
           <p>Contact Info: {policy.contact_info}</p>
         </div>
+        <Divider orientation="left">File</Divider>
+        <div style={passiveFileDiv}>
+        <List
+          size="large"
+          bordered
+        >
+          <List.Item>
+            {policy.policy_file ? 
+            <a href={policy.policy_file} width='auto' height='200px'>{policy.policy_file} </a>
+            : 
+            <p>No File Uploaded</p>
+            }
+  
+          </List.Item>
+        </List>
+      </div>
+      </>
       )
     }
     return (
@@ -60,3 +79,6 @@ margin: 24px 0;
 background: #919191;
 
 `
+const passiveFileDiv = {
+  margin: '12px',
+}

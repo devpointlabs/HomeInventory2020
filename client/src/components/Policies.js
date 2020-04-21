@@ -54,24 +54,13 @@ class Policies extends React.Component {
   // Render information panel based on function above / active tab.
   renderPolicyInfo = () => {
     const { tab } = this.state;
-    switch (tab) {
-      case "info":
         return (
           <PolicyInfo
             policyId={this.state.policyId}
             homeId={this.state.homeId}
           />
-        );
-      case "files":
-        return (
-          <>
-          <PolicyFileUploader homeId={this.state.homeId} policyId={this.state.policyId} update={this.updateFiles} />
-          <PolicyFiles homeId={this.state.homeId} policyId={this.state.policyId} />
-          </>
-        );
-      default:
-        return <></>;
-    }
+        )
+    
   };
 
   deletePolicy = () => {
