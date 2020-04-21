@@ -37,7 +37,7 @@ const Album = () => {
           <StyledLine style={photoTab === true ? activeTab : passiveTab} />
         </StyledCon>
         <StyledCon>
-          <StyledSpan onClick={switchTab}>Reciepts</StyledSpan>
+          <StyledSpan onClick={switchTab}>Receipts</StyledSpan>
           <StyledLine style={recieptTab === true ? activeTab : passiveTab} />
         </StyledCon>
       </StyledBar>
