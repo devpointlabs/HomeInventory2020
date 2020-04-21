@@ -57,11 +57,11 @@ class UploadModal extends React.Component {
   handleOk =() => {
     const { type } = this.state  
     //The function below is passed from Item.js to hot-reload and change tab on itm page.
-    this.props.update()
     this.setState({
       confirmLoading: true,
     });
     setTimeout(() => {
+      this.props.update()
       this.setState({
         visible: false,
         confirmLoading: false,
@@ -94,7 +94,7 @@ class UploadModal extends React.Component {
           confirmLoading={confirmLoading}
           onCancel={this.handleCancel}
         >
-          <FileUploader itemId={this.props.itemId} upload={this.postFile}/>
+          <FileUploader itemId={this.props.itemId} upload={this.postFile} handleOk={this.handleOk}/>
         </Modal>
       </div>
     );
@@ -108,7 +108,7 @@ class UploadModal extends React.Component {
           confirmLoading={confirmLoading}
           onCancel={this.handleCancel}
         >
-          <PhotoUploader itemId={this.props.itemId} upload={this.postPhoto}/>
+          <PhotoUploader itemId={this.props.itemId} upload={this.postPhoto} handleOk={this.handleOk}/>
         </Modal>
       </div>
     )

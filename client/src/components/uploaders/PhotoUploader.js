@@ -23,6 +23,7 @@ class PhotoUploader extends React.Component {
       // function passed here from parent
       this.props.upload(data)
       message.success(`${info.file.name} file uploaded successfully.`);
+      this.props.handleOk()
     } else if (status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
     }
