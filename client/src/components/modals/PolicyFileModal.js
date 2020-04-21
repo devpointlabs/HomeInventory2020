@@ -86,7 +86,7 @@ class UploadModal extends React.Component {
           confirmLoading={confirmLoading}
           onCancel={this.handleCancel}
         >
-          <PolicyFileUploader homeId={this.props.homeId} policyId={this.props.policyId} />
+          <PolicyFileUploader homeId={this.props.homeId} policyId={this.props.policyId} handleOk={this.handleOk}/>
         </Modal>
       </div>
     )

@@ -49,10 +49,8 @@ export default class RenderPolicy extends React.Component {
   checkFile = () => {
     const { policy } = this.state
     if (policy.policy_file !== null) {
-      console.log('file true')
       return this.props.update(true)
     } else {
-      console.log('file false')
       return this.props.update(false)
     }  
   }

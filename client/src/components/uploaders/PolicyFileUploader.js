@@ -22,10 +22,7 @@ class PolicyFileUploader extends React.Component {
             data.append('file', info.file.originFileObj)
             axios.patch(`/api/homes/${this.props.homeId}/policies/${this.props.policyId}`, data)
             message.success(`${info.file.name} file uploaded successfully.`);
-            // setTimeout(() => {
-            //     this.props.update()
-            //   }, 1500);
-            
+            this.props.handleOk()
         } else if (status === 'error') {
             message.error(`${info.file.name} file upload failed.`);
         }
@@ -45,7 +42,7 @@ class PolicyFileUploader extends React.Component {
         }
         return (
             <div style={draggerStyle}>
-                <Dragger {...data} onChange={this.onChange} onRemove={this.onRemove}>
+                <Dragger {...data} onChange={this.onChange} onRemove={this.onRemove} showUploadList={false}>
                     <p className="ant-upload-drag-icon">
                         <FileOutlined />
                     </p>
