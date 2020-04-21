@@ -63,6 +63,7 @@ class Policies extends React.Component {
     if (policyId !== null) {
       return (
         <PolicyInfo
+          ref='policy'
           policyId={this.state.policyId}
           homeId={this.state.homeId}
           update={this.togglePolicyFile}
@@ -92,6 +93,10 @@ class Policies extends React.Component {
         console.log(err);
       });
   };
+
+  deleteFile = () => {
+    this.refs.policy.deleteFile()
+  }
 
   render() {
     const { tab, policyId } = this.state;
@@ -157,7 +162,7 @@ class Policies extends React.Component {
                 <>
                   {this.state.policyFile ? 
                   <Tooltip title="Delete File">
-                    <Button shape="circle">
+                    <Button shape="circle" onClick={() => this.deleteFile()}>
                       <DeleteOutlined />
                     </Button> 
                   </Tooltip>
