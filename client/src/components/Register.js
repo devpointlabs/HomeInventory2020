@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { AuthConsumer } from '../providers/AuthProvider';
 import styled from 'styled-components';
 
@@ -13,10 +13,12 @@ class Register extends React.Component {
     const { email, password, passwordConfirmation } = this.state;
     const { auth: { handleRegister, }, history, } = this.props;
 
-    if (password === passwordConfirmation)
-      handleRegister({ email, password, passwordConfirmation, }, history);
-    else
+    if (password === passwordConfirmation) {
+      handleRegister({ email, password, passwordConfirmation, });
+      return <Redirect to='/items' />
+    } else {
       alert('Passwords Do Not Match!');
+    }
   };
 
   handleChange = (e) => {
