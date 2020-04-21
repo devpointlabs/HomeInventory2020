@@ -15,7 +15,7 @@ export default class House extends React.Component {
     state = {
         houses: [],
         maintenanceId: 0,
-        assessmentId: 0, 
+        assessmentId: 0,
         homeId: 0,
     };
     componentDidMount() {
@@ -73,7 +73,7 @@ export default class House extends React.Component {
             .catch(err => {
                 console.log(err)
             })
-    
+
     }
 
     // Function to open assessment modal on click of new button:
@@ -113,7 +113,7 @@ export default class House extends React.Component {
                         <Link><PlusOutlined /></Link>
                     </StyledIcon> */}
                     <StyledIconHome>
-                    <Link to={{ pathname: '/edit/home', home: home.id }}>
+                        <Link to={{ pathname: '/edit/home', home: home.id }}>
                             <EditOutlined />
                         </Link>
                     </StyledIconHome>
@@ -127,7 +127,7 @@ export default class House extends React.Component {
             </div >
         ))
     }
- 
+
     renderMaintenances = () => {
         const { houses } = this.state
         return houses.map(home => (
@@ -136,29 +136,29 @@ export default class House extends React.Component {
                     <StyledHeader>
                         <p> Maintenance Schedule </p>
                     </StyledHeader>
-                    {this.state.maintenanceId !== 0 ? 
-                    <>               
-                    <StyledIcon onClick={() => this.openEditMaintenance()}>
-                        <Link><EditOutlined /></Link>
-                    </StyledIcon>
-                    <div onClick={e => e.stopPropagation()}>
-                        <EditMaintenanceModal 
-                            ref='editMaintenance'
-                            home={home.id} 
-                            id={this.state.maintenanceId} 
-                            update={this.updateMaintenance}
-                        />
-                    </div>
-                    <StyledIcon>
-                        <Link><MinusOutlined onClick={this.deleteMaintenance} /></Link>
-                    </StyledIcon>
-                    </>
-                    : null }
+                    {this.state.maintenanceId !== 0 ?
+                        <>
+                            <StyledIcon onClick={() => this.openEditMaintenance()}>
+                                <Link><EditOutlined /></Link>
+                            </StyledIcon>
+                            <div onClick={e => e.stopPropagation()}>
+                                <EditMaintenanceModal
+                                    ref='editMaintenance'
+                                    home={home.id}
+                                    id={this.state.maintenanceId}
+                                    update={this.updateMaintenance}
+                                />
+                            </div>
+                            <StyledIcon>
+                                <Link><MinusOutlined onClick={this.deleteMaintenance} /></Link>
+                            </StyledIcon>
+                        </>
+                        : null}
                     <StyledIcon onClick={() => this.openMaintenance()}>
                         <Link><PlusOutlined /></Link>
                     </StyledIcon>
                     <div onClick={e => e.stopPropagation()}>
-                        <MaintenanceModal ref='maintenance' update={this.updateMaintenance}/>
+                        <MaintenanceModal ref='maintenance' update={this.updateMaintenance} homeId={home.id}/>
                     </div>
                 </StyledCon>
                 <StyledTable>
@@ -184,29 +184,29 @@ export default class House extends React.Component {
                     <StyledHeader>
                         <p> Assessment History </p>
                     </StyledHeader>
-                    {this.state.assessmentId !== 0 ? 
-                    <>
-                     <StyledIcon onClick={() => this.openEditAssessment()}>
-                        <Link><EditOutlined /></Link>
-                    </StyledIcon>
-                    <div onClick={e => e.stopPropagation()}>
-                        <EditAssessmentsModal 
-                            ref='editAssessment'
-                            home= {home.id} 
-                            assessmentId={this.state.assessmentId} 
-                            update={this.updateAssessment}
-                        />
-                     </div>
-                    <StyledIcon>
-                        <Link><MinusOutlined onClick={this.deleteAssessment} /></Link>
-                    </StyledIcon>
-                    </>
-                    : null}                  
+                    {this.state.assessmentId !== 0 ?
+                        <>
+                            <StyledIcon onClick={() => this.openEditAssessment()}>
+                                <Link><EditOutlined /></Link>
+                            </StyledIcon>
+                            <div onClick={e => e.stopPropagation()}>
+                                <EditAssessmentsModal
+                                    ref='editAssessment'
+                                    home={home.id}
+                                    assessmentId={this.state.assessmentId}
+                                    update={this.updateAssessment}
+                                />
+                            </div>
+                            <StyledIcon>
+                                <Link><MinusOutlined onClick={this.deleteAssessment} /></Link>
+                            </StyledIcon>
+                        </>
+                        : null}
                     <StyledIcon onClick={() => this.openAssessment()}>
-                       <Link><PlusOutlined /></Link>   
+                        <Link><PlusOutlined /></Link>
                     </StyledIcon>
                     <div onClick={e => e.stopPropagation()}>
-                        <AssessmentModal ref='assessment' update={this.updateAssessment}/>
+                        <AssessmentModal ref='assessment' update={this.updateAssessment} />
                     </div>
                 </StyledCon>
                 <StyledTable>

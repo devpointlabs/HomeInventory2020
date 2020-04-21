@@ -43,19 +43,19 @@ class HomeForm extends React.Component {
   };
 
   onDrop = (files) => {
-    console.log('files[0]',files[0])
-    this.setState({file:files[0]})
+    console.log('files[0]', files[0])
+    this.setState({ file: files[0] })
   };
 
 
   handleSubmit = () => {
     let data = new FormData();
-    const {file} = this.state
+    const { file } = this.state
     console.log('file: submit', file)
     data.append("file", file);
     const {
       address,
-      zip_code ,
+      zip_code,
       square_footage,
       lot_size,
       purchase_date,
@@ -77,6 +77,7 @@ class HomeForm extends React.Component {
           file: null
           // image: "",
         });
+        return <Redirect to='/house' />
       })
       .catch((err) => {
         console.log(err);

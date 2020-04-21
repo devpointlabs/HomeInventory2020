@@ -10,9 +10,11 @@ class AssessmentForm extends React.Component {
     total_value: "",
   };
 
+
   handleSubmit = () => {
-    //gonna need a home to post this assessment to
-    axios.post("/api/homes/1/assessments", this.state).then((res) => {
+    const { homeId } = this.props
+
+    axios.post(`/api/homes/${homeId}/assessments`, this.state).then((res) => {
       console.log(res);
       this.setState({
         date: null,

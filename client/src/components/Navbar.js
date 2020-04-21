@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthProvider';
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
+import Logo from '../images/home-inventory-black.png'
 
 const { Search } = Input;
 // import { Menu, Icon, Button } from 'antd';
@@ -45,9 +46,9 @@ const Navbar = (props) => {
           <Redirect to='/' />
           <StyledNav>
             <StyledUl>
-              <StyledLogo><StyledA as={Link} to='/'>LOGO</StyledA></StyledLogo>
+              <StyledLogo><Link to='/'><img src={Logo} width='190px' height='90px'/></Link></StyledLogo>
               <StyledLi><StyledButton as={Link} to='/register'>SIGN UP</StyledButton></StyledLi>
-              <StyledLi><StyledA as={Link} to='/login'>SIGN IN</StyledA></StyledLi>
+              <StyledLi><StyledA2 as={Link} to='/login'>SIGN IN</StyledA2></StyledLi>
             </StyledUl>
           </StyledNav>
         </>
@@ -76,7 +77,7 @@ list-style-type: none;
 `
 const StyledLogo = styled.li`
 margin-left: 0.5206vw;
-margin-right: 64vw;
+margin-right: 55vw;
 font-weight: bold;
 cursor: pointer;
 font-size: 25px;
@@ -101,6 +102,10 @@ transition: all 0.3s ease-in-out;
 `
 const StyledA = styled.a`
 color: black;
+text-decoration: none;
+`
+const StyledA2 = styled.a`
+color: white;
 text-decoration: none;
 `
 //logged in navbar

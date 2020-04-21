@@ -9,7 +9,8 @@ class MaintenanceForm extends React.Component {
   };
 
   handleSubmit = () => {
-    axios.post("/api/homes/1/maintenances", this.state).then((res) => {
+    const { homeId }= this.props
+    axios.post(`/api/homes/${homeId}/maintenances`, this.state).then((res) => {
       console.log(res);
       this.setState({
         due_date: null,
