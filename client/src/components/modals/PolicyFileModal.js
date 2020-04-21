@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal } from 'antd';
 import FileUploader from '../uploaders/FileUploader'
-import PhotoUploader from '../uploaders/PhotoUploader'
+import PolicyFileUploader from '../uploaders/PolicyFileUploader'
 import axios from 'axios'
 
 class UploadModal extends React.Component {
@@ -55,8 +55,6 @@ class UploadModal extends React.Component {
   }
 
   handleOk =() => {
-    const { type } = this.state  
-    //The function below is passed from Item.js to hot-reload and change tab on itm page.
     this.setState({
       confirmLoading: true,
     });
@@ -70,21 +68,15 @@ class UploadModal extends React.Component {
   };
 
   handleCancel = async() => {
-    const { type } = this.state
     console.log('Clicked cancel button');
-    if (type === 'file'){
-      axios.delete(`api/items/${this.props.itemId}/documents/${this.state.fileId}`).then(res => {console.log(res)})
-    } else if (type === 'photo') {
-      axios.delete(`api/items/${this.props.itemId}/photos/${this.state.photoId}`).then(res => {console.log(res)})
-    }
     this.setState({
       visible: false,
     });
   };
 
   render() {
-    const { visible, confirmLoading, type } = this.state;
-    if (type === 'file'){
+    const { visible, confirmLoading } = this.state;
+
     return (
       <div>
         <Modal
@@ -94,25 +86,11 @@ class UploadModal extends React.Component {
           confirmLoading={confirmLoading}
           onCancel={this.handleCancel}
         >
-          <FileUploader itemId={this.props.itemId} upload={this.postFile} handleOk={this.handleOk}/>
-        </Modal>
-      </div>
-    );
-  } else if (type === 'photo')
-    return (
-      <div>
-        <Modal
-          title={this.props.title}
-          visible={visible}
-          onOk={this.handleOk}
-          confirmLoading={confirmLoading}
-          onCancel={this.handleCancel}
-        >
-          <PhotoUploader itemId={this.props.itemId} upload={this.postPhoto} handleOk={this.handleOk}/>
+          <PolicyFileUploader homeId={this.props.homeId} policyId={this.props.policyId} handleOk={this.handleOk}/>
         </Modal>
       </div>
     )
-  }
+    }
 }
 
 export default UploadModal

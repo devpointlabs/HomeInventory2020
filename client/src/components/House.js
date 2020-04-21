@@ -206,7 +206,7 @@ export default class House extends React.Component {
                         <Link><PlusOutlined /></Link>
                     </StyledIcon>
                     <div onClick={e => e.stopPropagation()}>
-                        <AssessmentModal ref='assessment' update={this.updateAssessment} />
+                        <AssessmentModal ref='assessment' homeId={home.id} update={this.updateAssessment} />
                     </div>
                 </StyledCon>
                 <StyledTable>

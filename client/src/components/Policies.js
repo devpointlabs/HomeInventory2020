@@ -2,15 +2,24 @@ import React from "react";
 import { Row, Col } from "antd";
 import styled from "styled-components";
 import axios from "axios";
-import Uploader from "./uploaders/FileUploader";
-import { Button, List } from "antd";
+//
+import PolicyFileUploader from "./uploaders/PolicyFileUploader";
+//
+import PolicyFileModal from './modals/PolicyFileModal'
+import { Button, List, Tooltip } from "antd";
 import { PlusOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import PolicyForm from "../components/forms/PolicyForm";
 import PolicyInfo from "../components/PolicyInfo";
 import { Link } from "react-router-dom";
 
 class Policies extends React.Component {
-  state = { homes: [], policies: [], policyId: null, homeId: 0, tab: "info" };
+  state = { 
+    homes: [], 
+    policies: [],
+    policyId: null, 
+    file: false,
+    homeId: 0,
+    tab: "info" 
+    };
 
   async componentDidMount() {
     let homeData = await axios.get("/api/homes");
@@ -41,41 +50,55 @@ class Policies extends React.Component {
     ));
   };
 
+  togglePolicyFile = (bool) => {
+    this.setState({file: bool});
+  }
+
   togglePolicies = (targetId) => {
     this.setState({ ...this.state, policyId: targetId });
   };
 
-  // Toggles Info display
-  toggleTab = (t) => {
-    this.setState({ tab: t });
-  };
-
   // Render information panel based on function above / active tab.
   renderPolicyInfo = () => {
-    const { tab } = this.state;
-    switch (tab) {
-      case "info":
+    const { policyId, tab } = this.state
+    if (policyId !== null) {
+      if (tab === 'info') {
+      return (
+        <PolicyInfo
+          ref='policy'
+          policyId={this.state.policyId}
+          homeId={this.state.homeId}
+          update={this.togglePolicyFile}
+        />
+      )}
+      if( tab === 'newFile') {
         return (
-          <PolicyInfo
-            policyId={this.state.policyId}
-            homeId={this.state.homeId}
-          />
-        );
-      case "files":
-        return (
-          <Uploader itemId={this.state.itemId} update={this.updateFiles} />
-        );
-      // case "newPolicy":
-      //   return (
-      //     <PolicyForm
-      //       update={this.updateLocationList}
-      //       homeId={this.state.homeId}
-      //     />
-      //   );
-      default:
-        return <></>;
-    }
+          <PolicyFileModal homeId={this.state.homeId} policyId={this.state.policyId} update={this.updateFiles} />
+        )
+      }
+    } 
   };
+
+  renderButtons = () => {
+    const { file } = this.state
+    if(file === true) {
+      return (
+      <Tooltip title="Delete File">
+        <Button shape="circle" onClick={() => this.deleteFile()}>
+          <DeleteOutlined />
+        </Button> 
+      </Tooltip>
+      )
+    } else {
+      return (
+      <Tooltip title="Upload File">
+        <Button shape="circle" onClick={() => this.uploadFile()}>
+          <PlusOutlined />
+        </Button>  
+      </Tooltip>
+      )
+    }
+  }
 
   deletePolicy = () => {
     const { homeId, policyId, policies } = this.state;
@@ -99,56 +122,19 @@ class Policies extends React.Component {
       });
   };
 
-  renderFiles = () => {
-    const { files, fileId } = this.state;
-    return files.map((file) => (
-      <div
-        style={fileId === file.id ? activeFileDiv : passiveFileDiv}
-        key={file.id}
-        onClick={() => this.setId(file.id)}
-      >
-        <List size="large" bordered>
-          <List.Item>
-            <a href={file.file} width="auto" height="200px">
-              {file.name}{" "}
-            </a>
-          </List.Item>
-        </List>
-      </div>
-    ));
-  };
+  deleteFile = () => {
+    this.refs.policy.deleteFile()
+  }
 
-  // Function that toggles active file ID:
-  setId = (id) => {
-    this.setState({
-      fileId: id,
-    });
-  };
-
+  uploadFile = () => {
+    this.setState({tab: 'newFile'});
+  }
   updateFiles = () => {
-    this.setState({ filesLoaded: false });
-  };
-
-  deleteFile = (id) => {
-    const { itemId, fileId, files } = this.state;
-    axios
-      .delete(``)
-      .then((res) => {
-        console.log(res);
-        const filteredFiles = files.filter((f) => f.id !== fileId);
-        this.setState({
-          fileId: null,
-          tab: "files",
-          files: filteredFiles,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+    this.setState({tab: 'info'});
+  }
 
   render() {
-    const { tab, policyId } = this.state;
+
     return (
       <>
         <Row>
@@ -159,18 +145,7 @@ class Policies extends React.Component {
           </Col>
           <Col span={18}>
             <div style={{ ...divHead }}>
-              <StyledA
-                onClick={() => this.toggleTab("info")}
-                style={tab === "info" && policyId !== null ? activeTab : {}}
-              >
-                Info
-              </StyledA>
-              <StyledA
-                onClick={() => this.toggleTab("files")}
-                style={tab === "files" && policyId !== null ? activeTab : {}}
-              >
-                Files
-              </StyledA>
+              <p>Info</p>
             </div>
           </Col>
         </Row>
@@ -204,7 +179,6 @@ class Policies extends React.Component {
                   </Button>
                   <Button
                     type="primary"
-                    // onClick={() => this.updatePolicy()}
                     shape="circle"
                   ><Link 
                   to={{ pathname: "/edit/policy", homeId:this.state.homeId, policyId:this.state.policyId}}>
@@ -217,14 +191,9 @@ class Policies extends React.Component {
           </Col>
           <Col span={18}>
             <div style={{ ...divFoot }}>
-              {this.state.itemId !== null ? (
+              {this.state.policyId !== null ? (
                 <>
-                  <Button shape="circle">
-                    <EditOutlined />
-                  </Button>
-                  <Button shape="circle" onClick={() => this.deleteItem()}>
-                    <DeleteOutlined />
-                  </Button>
+                {this.renderButtons()}
                 </>
               ) : null}
             </div>
@@ -292,9 +261,10 @@ const divFoot = {
   fontWeight: "400",
 };
 //styling for name links
-const StyledA = styled.a`
+const StyledA = styled.h4`
   color: #272829;
   text-decoration: none;
+  cursor: default
 `;
 const StyledA2 = styled.a`
   color: #272829;

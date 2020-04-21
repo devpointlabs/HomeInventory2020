@@ -1,0 +1,32 @@
+{
+  "name": "HomeInventory2020",
+  "version": "1.0.0",
+  "description": "This README would normally document whatever steps are necessary to get the application up and running.",
+  "main": "server.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "proxy": "http://localhost:3001",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "build": "cd client && npm install --only=dev && npm install && npm run build && cd ..",
+    "deploy": "cp -a client/build/. public/",
+    "heroku-postbuild": "npm run build && npm run deploy && echo 'Client Built'"
+  
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devpointlabs/HomeInventory2020.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devpointlabs/HomeInventory2020/issues"
+  },
+  "homepage": "https://github.com/devpointlabs/HomeInventory2020#readme"
+}

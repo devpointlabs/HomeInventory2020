@@ -24,7 +24,22 @@ class Api::PoliciesController < ApplicationController
  
   def update
     @policy.update(policy_params)
-    render json: @policy
+    file = params[:file]
+    if file
+      begin
+        ext = File.extname(file.tempfile)
+        cloud_image = Cloudinary::Uploader.upload(file, public_id: file.original_filename, secure: true, :resource_type => :raw)
+        @policy.policy_file = cloud_image["secure_url"]
+      rescue => e
+        render json: { errors: e }, status: 422
+        return
+      end
+    end
+    if @policy.save
+      render json: @policy
+    else
+      render json: @policy.errors, status: 422
+    end
   end
 
   def destroy
@@ -35,7 +50,7 @@ class Api::PoliciesController < ApplicationController
 private
 
   def policy_params
-    params.require(:policy).permit(:name, :issuer, :issue_date, :policy_num, :policy_type, :contact_info)
+    params.permit(:name, :issuer, :issue_date, :policy_num, :policy_type, :contact_info, :policy_file, :policy)
   end
 
   def set_home

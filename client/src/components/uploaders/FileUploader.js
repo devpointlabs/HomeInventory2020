@@ -21,6 +21,7 @@ class Uploader extends React.Component {
       data.append('file', info.file.originFileObj)
       this.props.upload(data)
       message.success(`${info.file.name} file uploaded successfully.`);
+      this.props.handleOk()
     } else if (status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
     }
