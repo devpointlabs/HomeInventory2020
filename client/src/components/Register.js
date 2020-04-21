@@ -28,67 +28,70 @@ class Register extends React.Component {
     const { name, email, password, passwordConfirmation, } = this.state;
 
     return (
-      <StyledBackground>
-        <StyledHeader>Join Home Inventory</StyledHeader>
-        <StyledHeader2>Sign up with <a>Facebook</a> or <a>Google</a></StyledHeader2>
-        <LineCon>
-          <StyledLine></StyledLine>
-          <StyledHeader2>or</StyledHeader2>
-          <StyledLine></StyledLine>
-        </LineCon>
-        <Form onFinish={this.handleSubmit}>
-          <Form.Item>
-            <Input
-              label="Email"
-              required
-              autoFocus
-              name='email'
-              value={email}
-              placeholder='Email'
-              onChange={this.handleChange}
-            />
-          </Form.Item>
-          <Form.Item >
-            <Input
-              label="Name"
-              required
-              name='name'
-              value={name}
-              placeholder='Name'
-              onChange={this.handleChange}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Input as={StyledForm}
-              label="Password"
-              required
-              name='password'
-              value={password}
-              placeholder='Password'
-              type='password'
-              onChange={this.handleChange}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Input
-              label="Password Confirmation"
-              required
-              name='passwordConfirmation'
-              value={passwordConfirmation}
-              placeholder='Password Confirmation'
-              type='password'
-              onChange={this.handleChange}
-            />
-          </Form.Item>
-          <Form.Item>
-            <StyledButton htmlType="submit">
-              Sign up
+      <>
+        <StyledBackgroundImg src='https://images.unsplash.com/photo-1493934558415-9d19f0b2b4d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=2536&q=80' width="100%" height='auto' />
+        <StyledBackground>
+          <StyledHeader>Join Home Inventory</StyledHeader>
+          <StyledHeader2>Sign up with <a>Facebook</a> or <a>Google</a></StyledHeader2>
+          <LineCon>
+            <StyledLine></StyledLine>
+            <StyledHeader2>or</StyledHeader2>
+            <StyledLine></StyledLine>
+          </LineCon>
+          <Form onFinish={this.handleSubmit}>
+            <Form.Item>
+              <Input
+                label="Email"
+                required
+                autoFocus
+                name='email'
+                value={email}
+                placeholder='Email'
+                onChange={this.handleChange}
+              />
+            </Form.Item>
+            <Form.Item >
+              <Input
+                label="Name"
+                required
+                name='name'
+                value={name}
+                placeholder='Name'
+                onChange={this.handleChange}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Input as={StyledForm}
+                label="Password"
+                required
+                name='password'
+                value={password}
+                placeholder='Password'
+                type='password'
+                onChange={this.handleChange}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Input
+                label="Password Confirmation"
+                required
+                name='passwordConfirmation'
+                value={passwordConfirmation}
+                placeholder='Password Confirmation'
+                type='password'
+                onChange={this.handleChange}
+              />
+            </Form.Item>
+            <Form.Item>
+              <StyledButton htmlType="submit">
+                Sign up
             </StyledButton>
-            <StyledLine2></StyledLine2>
-            <StyledHeader2>Already have an account? <Link to='/login'>Log in</Link></StyledHeader2>
-          </Form.Item>
-        </Form>
-      </StyledBackground>
+              <StyledLine2></StyledLine2>
+              <StyledHeader2>Already have an account? <Link to='/login'>Log in</Link></StyledHeader2>
+            </Form.Item>
+          </Form>
+        </StyledBackground>
+      </>
     );
   };
 };
@@ -103,6 +106,12 @@ export default class ConnectedRegister extends React.Component {
   };
 };
 
+const StyledBackgroundImg = styled.img`
+position: absolute;
+top: 0;
+z-index: -1;
+`
+
 const StyledForm = styled.input`
 background: grey !important;
 border: none !important;
@@ -110,6 +119,7 @@ border: none !important;
 
 const StyledBackground = styled.div`
 border: black 1px solid;
+background: white;
 margin: 10px 420px;
 padding: 10px 25px;
 `

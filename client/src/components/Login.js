@@ -21,6 +21,8 @@ class Login extends React.Component {
   render() {
     const { email, password, } = this.state;
     return (
+      <>
+      <StyledBackgroundImg src='https://images.unsplash.com/photo-1493934558415-9d19f0b2b4d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=2536&q=80' width="100%" height='auto'/>
       <StyledBackground>
         <StyledHeader>Log Into Home Inventory</StyledHeader>
         <StyledHeader2>Log in with <a>Facebook</a> or <a>Google</a></StyledHeader2>
@@ -61,6 +63,7 @@ class Login extends React.Component {
           </Form.Item>
         </Form>
       </ StyledBackground>
+      </>
     )
   }
 }
@@ -75,6 +78,11 @@ export default class ConnectedLogin extends React.Component {
   }
 }
 
+const StyledBackgroundImg = styled.img`
+position: absolute;
+top: 0;
+z-index: -1;
+`
 const StyledForm = styled.input`
 background: grey !important;
 border: none !important;
@@ -82,6 +90,7 @@ border: none !important;
 
 const StyledBackground = styled.div`
 border: black 1px solid;
+background: white;
 margin: 10px 420px;
 padding: 10px 25px;
 `
