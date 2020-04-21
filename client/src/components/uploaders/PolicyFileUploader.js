@@ -21,9 +21,11 @@ class PolicyFileUploader extends React.Component {
             const data = new FormData()
             data.append('file', info.file.originFileObj)
             axios.patch(`/api/homes/${this.props.homeId}/policies/${this.props.policyId}`, data)
-            // does this need to be img, same as schema
-            // function passed here from parent
             message.success(`${info.file.name} file uploaded successfully.`);
+            setTimeout(() => {
+                this.props.update()
+              }, 1500);
+            
         } else if (status === 'error') {
             message.error(`${info.file.name} file upload failed.`);
         }

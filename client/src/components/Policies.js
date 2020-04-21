@@ -15,7 +15,7 @@ class Policies extends React.Component {
     homes: [], 
     policies: [],
     policyId: null, 
-    policyFile: false,
+    file: false,
     homeId: 0,
     tab: "info" 
     };
@@ -50,7 +50,7 @@ class Policies extends React.Component {
   };
 
   togglePolicyFile = (bool) => {
-    this.setState({policyFile: bool});
+    this.setState({file: bool});
   }
 
   togglePolicies = (targetId) => {
@@ -59,8 +59,9 @@ class Policies extends React.Component {
 
   // Render information panel based on function above / active tab.
   renderPolicyInfo = () => {
-    const { policyId } = this.state
+    const { policyId, tab } = this.state
     if (policyId !== null) {
+      if (tab === 'info') {
       return (
         <PolicyInfo
           ref='policy'
@@ -68,9 +69,35 @@ class Policies extends React.Component {
           homeId={this.state.homeId}
           update={this.togglePolicyFile}
         />
-      )
+      )}
+      if( tab === 'newFile') {
+        return (
+          <PolicyFileUploader homeId={this.state.homeId} policyId={this.state.policyId} update={this.updateFiles} />
+        )
+      }
     } 
   };
+
+  renderButtons = () => {
+    const { file } = this.state
+    if(file === true) {
+      return (
+      <Tooltip title="Delete File">
+        <Button shape="circle" onClick={() => this.deleteFile()}>
+          <DeleteOutlined />
+        </Button> 
+      </Tooltip>
+      )
+    } else {
+      return (
+      <Tooltip title="Upload File">
+        <Button shape="circle" onClick={() => this.uploadFile()}>
+          <PlusOutlined />
+        </Button>  
+      </Tooltip>
+      )
+    }
+  }
 
   deletePolicy = () => {
     const { homeId, policyId, policies } = this.state;
@@ -98,8 +125,15 @@ class Policies extends React.Component {
     this.refs.policy.deleteFile()
   }
 
+  uploadFile = () => {
+    this.setState({tab: 'newFile'});
+  }
+  updateFiles = () => {
+    this.setState({tab: 'info'});
+  }
+
   render() {
-    const { tab, policyId } = this.state;
+
     return (
       <>
         <Row>
@@ -135,15 +169,13 @@ class Policies extends React.Component {
               </Button>
               {this.state.locationId !== null ? (
                 <>
-             
-                    <Button
-                      type="primary"
-                      shape="circle"
-                      onClick={() => this.deletePolicy()}
-                    >
-                      <DeleteOutlined />
-                    </Button>
-         
+                  <Button
+                    type="primary"
+                    shape="circle"
+                    onClick={() => this.deletePolicy()}
+                  >
+                    <DeleteOutlined />
+                  </Button>
                   <Button
                     type="primary"
                     shape="circle"
@@ -160,17 +192,7 @@ class Policies extends React.Component {
             <div style={{ ...divFoot }}>
               {this.state.policyId !== null ? (
                 <>
-                  {this.state.policyFile ? 
-                  <Tooltip title="Delete File">
-                    <Button shape="circle" onClick={() => this.deleteFile()}>
-                      <DeleteOutlined />
-                    </Button> 
-                  </Tooltip>
-                  : 
-                  <Button shape="circle">
-                    <PlusOutlined />
-                  </Button>  
-                  }            
+                {this.renderButtons()}
                 </>
               ) : null}
             </div>

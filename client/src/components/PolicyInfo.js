@@ -12,9 +12,9 @@ export default class RenderPolicy extends React.Component {
     const { policyId, homeId } = this.props
     if (policyId !== null) {
       axios.get(`/api/homes/${homeId}/policies/${policyId}`).then((res) => {
-        console.log(res)
-        this.setState({ policy: res.data });
         this.checkFile()
+        console.log(res)
+        this.setState({ policy: res.data });  
       }).catch((err) => {
         console.log(err)
       })
@@ -24,9 +24,9 @@ export default class RenderPolicy extends React.Component {
     const { policyId, homeId } = this.props
     if (policyId !== null && policyId !== this.state.policy.id) {
       axios.get(`/api/homes/${homeId}/policies/${policyId}`).then((res) => {
-        console.log(res)
-        this.setState({ policy: res.data });
         this.checkFile()
+        console.log(res)
+        this.setState({ policy: res.data }); 
       }).catch((err) => {
         console.log(err)
       })
@@ -39,15 +39,18 @@ export default class RenderPolicy extends React.Component {
     .then(res => {
       console.log(res)
     })
+    this.setState({...policy, policy_file: null});
   }
 
   checkFile = () => {
     const { policy } = this.state
-    if (policy.policy_file) {
+    if (policy.policy_file !== null) {
       console.log('file true')
-      return this.props.update('true')
-    }
-    return console.log('no file')
+      return this.props.update(true)
+    } else {
+      console.log('file false')
+      return this.props.update(false)
+    }  
   }
   render() {
     const { policy } = this.state
