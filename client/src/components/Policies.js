@@ -5,8 +5,6 @@ import axios from "axios";
 import PolicyFileUploader from "./uploaders/PolicyFileUploader";
 import { Button, List, Tooltip } from "antd";
 import { PlusOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import PolicyFiles from "../components/PolicyFiles"
-import PolicyForm from "../components/forms/PolicyForm";
 import PolicyInfo from "../components/PolicyInfo";
 import { Link } from "react-router-dom";
 

@@ -34,12 +34,13 @@ export default class RenderPolicy extends React.Component {
   }
   deleteFile = () => {
     const { policyId, homeId } = this.props
-    const policy = this.state.policy
+    const policy = this.state
     axios.patch(`/api/homes/${homeId}/policies/${policyId}`, {...policy, policy_file: null})
     .then(res => {
       console.log(res)
     })
-    this.setState({...policy, policy_file: null});
+    const fileRmv = {...policy, policy_file: null}
+    this.setState({policy: fileRmv});
   }
 
   checkFile = () => {
