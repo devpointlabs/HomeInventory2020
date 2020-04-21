@@ -9,6 +9,7 @@
   },
   "dependencies": {},
   "devDependencies": {},
+  "proxy": "http://localhost:3001",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
