@@ -3,114 +3,130 @@ import axios from "axios";
 import { Form, Input, DatePicker, InputNumber, Button } from "antd";
 import RecieptPhotoUploader from "../uploaders/RecieptPhotoUploader";
 
-
 class ReceiptForm extends React.Component {
-  state = { date: null, receipt_num: "", purchased_from: "", price: "", tax: "", img: "" , file:""};
+  state = {
+    date: null,
+    receipt_num: "",
+    purchased_from: "",
+    price: "",
+    tax: "",
+    img: "",
+    file: "",
+  };
 
   handleSubmit = () => {
-    const { receipt_num, purchased_from, price, tax, file, date} = this.state
+    const { receipt_num, purchased_from, price, tax, file, date } = this.state;
 
-    axios.post(`/api/items/${this.props.itemId}/receipts?date=${date}&receipt_num=${receipt_num}&purchased_from=${purchased_from}&price=${price}&tax=${tax}`, file)
-      .then(res => {
-        console.log(res)
-      })
-  }
+    axios
+      .post(
+        `/api/items/${this.props.itemId}/receipts?date=${date}&receipt_num=${receipt_num}&purchased_from=${purchased_from}&price=${price}&tax=${tax}`,
+        file
+      )
+      .then((res) => {
+        console.log(res);
+      });
+  };
 
   handlePriceChange = (value) => {
-    this.setState({ price: value })
+    this.setState({ price: value });
   };
 
   handleTaxChange = (value) => {
-    this.setState({ tax: value })
+    this.setState({ tax: value });
   };
 
   handleChange = (e) => {
-    const { name, value, } = e.target;
+    const { name, value } = e.target;
     this.setState({ [name]: value });
   };
 
   handleDate = (date) => {
-    this.setState({ date: date })
-  }
-  
+    this.setState({ date: date });
+  };
+
   postPhoto = (data) => {
-    console.log(`this`)
-    console.log(data)
-        this.setState({
-          file: data
-        })
-  }
+    console.log(`this`);
+    console.log(data);
+    this.setState({
+      file: data,
+    });
+  };
 
   render() {
     const { date, receipt_num, purchased_from, price, tax, img } = this.state;
     return (
       <>
         <Form onFinish={this.handleSubmit}>
-          <Form.Item >
+          <p>Purchase Date</p>
+          <Form.Item>
             <DatePicker
-              label="Purchase Date"
               placeholder="Purchase Date"
               autoFocus
               required
-              name='date'
+              name="date"
               value={date}
               onChange={this.handleDate}
             />
           </Form.Item>
+          <p>Receipt Number</p>
           <Form.Item>
             <Input
-              label="Receipt Number"
               required
-              name='receipt_num'
+              name="receipt_num"
               value={receipt_num}
-              placeholder='Receipt Number'
+              placeholder="Receipt Number"
               onChange={this.handleChange}
             />
           </Form.Item>
+          <p>Purchased From</p>
           <Form.Item>
             <Input
-              label="Purchased From"
               required
-              name='purchased_from'
+              name="purchased_from"
               value={purchased_from}
-              placeholder='Purchased From'
+              placeholder="Purchased From"
               onChange={this.handleChange}
             />
           </Form.Item>
+          <p>Price</p>
           <Form.Item>
             <InputNumber
-              label="Price"
               required
-              name='price'
+              name="price"
               value={price}
               defaultValue={0}
-              placeholder='price'
-              formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              parser={value => value.replace(/\$\s?|(,*)/g, '')}
+              placeholder="price"
+              formatter={(value) =>
+                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
               onChange={this.handlePriceChange}
             />
           </Form.Item>
+          <p>Tax</p>
           <Form.Item>
             <InputNumber
-              label="Tax"
               required
-              name='tax'
+              name="tax"
               value={tax}
               defaultValue={0}
-              placeholder='tax'
-              formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              parser={value => value.replace(/\$\s?|(,*)/g, '')}
+              placeholder="tax"
+              formatter={(value) =>
+                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
               onChange={this.handleTaxChange}
             />
           </Form.Item>
           <Form.Item>
-            <RecieptPhotoUploader itemId={this.props.itemId} upload={this.postPhoto} />
+            <RecieptPhotoUploader
+              itemId={this.props.itemId}
+              upload={this.postPhoto}
+            />
           </Form.Item>
         </Form>
       </>
     );
-  };
+  }
 }
 export default ReceiptForm;
-
-

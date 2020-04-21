@@ -96,9 +96,9 @@ class EditItemModal extends React.Component {
      {/* _________________________________FORM_______________________________ */}
         <div> 
           <Form onFinish={this.handleSubmit}>
+            <p>Name</p>
             <Form.Item >
               <Input
-              label="Name"
               required     
               autoFocus
               name='name'
@@ -107,9 +107,9 @@ class EditItemModal extends React.Component {
               onChange={this.handleChange}
               />
             </Form.Item>
+            <p>Make</p>
             <Form.Item >
               <Input
-              label="Make"
               required     
               name='make'
               value={make}
@@ -117,9 +117,9 @@ class EditItemModal extends React.Component {
               onChange={this.handleChange}
               />
             </Form.Item>
+            <p>Model</p>
             <Form.Item >
               <Input
-              label="Model"
               required     
               name='model'
               value={model}
@@ -127,9 +127,9 @@ class EditItemModal extends React.Component {
               onChange={this.handleChange}
               />
             </Form.Item>
+            <p>Serial Number</p>
             <Form.Item >
               <Input
-              label="Serial_num"
               required     
               name='serial_num'
               value={serial_num}
@@ -137,9 +137,9 @@ class EditItemModal extends React.Component {
               onChange={this.handleChange}
               />
             </Form.Item>
+            <p>Category</p>
             <Form.Item>
               <Input
-                label="Category"
                 required
                 name='category'
                 value={category}
@@ -147,9 +147,9 @@ class EditItemModal extends React.Component {
                 onChange={this.handleChange}
               />
             </Form.Item>
+            <p>Collection</p>
             <Form.Item>
               <Input
-              label="Collection"
               required
               name='collection'
               value={collection}
@@ -157,9 +157,9 @@ class EditItemModal extends React.Component {
               onChange={this.handleChange}
               />
             </Form.Item>
+            <p>Condition</p>
             <Form.Item>
               <Input
-              label="Condition"
               required
               name='condition'
               value={condition}
@@ -167,9 +167,9 @@ class EditItemModal extends React.Component {
               onChange={this.handleChange}
               />
             </Form.Item>
+            <p>Purchase Date</p>
             <Form.Item >
               <Input
-              label="Purchase Date"
               placeholder="Purchase Date"
               required
               name='purchase_date'
@@ -177,10 +177,10 @@ class EditItemModal extends React.Component {
               onChange={this.handleChange}
               />
             </Form.Item>
+            <p>Quantity</p>
             <Form.Item >
               <InputNumber 
               type="integer"
-              label="Quantity"
               required
               name='quantity'
               value={quantity}
@@ -188,9 +188,9 @@ class EditItemModal extends React.Component {
               onChange={this.handleNumberInputChange}
               />
             </Form.Item>
+            <p>Value</p>
             <Form.Item>
               <InputNumber
-                label="Value"
                 required
                 name='value'
                 value={value}
@@ -201,9 +201,9 @@ class EditItemModal extends React.Component {
                 onChange={this.handleFloatInputChange}
               />
             </Form.Item>
+            <p>Tags</p>
             <Form.Item>
               <Input
-              label="Tags"
               required
               name='tags'
               value={tags}
