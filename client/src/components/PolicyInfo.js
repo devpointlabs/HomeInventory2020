@@ -14,6 +14,7 @@ export default class RenderPolicy extends React.Component {
       axios.get(`/api/homes/${homeId}/policies/${policyId}`).then((res) => {
         console.log(res)
         this.setState({ policy: res.data });
+        this.checkFile()
       }).catch((err) => {
         console.log(err)
       })
@@ -25,10 +26,20 @@ export default class RenderPolicy extends React.Component {
       axios.get(`/api/homes/${homeId}/policies/${policyId}`).then((res) => {
         console.log(res)
         this.setState({ policy: res.data });
+        this.checkFile()
       }).catch((err) => {
         console.log(err)
       })
     }
+  }
+
+  checkFile = () => {
+    const { policy } = this.state
+    if (policy.policy_file) {
+      console.log('file true')
+      return this.props.update('true')
+    }
+    return console.log('no file')
   }
   render() {
     const { policy } = this.state
@@ -44,21 +55,23 @@ export default class RenderPolicy extends React.Component {
           <p>Policy Type: {policy.policy_type}</p>
           <p>Contact Info: {policy.contact_info}</p>
         </div>
-        <Divider orientation="left">File</Divider>
-        <div style={passiveFileDiv}>
-        <List
-          size="large"
-          bordered
-        >
-          <List.Item>
-            {policy.policy_file ? 
-            <a href={policy.policy_file} width='auto' height='200px'>{policy.policy_file} </a>
-            : 
-            <p>No File Uploaded</p>
-            }
-  
-          </List.Item>
-        </List>
+        <div style={{marginTop: '60px'}}>
+          <Divider orientation="left">File</Divider>
+          <div style={passiveFileDiv}>
+          <List
+            size="large"
+            bordered
+          >
+            <List.Item>
+              {policy.policy_file ? 
+              <a href={policy.policy_file} width='auto' height='200px'>{policy.policy_file} </a>
+              : 
+              <p>No File Uploaded</p>
+              }
+    
+            </List.Item>
+          </List>
+        </div>
       </div>
       </>
       )

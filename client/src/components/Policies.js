@@ -3,7 +3,7 @@ import { Row, Col } from "antd";
 import styled from "styled-components";
 import axios from "axios";
 import PolicyFileUploader from "./uploaders/PolicyFileUploader";
-import { Button, List } from "antd";
+import { Button, List, Tooltip } from "antd";
 import { PlusOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import PolicyFiles from "../components/PolicyFiles"
 import PolicyForm from "../components/forms/PolicyForm";
@@ -11,7 +11,14 @@ import PolicyInfo from "../components/PolicyInfo";
 import { Link } from "react-router-dom";
 
 class Policies extends React.Component {
-  state = { homes: [], policies: [], policyId: null, homeId: 0, tab: "info" };
+  state = { 
+    homes: [], 
+    policies: [],
+    policyId: null, 
+    policyFile: false,
+    homeId: 0,
+    tab: "info" 
+    };
 
   async componentDidMount() {
     let homeData = await axios.get("/api/homes");
@@ -42,25 +49,26 @@ class Policies extends React.Component {
     ));
   };
 
+  togglePolicyFile = (bool) => {
+    this.setState({policyFile: bool});
+  }
+
   togglePolicies = (targetId) => {
     this.setState({ ...this.state, policyId: targetId });
   };
 
-  // Toggles Info display
-  toggleTab = (t) => {
-    this.setState({ tab: t });
-  };
-
   // Render information panel based on function above / active tab.
   renderPolicyInfo = () => {
-    const { tab } = this.state;
-        return (
-          <PolicyInfo
-            policyId={this.state.policyId}
-            homeId={this.state.homeId}
-          />
-        )
-    
+    const { policyId } = this.state
+    if (policyId !== null) {
+      return (
+        <PolicyInfo
+          policyId={this.state.policyId}
+          homeId={this.state.homeId}
+          update={this.togglePolicyFile}
+        />
+      )
+    } 
   };
 
   deletePolicy = () => {
@@ -97,18 +105,7 @@ class Policies extends React.Component {
           </Col>
           <Col span={18}>
             <div style={{ ...divHead }}>
-              <StyledA
-                onClick={() => this.toggleTab("info")}
-                style={tab === "info" && policyId !== null ? activeTab : {}}
-              >
-                Info
-              </StyledA>
-              <StyledA
-                onClick={() => this.toggleTab("files")}
-                style={tab === "files" && policyId !== null ? activeTab : {}}
-              >
-                Files
-              </StyledA>
+              <p>Info</p>
             </div>
           </Col>
         </Row>
@@ -133,13 +130,15 @@ class Policies extends React.Component {
               </Button>
               {this.state.locationId !== null ? (
                 <>
-                  <Button
-                    type="primary"
-                    shape="circle"
-                    onClick={() => this.deletePolicy()}
-                  >
-                    <DeleteOutlined />
-                  </Button>
+             
+                    <Button
+                      type="primary"
+                      shape="circle"
+                      onClick={() => this.deletePolicy()}
+                    >
+                      <DeleteOutlined />
+                    </Button>
+         
                   <Button
                     type="primary"
                     shape="circle"
@@ -156,12 +155,17 @@ class Policies extends React.Component {
             <div style={{ ...divFoot }}>
               {this.state.policyId !== null ? (
                 <>
+                  {this.state.policyFile ? 
+                  <Tooltip title="Delete File">
+                    <Button shape="circle">
+                      <DeleteOutlined />
+                    </Button> 
+                  </Tooltip>
+                  : 
                   <Button shape="circle">
                     <PlusOutlined />
-                  </Button>
-                  {/* <Button shape="circle">
-                    <DeleteOutlined />
-                  </Button> */}
+                  </Button>  
+                  }            
                 </>
               ) : null}
             </div>
@@ -229,9 +233,10 @@ const divFoot = {
   fontWeight: "400",
 };
 //styling for name links
-const StyledA = styled.a`
+const StyledA = styled.h4`
   color: #272829;
   text-decoration: none;
+  cursor: default
 `;
 const StyledA2 = styled.a`
   color: #272829;
