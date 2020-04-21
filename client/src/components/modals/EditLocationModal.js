@@ -32,9 +32,9 @@ class EditLocationModal extends React.Component {
     this.setState({location: {...this.state.location, [name]: value, }});
   };
 
-  handleNumberInputChange = (value) => {
-    this.setState({location: {...this.state.location, square_footage: value}})
-  };
+  // handleNumberInputChange = (value) => {
+  //   this.setState({location: {...this.state.location, square_footage: value}})
+  // };
 
   showModal = () => {
     this.setState({
@@ -94,26 +94,6 @@ class EditLocationModal extends React.Component {
                 name='name'
                 value={name}
                 placeholder='Name'
-                onChange={this.handleChange}
-                />
-              </Form.Item>
-              <Form.Item >
-                <InputNumber 
-                label="Square Footage"
-                required
-                name='square_footage'
-                value={square_footage}
-                placeholder='Square Footage'
-                onChange={this.handleNumberInputChange}
-                />
-              </Form.Item>
-              <Form.Item >
-                <Input
-                label="Description"
-                required     
-                name='description'
-                value={description}
-                placeholder='Description'
                 onChange={this.handleChange}
                 />
               </Form.Item>

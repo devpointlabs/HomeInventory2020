@@ -3,14 +3,14 @@ import axios from "axios";
 import { Form, Input, InputNumber, Button } from "antd";
 
 class LocationForm extends React.Component {
-  state = { name: "", square_footage: "", description: ""};
+  state = { name: ""};
 
 
   handleSubmit = () => {
     const newLocation = {...this.state}
     axios.post("/api/locations", newLocation)
       .then( res => {
-        this.setState({ name: "", square_footage: "", description: ""});
+        this.setState({ name: ""});
         this.props.update(res)
       })
   }
@@ -20,44 +20,22 @@ class LocationForm extends React.Component {
     this.setState({ [name]: value, });
   };
 
-  handleNumberInputChange = (value) => {
-    this.setState({square_footage: value})
-  };
-
-
   render() {
-    const { name, square_footage, description} = this.state;
+    const { name } = this.state;
     return (
       <> 
         <Form onFinish={this.handleSubmit}>
-          <Form.Item >
+          <Form.Item
+          rules={[{ required: true }]}
+            >     
             <Input
+            rules={[{ required: true }]}
             label="Name"
-            required     
+            required
             autoFocus
             name='name'
             value={name}
             placeholder='Name'
-            onChange={this.handleChange}
-            />
-          </Form.Item>
-          <Form.Item >
-            <InputNumber 
-            label="Square Footage"
-            required
-            name='square_footage'
-            value={square_footage}
-            placeholder='Square Footage'
-            onChange={this.handleNumberInputChange}
-            />
-          </Form.Item>
-          <Form.Item >
-            <Input
-            label="Description"
-            required     
-            name='description'
-            value={description}
-            placeholder='Description'
             onChange={this.handleChange}
             />
           </Form.Item>
