@@ -2,7 +2,10 @@ import React from "react";
 import { Row, Col } from "antd";
 import styled from "styled-components";
 import axios from "axios";
+//
 import PolicyFileUploader from "./uploaders/PolicyFileUploader";
+//
+import PolicyFileModal from './modals/PolicyFileModal'
 import { Button, List, Tooltip } from "antd";
 import { PlusOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import PolicyInfo from "../components/PolicyInfo";
@@ -70,7 +73,7 @@ class Policies extends React.Component {
       )}
       if( tab === 'newFile') {
         return (
-          <PolicyFileUploader homeId={this.state.homeId} policyId={this.state.policyId} update={this.updateFiles} />
+          <PolicyFileModal homeId={this.state.homeId} policyId={this.state.policyId} update={this.updateFiles} />
         )
       }
     } 

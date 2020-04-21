@@ -1,6 +1,6 @@
 import React from 'react';
 import { Upload, message } from 'antd';
-import { FileImageOutlined } from '@ant-design/icons';
+import { FileOutlined } from '@ant-design/icons';
 import axios from 'axios'
 
 
@@ -22,9 +22,9 @@ class PolicyFileUploader extends React.Component {
             data.append('file', info.file.originFileObj)
             axios.patch(`/api/homes/${this.props.homeId}/policies/${this.props.policyId}`, data)
             message.success(`${info.file.name} file uploaded successfully.`);
-            setTimeout(() => {
-                this.props.update()
-              }, 1500);
+            // setTimeout(() => {
+            //     this.props.update()
+            //   }, 1500);
             
         } else if (status === 'error') {
             message.error(`${info.file.name} file upload failed.`);
@@ -47,9 +47,9 @@ class PolicyFileUploader extends React.Component {
             <div style={draggerStyle}>
                 <Dragger {...data} onChange={this.onChange} onRemove={this.onRemove}>
                     <p className="ant-upload-drag-icon">
-                        <FileImageOutlined />
+                        <FileOutlined />
                     </p>
-                    <p className="ant-upload-text">Click or drag photo to this area to upload</p>
+                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
                 </Dragger>
             </div>
         )

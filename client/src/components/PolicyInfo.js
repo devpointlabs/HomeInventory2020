@@ -36,11 +36,14 @@ export default class RenderPolicy extends React.Component {
     const { policyId, homeId } = this.props
     const policy = this.state
     axios.patch(`/api/homes/${homeId}/policies/${policyId}`, {...policy, policy_file: null})
-    .then(res => {
+    .then(res => {  
       console.log(res)
     })
     const fileRmv = {...policy, policy_file: null}
     this.setState({policy: fileRmv});
+    setTimeout(() => {
+      this.props.update(false)
+      }, 300);
   }
 
   checkFile = () => {
