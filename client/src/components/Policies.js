@@ -2,9 +2,10 @@ import React from "react";
 import { Row, Col } from "antd";
 import styled from "styled-components";
 import axios from "axios";
-import Uploader from "./uploaders/FileUploader";
+import PolicyFileUploader from "./uploaders/PolicyFileUploader";
 import { Button, List } from "antd";
 import { PlusOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import PolicyFiles from "../components/PolicyFiles"
 import PolicyForm from "../components/forms/PolicyForm";
 import PolicyInfo from "../components/PolicyInfo";
 import { Link } from "react-router-dom";
@@ -63,15 +64,11 @@ class Policies extends React.Component {
         );
       case "files":
         return (
-          <Uploader itemId={this.state.itemId} update={this.updateFiles} />
+          <>
+          <PolicyFileUploader homeId={this.state.homeId} policyId={this.state.policyId} update={this.updateFiles} />
+          <PolicyFiles homeId={this.state.homeId} policyId={this.state.policyId} />
+          </>
         );
-      // case "newPolicy":
-      //   return (
-      //     <PolicyForm
-      //       update={this.updateLocationList}
-      //       homeId={this.state.homeId}
-      //     />
-      //   );
       default:
         return <></>;
     }
@@ -93,54 +90,6 @@ class Policies extends React.Component {
           tab: "blank",
         });
         this.props.history.push('/policies')
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  renderFiles = () => {
-    const { files, fileId } = this.state;
-    return files.map((file) => (
-      <div
-        style={fileId === file.id ? activeFileDiv : passiveFileDiv}
-        key={file.id}
-        onClick={() => this.setId(file.id)}
-      >
-        <List size="large" bordered>
-          <List.Item>
-            <a href={file.file} width="auto" height="200px">
-              {file.name}{" "}
-            </a>
-          </List.Item>
-        </List>
-      </div>
-    ));
-  };
-
-  // Function that toggles active file ID:
-  setId = (id) => {
-    this.setState({
-      fileId: id,
-    });
-  };
-
-  updateFiles = () => {
-    this.setState({ filesLoaded: false });
-  };
-
-  deleteFile = (id) => {
-    const { itemId, fileId, files } = this.state;
-    axios
-      .delete(``)
-      .then((res) => {
-        console.log(res);
-        const filteredFiles = files.filter((f) => f.id !== fileId);
-        this.setState({
-          fileId: null,
-          tab: "files",
-          files: filteredFiles,
-        });
       })
       .catch((err) => {
         console.log(err);
@@ -204,7 +153,6 @@ class Policies extends React.Component {
                   </Button>
                   <Button
                     type="primary"
-                    // onClick={() => this.updatePolicy()}
                     shape="circle"
                   ><Link 
                   to={{ pathname: "/edit/policy", homeId:this.state.homeId, policyId:this.state.policyId}}>
@@ -217,14 +165,14 @@ class Policies extends React.Component {
           </Col>
           <Col span={18}>
             <div style={{ ...divFoot }}>
-              {this.state.itemId !== null ? (
+              {this.state.policyId !== null ? (
                 <>
                   <Button shape="circle">
-                    <EditOutlined />
+                    <PlusOutlined />
                   </Button>
-                  <Button shape="circle" onClick={() => this.deleteItem()}>
+                  {/* <Button shape="circle">
                     <DeleteOutlined />
-                  </Button>
+                  </Button> */}
                 </>
               ) : null}
             </div>
