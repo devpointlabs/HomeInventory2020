@@ -163,10 +163,10 @@ export default class House extends React.Component {
                 </StyledCon>
                 <StyledTable>
                     <table>
-                        <tr>
+                        <div>
                             <StyledTableDate >Due Date</StyledTableDate >
                             <StyledTableTask >Task</StyledTableTask >
-                        </tr>
+                        </div>
                     </table>
                     <StyledLine />
                     <Maintenances ref='maintenances' homeId={home.id} getId={this.getMaintenanceId} />
@@ -211,12 +211,12 @@ export default class House extends React.Component {
                 </StyledCon>
                 <StyledTable>
                     <table>
-                        <tr>
+                        <div>
                             <StyledTableDate>Date</StyledTableDate>
                             <StyledTableTask2>Land</StyledTableTask2>
                             <StyledTableTask2>Structure</StyledTableTask2>
                             <StyledTableTask2>Total</StyledTableTask2>
-                        </tr>
+                        </div>
                     </table>
                     <StyledLine />
                     <Assessments ref='assessments' homeId={home.id} getId={this.getAssessmentId} />
