@@ -404,7 +404,7 @@ class Items extends React.Component {
 // styling for selected menu options
 const activeDiv = {
   height: '50px',
-  backgroundColor: '#f0f0f0', 
+  backgroundColor: '#D9D9D9', 
   boxShadow: '0px 2px 5px #888888', 
   paddingTop: '12px',
   transition: 'all 0.2s ease-in-out',

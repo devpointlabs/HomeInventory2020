@@ -207,14 +207,13 @@ class Policies extends React.Component {
 // styling for selected menu options
 const activeDiv = {
   height: "50px",
-  backgroundColor: "#f0f0f0",
+  backgroundColor: "#D9D9D9",
   boxShadow: "0px 2px 5px #888888",
   paddingTop: "12px",
   transition: 'all 0.2s ease-in-out',
 };
 const passiveDiv = { height: "50px", marginLeft: "14px", paddingTop: "12px" , transition: 'all 0.2s ease-in-out',};
 const activeA = { color: "#1890ff", marginTop: "16px", paddingLeft: "6px" , transition: 'all 0.2s ease-in-out',};
-const activeTab = { color: "#1890ff", textDecoration: "underline", transition: 'all 0.2s ease-in-out',};
 // styling for layout of items page
 const divHead = {
   display: "flex",
@@ -228,15 +227,7 @@ const divHead = {
   padding: "12px",
   fontWeight: "400",
 };
-const passiveFileDiv = {
-  margin: "12px",
-  cursor: "pointer",
-};
-const activeFileDiv = {
-  margin: "12px",
-  cursor: "pointer",
-  backgroundColor: "#f0f0f0",
-};
+
 const divField = {
   display: "flex !important",
   flexDirection: "row !important",
@@ -260,12 +251,8 @@ const divFoot = {
   padding: "12px",
   fontWeight: "400",
 };
-//styling for name links
-const StyledA = styled.h4`
-  color: #272829;
-  text-decoration: none;
-  cursor: default
-`;
+
+
 const StyledA2 = styled.a`
   color: #272829;
   text-decoration: none;
