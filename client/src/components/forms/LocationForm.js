@@ -8,6 +8,10 @@ class LocationForm extends React.Component {
 
   handleSubmit = () => {
     const newLocation = {...this.state}
+    if (this.state.name.length===0) {
+      alert ("Location name cannot be empty")
+      return
+    }
     axios.post("/api/locations", newLocation)
       .then( res => {
         this.setState({ name: ""});

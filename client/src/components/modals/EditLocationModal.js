@@ -44,6 +44,10 @@ class EditLocationModal extends React.Component {
 
   handleOk =() => { 
     const { locationId } = this.props
+    if (this.state.location.name.length===0) {
+      alert ("Location name cannot be empty")
+      return
+    }
 
     axios.patch(`/api/locations/${locationId}`, { ...this.state.location })
     .then( res => {
