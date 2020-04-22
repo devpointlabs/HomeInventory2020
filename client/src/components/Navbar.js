@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { AuthContext } from '../providers/AuthProvider';
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
-import Logo from '../images/home-inventory-black.png'
+import Logo from '../images/logo.png'
 
 const { Search } = Input;
 // import { Menu, Icon, Button } from 'antd';
@@ -46,7 +46,7 @@ const Navbar = (props) => {
           <Redirect to='/' />
           <StyledNav>
             <StyledUl>
-              <StyledLogo><Link to='/'><img src={Logo} width='190px' height='90px'/></Link></StyledLogo>
+              <StyledLogo><Link to='/'><img src={Logo} width='145px' height='130px'/></Link></StyledLogo>
               <StyledLi><StyledButton as={Link} to='/register'>SIGN UP</StyledButton></StyledLi>
               <StyledLi><StyledA2 as={Link} to='/login'>SIGN IN</StyledA2></StyledLi>
             </StyledUl>
@@ -77,7 +77,7 @@ list-style-type: none;
 `
 const StyledLogo = styled.li`
 margin-left: 0.5206vw;
-margin-right: 55vw;
+margin-right: 57vw;
 font-weight: bold;
 cursor: pointer;
 font-size: 25px;
