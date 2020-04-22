@@ -8,9 +8,11 @@ class Api::ReceiptsController < ApplicationController
     render json: receipts
   end
 
-  # def show
-  #   render json: @items.receipts.find(params[:id]) 
-  # end
+  def show
+    # render json: @items.receipts.find(params[:id]) 
+    receipt = @item.receipts.find(params[:id])
+    render json: receipt
+  end
 
   def create
     receipt = @item.receipts.new(receipt_params)
@@ -44,7 +46,7 @@ class Api::ReceiptsController < ApplicationController
       begin
         ext = File.extname(file.tempfile)
         cloud_image = Cloudinary::Uploader.upload(file, public_id: file.original_filename, secure: true)
-        @receipt.image = cloud_image["secure_url"]
+        @receipt.img = cloud_image["secure_url"]
       rescue => e
         render json: { errors: e }, status: 422
         return

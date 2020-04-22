@@ -9,6 +9,7 @@ class EditReceiptModal extends React.Component {
     visible: true,
     confirmLoading: false,
     itemId: null,
+    file: null,
     receipt: {
       id: null,
       date: null,
@@ -55,9 +56,20 @@ class EditReceiptModal extends React.Component {
   handleOk = () => {
     const { itemId } = this.props;
     const { id } = this.state.receipt;
+    let data = new FormData();
+    const { file } = this.state;
+    console.log("file: submit", file);
+    data.append("file", file);
+    const {
+      date,
+      receipt_num,
+      purchased_from,
+      price,
+      tax,
+    } =this.state.receipt;
 
     axios
-      .patch(`/api/items/${itemId}/receipts/${id}`, { ...this.state.receipt })
+      .patch(`/api/items/${itemId}/receipts/${id}/?date=${date}&receipt_num=${receipt_num}&purchased_from=${purchased_from}&price=${price}&tax=${tax}`, data, { ...this.state.receipt })
       .then((res) => {
         console.log(res);
       });
@@ -71,7 +83,7 @@ class EditReceiptModal extends React.Component {
         visible: false,
         confirmLoading: false,
       });
-    }, 1000);
+    }, 2000);
   };
 
   onDrop = (files) => {
@@ -111,8 +123,8 @@ class EditReceiptModal extends React.Component {
           <>
             <Form onFinish={this.handleSubmit}>
               <Form.Item>
+                <p>Purchase Date</p>
                 <Input
-                  label="Purchase Date"
                   placeholder="Purchase Date"
                   autoFocus
                   required
@@ -122,8 +134,8 @@ class EditReceiptModal extends React.Component {
                 />
               </Form.Item>
               <Form.Item>
+                <p>Receipt Number</p>
                 <Input
-                  label="Receipt Number"
                   required
                   name="receipt_num"
                   value={receipt_num}
@@ -132,8 +144,8 @@ class EditReceiptModal extends React.Component {
                 />
               </Form.Item>
               <Form.Item>
+                <p>Purchased From</p>
                 <Input
-                  label="Purchased From"
                   required
                   name="purchased_from"
                   value={purchased_from}
@@ -142,8 +154,8 @@ class EditReceiptModal extends React.Component {
                 />
               </Form.Item>
               <Form.Item>
+                <p>Price</p>
                 <InputNumber
-                  label="Price"
                   required
                   name="price"
                   value={price}
@@ -157,8 +169,8 @@ class EditReceiptModal extends React.Component {
                 />
               </Form.Item>
               <Form.Item>
+                <p>Tax</p>
                 <InputNumber
-                  label="Tax"
                   required
                   name="tax"
                   value={tax}
@@ -172,20 +184,12 @@ class EditReceiptModal extends React.Component {
                 />
               </Form.Item>
               <Form.Item>
-                {/* <Input
-                label="Image"
-                required
-                name='img'
-                value={img}
-                placeholder='Image'
-                onChange={this.handleChange}
-                /> */}
                 <Dropzone onDrop={this.onDrop} multiple={false}>
                   {({ getRootProps, getInputProps }) => (
                     <StyledDrop>
                       <div {...getRootProps()}>
                         <input {...getInputProps()} />
-                        <p>Drag or drop a picture of your home</p>
+                        <p>Drag or drop a picture of your receipt</p>
                       </div>
                     </StyledDrop>
                   )}
