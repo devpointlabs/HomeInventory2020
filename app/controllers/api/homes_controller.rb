@@ -32,7 +32,7 @@ class Api::HomesController < ApplicationController
   def update
     @home.update(home_params)
     # render json: @home
-
+ 
 
     file = params[:file]
     
