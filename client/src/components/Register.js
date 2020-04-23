@@ -3,7 +3,7 @@ import { Form, Input } from 'antd';
 import { Link, Redirect } from 'react-router-dom';
 import { AuthConsumer } from '../providers/AuthProvider';
 import styled from 'styled-components';
-import Img from '../images/DGB_Hero.jpg';
+
 
 
 class Register extends React.Component {
@@ -32,7 +32,7 @@ class Register extends React.Component {
 
     return (
       <>
-        <StyledBackgroundImg src={Img} width="100%" height='auto' />
+        <StyledBackgroundImg src='https://images.unsplash.com/photo-1493934558415-9d19f0b2b4d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=2536&q=80' width="100%" height='auto' />
         <StyledBackground>
           <StyledHeader>Join Home Inventory</StyledHeader>
           <StyledHeader2>Sign up with <a>Facebook</a> or <a>Google</a></StyledHeader2>

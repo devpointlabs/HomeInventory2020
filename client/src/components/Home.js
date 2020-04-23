@@ -6,12 +6,14 @@ import Img from '../images/DGB_Hero.jpg';
 // 'https://images.unsplash.com/photo-1493934558415-9d19f0b2b4d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=2536&q=80'
 const Home = () => (
   <>
-  <StyledBackground src={Img} width="100%" height='auto'/>
+  <StyledBackground src='https://images.unsplash.com/photo-1493934558415-9d19f0b2b4d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=2536&q=80' width="100%" height='auto'/>
   <StyledDiv>
   <StyledHeader>
-    Do you really know what you 
+    Document &
     <br/>
-    own? Let us help.
+    organize
+    <br/>
+    your home
   </StyledHeader>
    <br/>
    <StyledA><Link to='/login'>Get started ></Link></StyledA>
@@ -26,7 +28,7 @@ z-index: -1;
 `
 
 const StyledDiv = styled.div`
-margin-top: -15px;
+margin-top: 80px;
 margin-left: 12.5vw;
 `
 // const StyledImg = styled.div`
@@ -42,7 +44,7 @@ margin-left: 12.5vw;
 const StyledHeader = styled.div`
 font-size: 80px;
 font-weight: bold;
-color: white;
+color: black;
 `
 
 const StyledA = styled.a`
